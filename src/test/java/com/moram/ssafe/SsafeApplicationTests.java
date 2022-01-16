@@ -1,4 +1,4 @@
-package com.maram.ssafe;
+package com.moram.ssafe;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
