@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role roleType;
 
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
@@ -35,18 +35,20 @@ public class User extends BaseEntity {
 
     private String realName;
 
+    private int ordinal;
+
     private String campus;
 
     private String authImg;
 
-    private int ssafyCheck;
+    private int authCheck;
 
     private String likeJob;
 
     @Builder
-    public User(String email, Role role, SocialType socialType) {
+    public User(String email, Role roleType, SocialType socialType) {
         this.email = email;
-        this.role = role;
+        this.roleType = roleType;
         this.socialType = socialType;
     }
 
@@ -54,15 +56,16 @@ public class User extends BaseEntity {
         this.profileImg = user.getProfileImg();
         this.nickname = user.getNickname();
         this.realName = user.getRealName();
+        this.ordinal=user.getOrdinal();
         this.campus = user.getCampus();
         this.authImg = user.getAuthImg();
-        this.ssafyCheck = 1;
+        this.authCheck = 1;
     }
 
     public void updateLikeJob(String likeJob) {
         this.likeJob = likeJob;
     }
     public Role getRole() {
-        return role;
+        return roleType;
     }
 }
