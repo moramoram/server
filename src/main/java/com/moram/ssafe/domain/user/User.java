@@ -56,7 +56,7 @@ public class User extends BaseEntity {
         this.profileImg = user.getProfileImg();
         this.nickname = user.getNickname();
         this.realName = user.getRealName();
-        this.ordinal=user.getOrdinal();
+        this.ordinal = user.getOrdinal();
         this.campus = user.getCampus();
         this.authImg = user.getAuthImg();
         this.authCheck = 1;
@@ -65,6 +65,7 @@ public class User extends BaseEntity {
     public void updateLikeJob(String likeJob) {
         this.likeJob = likeJob;
     }
+
     public Role getRole() {
         return roleType;
     }
