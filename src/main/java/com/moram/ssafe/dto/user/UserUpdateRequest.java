@@ -18,6 +18,9 @@ public class UserUpdateRequest {
     @NotNull(message = "실명이 존재하지 않습니다.")
     private String realName;
 
+    @NotNull(message = "ordinal이 존재하지 않습니다.")
+    private int ordinal;
+
     @NotNull(message = "Campus가 존재하지 않습니다.")
     private String campus;
 
