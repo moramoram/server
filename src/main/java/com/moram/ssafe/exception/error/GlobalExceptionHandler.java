@@ -1,4 +1,4 @@
-package com.moram.ssafe.common.error;
+package com.moram.ssafe.exception.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.moram.ssafe.common.error;
+package com.moram.ssafe.exception.error;
 
 import lombok.Getter;
 

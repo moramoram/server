@@ -1,4 +1,4 @@
-package com.moram.ssafe.common.response;
+package com.moram.ssafe.dto.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
