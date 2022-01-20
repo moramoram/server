@@ -1,63 +1,78 @@
 package com.moram.ssafe.infrastructure.auth;
 
+import com.moram.ssafe.domain.user.User;
+import com.moram.ssafe.exception.auth.ExpiredAccessTokenException;
+import com.moram.ssafe.exception.auth.InvalidJwtSignatureException;
+import com.moram.ssafe.exception.auth.InvalidJwtTokenException;
+import com.moram.ssafe.exception.auth.UnsupportedJwtTokenException;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.*;
-
+@Slf4j
 @Component
 public class JwtTokenProvider {
-    @Value("${jwt.access-token.expire-length:10000}")
+
+    protected static final String AUTHORITIES_KEY = "auth";
+    protected static final String AUTHORITIES_SPLITTER = ", ";
+
+    @Value("${jwt.access.expire-length}")
     private long accessTokenValidityInMilliseconds;
-    @Value("${jwt.refresh-token.expire-length:10000}")
+    @Value("${jwt.refresh.expire-length}")
     private long refreshTokenValidityInMilliseconds;
     @Value("${jwt.token.secret-key:secret-key}")
     private String secretKey;
 
-    public String createAccessToken(String payload) {
-        return createToken(payload, accessTokenValidityInMilliseconds);
+    public String createAccessToken(User user) {
+        return createToken(user, accessTokenValidityInMilliseconds);
     }
 
-    public String createRefreshToken() {
+    public String createRefreshToken(User user) {
         byte[] array = new byte[7];
         new Random().nextBytes(array);
         String generatedString = new String(array, StandardCharsets.UTF_8);
-        return createToken(generatedString, refreshTokenValidityInMilliseconds);
+        return createToken(user, refreshTokenValidityInMilliseconds);
     }
 
-    public String createToken(String payload, long expireLength) {
-        Claims claims = Jwts.claims().setSubject(payload);
+    public String createToken(User user, long expireLength) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + expireLength);
-
+        Date validity = new Date(now.getTime() + expireLength * 1000);
+        log.info(user.getRoleType().getRole());
+        String authority = user.getRoleType().getRole();
         return Jwts.builder()
-                .setClaims(claims)
+                .claim("id", user.getId())
+                .claim(AUTHORITIES_KEY, authority)
                 .setIssuedAt(now)
-                .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setExpiration(validity)
                 .compact();
-    }
-
-    public String getPayload(String token) {
-        try {
-            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims().getSubject();
-        } catch (JwtException e) {
-            throw new RuntimeException("유효하지 않은 토큰입니다.");
-        }
     }
 
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new InvalidJwtSignatureException();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredAccessTokenException();
+        } catch (UnsupportedJwtException e) {
+            throw new UnsupportedJwtTokenException();
+        } catch (IllegalArgumentException e) {
+            throw new InvalidJwtTokenException();
         }
+    }
+
+
+    public Claims getData(String token) {
+        if (validateToken(token)) {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        }
+        return null;
     }
 }
