@@ -16,7 +16,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(SafeServerException.class)
     public ResponseEntity<ErrorResponse> serverExceptionHandler(SafeServerException e) {
         ErrorCode errorCode = e.getErrorCode();
@@ -25,4 +24,3 @@ public class GlobalExceptionHandler {
     }
 
 }
-
