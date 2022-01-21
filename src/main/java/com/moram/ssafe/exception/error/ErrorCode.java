@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum ErrorCode {
 
     INVALID_INPUT_VALUE(400, "Invalid input value."),
-    HELLO_ERROR_MESSAGE(404,"Hello 요청 실패");
+    HELLO_ERROR_MESSAGE(404,"Hello 요청 실패"),
+    USER_NOT_FOUND(404, "User not found.");
 
     private final int status;
     private final String message;

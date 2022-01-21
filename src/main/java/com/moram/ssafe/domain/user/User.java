@@ -20,14 +20,12 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
     private Role roleType;
 
-    @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private String socialId;
 
     private String profileImg;
 
@@ -46,17 +44,18 @@ public class User extends BaseEntity {
     private String likeJob;
 
     @Builder
-    public User(String email, Role roleType, SocialType socialType) {
+    public User(String socialId,String email, Role roleType,String nickname) {
+        this.socialId =socialId;
         this.email = email;
         this.roleType = roleType;
-        this.socialType = socialType;
+        this.nickname=nickname;
     }
 
     public void update(UserUpdateRequest user) {
         this.profileImg = user.getProfileImg();
         this.nickname = user.getNickname();
         this.realName = user.getRealName();
-        this.ordinal=user.getOrdinal();
+        this.ordinal = user.getOrdinal();
         this.campus = user.getCampus();
         this.authImg = user.getAuthImg();
         this.authCheck = 1;
@@ -65,6 +64,7 @@ public class User extends BaseEntity {
     public void updateLikeJob(String likeJob) {
         this.likeJob = likeJob;
     }
+
     public Role getRole() {
         return roleType;
     }

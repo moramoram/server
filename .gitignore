@@ -30,9 +30,6 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### my ignore ###
-src/main/resources/application.yml
-
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
