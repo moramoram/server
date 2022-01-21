@@ -15,9 +15,8 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/login/{socialType}")
+    @PostMapping("/login/{socialType}")
     public ResponseEntity<LoginResponse> login(@PathVariable String socialType, @RequestParam("code") String code) {
-        log.info(socialType+" "+code);
         LoginResponse loginResponse = authService.login(socialType, code);
         return ResponseEntity.ok().body(loginResponse);
     }
