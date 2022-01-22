@@ -1,6 +1,8 @@
 package com.moram.ssafe.controller.user;
 
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
+import com.moram.ssafe.controller.user.annotation.UserContext;
+import com.moram.ssafe.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +30,9 @@ public class UserController {
     @GetMapping("/all")
     @PreAuthorize(roles = {"ROLE_USER", "ROLE_ADMIN"})
     public String adminOrUser() {
-        return "어드민 유저 성공";
+       User user = UserContext.currentUser.get();
+       log.info("user id: "+user.getId());
+       return "어드민 유저 성공";
     }
 
 }
