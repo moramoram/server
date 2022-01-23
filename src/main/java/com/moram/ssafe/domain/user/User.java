@@ -61,6 +61,18 @@ public class User extends BaseEntity {
         this.authCheck = 1;
     }
 
+    public void authApprove() {
+        this.authCheck = 2;
+    }
+
+    public void deleteUser(){
+        this.email = "";
+        this.socialId ="";
+        this.nickname = "익명의 사용자";
+        this.realName = "탈퇴한 사용자";
+        this.authImg ="";
+    }
+
     public void updateLikeJob(String likeJob) {
         this.likeJob = likeJob;
     }
