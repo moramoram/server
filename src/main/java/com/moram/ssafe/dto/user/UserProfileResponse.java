@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class UserProfileResponse {
+
     private Long userId;
     private String email;
     private String profileImg;
