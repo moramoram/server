@@ -22,7 +22,11 @@ public enum ErrorCode {
     INVALID_JWT_SIGNATURE(401,"Invalid JWT signature"),
     UNSUPPORTED_JWT_TOKEN(401,"Unsupported Jwt Token"),
     INVALID_JWT_TOKEN(401,"Invalid Jwt token"),
-    NOT_VALID_USER(401,"Not valid user");
+    NOT_VALID_USER(401,"Not valid user"),
+
+    //Recruit
+    RECRUIT_NOT_FOUND(404,"Recruit not found"),
+    COMPANY_NOT_FOUND(404,"Company not found");
 
 
     private final int status;
