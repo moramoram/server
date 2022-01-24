@@ -21,7 +21,8 @@ public enum ErrorCode {
     EXPIRED_ACCESS_TOKEN(401, "Expired access token."),
     INVALID_JWT_SIGNATURE(401,"Invalid JWT signature"),
     UNSUPPORTED_JWT_TOKEN(401,"Unsupported Jwt Token"),
-    INVALID_JWT_TOKEN(401,"Invalid Jwt token");
+    INVALID_JWT_TOKEN(401,"Invalid Jwt token"),
+    NOT_VALID_USER(401,"Not valid user");
 
 
     private final int status;

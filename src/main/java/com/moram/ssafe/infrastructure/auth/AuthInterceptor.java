@@ -1,7 +1,10 @@
 package com.moram.ssafe.infrastructure.auth;
+
 import com.moram.ssafe.controller.user.annotation.AnnotationHandler;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
+import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.exception.auth.NoTokenException;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -26,6 +29,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String TOKEN_HEADER = "Bearer ";
+    private final UserRepository userRepository;
     private final JwtTokenProvider tokenProvider;
 
     @Override
@@ -55,7 +59,14 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private String[] getAuthorities(String token) {
-        String authorities = (String) tokenProvider.getData(token).get(AUTHORITIES_KEY);
+        Claims claims = tokenProvider.getData(token);
+
+//        Long userId = claims.get("id", Long.class);
+//        User optionalUser = userRepository.findById(userId).orElseThrow(UserAuthenticationException::new);
+//        UserContext.currentUser.set(optionalUser);
+        String authorities = (String) claims.get(AUTHORITIES_KEY);
+//        log.info("userId "+ userId);
+//        log.info("getAuthorities " + Arrays.toString(authorities.split(AUTHORITIES_SPLITTER)));
         return authorities.split(AUTHORITIES_SPLITTER);
     }
 

@@ -1,7 +1,7 @@
 package com.moram.ssafe.domain.user;
 
 import com.moram.ssafe.domain.BaseEntity;
-import com.moram.ssafe.dto.user.UserUpdateRequest;
+import com.moram.ssafe.dto.user.UserUpdateAddAuthRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,7 +51,7 @@ public class User extends BaseEntity {
         this.nickname=nickname;
     }
 
-    public void update(UserUpdateRequest user) {
+    public void update(UserUpdateAddAuthRequest user) {
         this.profileImg = user.getProfileImg();
         this.nickname = user.getNickname();
         this.realName = user.getRealName();
@@ -59,6 +59,18 @@ public class User extends BaseEntity {
         this.campus = user.getCampus();
         this.authImg = user.getAuthImg();
         this.authCheck = 1;
+    }
+
+    public void authApprove() {
+        this.authCheck = 2;
+    }
+
+    public void deleteUser(){
+        this.email = "";
+        this.socialId ="";
+        this.nickname = "익명의 사용자";
+        this.realName = "탈퇴한 사용자";
+        this.authImg ="";
     }
 
     public void updateLikeJob(String likeJob) {
