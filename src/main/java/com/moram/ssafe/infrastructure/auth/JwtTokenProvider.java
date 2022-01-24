@@ -42,7 +42,7 @@ public class JwtTokenProvider {
     public String createToken(User user, long expireLength) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expireLength * 1000);
-        log.info(user.getRoleType().getRole());
+//        log.info(user.getRoleType().getRole());
         String authority = user.getRoleType().getRole();
         return Jwts.builder()
                 .claim("id", user.getId())
