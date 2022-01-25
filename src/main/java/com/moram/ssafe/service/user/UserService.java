@@ -5,13 +5,11 @@ import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.UserProfileResponse;
 import com.moram.ssafe.dto.user.UserUpdateAddAuthRequest;
 import com.moram.ssafe.exception.user.UserNotFoundException;
-import com.mysql.cj.protocol.x.Notice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.rmi.runtime.Log;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,8 +40,8 @@ public class UserService {
         originUser.deleteUser();
     }
 
-    public List<UserProfileResponse> userAuthApprove() {
-        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "modifiedDate"));
+    public List<UserProfileResponse> userAuthApproveWait() {
+        List<User> users = userRepository.findByAuthCheck(Sort.by(Sort.Direction.DESC, "modifiedDate"),1);
         return users.stream().map(UserProfileResponse::from).collect(Collectors.toList());
     }
 }

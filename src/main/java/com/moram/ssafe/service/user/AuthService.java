@@ -1,7 +1,6 @@
 package com.moram.ssafe.service.user;
 
 import com.moram.ssafe.domain.user.Role;
-import com.moram.ssafe.domain.user.SocialType;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.LoginResponse;
@@ -12,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -52,7 +50,6 @@ public class AuthService {
                 .refreshToken(refreshToken)
                 .build();
     }
-
 
     public User saveOrUpdate(UserProfile profile) {
         log.info(profile.getEmail() + " email");
