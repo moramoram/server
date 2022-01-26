@@ -24,12 +24,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/me/{userId}")
+    @GetMapping("/me")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> getUserProfile(@PathVariable("userId") Long userId) {
+    public ResponseEntity<CommonResponseDto> getUserProfile() {
 
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_PROFILE, userService.getUserProfile(userId)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_PROFILE, userService.getUserProfile()));
     }
 
     @PutMapping
@@ -39,12 +39,20 @@ public class UserController {
                 HttpStatus.OK, SUCCESS_UPDATE_USER_ADD_AUTH, userService.updateUserAddAuth(request)));
     }
 
-    @DeleteMapping("/{userId}")
+
+    @PutMapping("/test")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> deleteUser (@PathVariable("userId") Long userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<CommonResponseDto> testUserAddAuth (@RequestBody @Valid UserUpdateAddAuthRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.NO_CONTENT, SUCCESS_DELETE_USER, userId));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_ADD_AUTH, userService.updateUserAddAuth(request)));
+    }
+
+    @DeleteMapping
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> deleteUser () {
+        userService.deleteUser();
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.NO_CONTENT, SUCCESS_DELETE_USER));
     }
 
     @GetMapping("/auth-approve/wait")
