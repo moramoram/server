@@ -28,12 +28,12 @@ public class RecruitService {
 
     public List<RecruitResponse> findRecruitList() {
         return recruitRepository.findAll().stream()
-                .map(RecruitResponse::of).collect(Collectors.toList());
+                .map(RecruitResponse::from).collect(Collectors.toList());
     }
 
     public RecruitResponse findRecruit(Long id) {
         Recruit recruit = getRecruit(id);
-        return RecruitResponse.of(recruit);
+        return RecruitResponse.from(recruit);
     }
 
     @Transactional
