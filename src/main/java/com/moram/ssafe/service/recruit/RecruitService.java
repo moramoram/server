@@ -44,7 +44,7 @@ public class RecruitService {
     }
 
     @Transactional
-    public Long updateRecruit(Long id,RecruitUpdateRequest request) {
+    public Long updateRecruit(Long id, RecruitUpdateRequest request) {
         Company company = getCompany(request.getCompanyId());
         Recruit recruit = getRecruit(id);
         recruit.update(request.toRecruit(company));
@@ -63,11 +63,11 @@ public class RecruitService {
         recruit.addView();
     }
 
-    public Recruit getRecruit(Long id){
+    public Recruit getRecruit(Long id) {
         return recruitRepository.findById(id).orElseThrow(RecruitNotFoundException::new);
     }
 
-    public Company getCompany(Long id){
-       return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+    public Company getCompany(Long id) {
+        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 }
