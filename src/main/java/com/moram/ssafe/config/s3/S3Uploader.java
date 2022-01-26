@@ -71,7 +71,7 @@ public class S3Uploader {
 
     public void deleteObject(String key) {
         try {
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucket, "static/"+key);
+            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucket, "static/"+key.substring(59));
             amazonS3Client.deleteObject(deleteObjectRequest);
         } catch (AmazonServiceException e) {
             e.printStackTrace();
