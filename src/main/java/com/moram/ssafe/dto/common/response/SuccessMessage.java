@@ -31,4 +31,10 @@ public class SuccessMessage {
     public static String SUCCESS_GET_COMPANY_NAME = "회사명 조회 성공";
     public static String SUCCESS_PUT_COMPANY_NAME = "회사명 수정 성공";
     public static String SUCCESS_PUT_COMPANY_LOGO = "회사 로고이미지 수정 성공";
+
+    //Comment
+    public static String SUCCESS_POST_COMMENT = "댓글 등록 성공";
+    public static String SUCCESS_GET_COMMENT_LIST = "댓글 리스트 조회 성공";
+    public static String SUCCESS_PUT_COMMENT = "댓글 수정 성공";
+    public static String SUCCESS_DELETE_COMMENT = "댓글 삭제 성공";
 }
