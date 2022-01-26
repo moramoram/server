@@ -35,7 +35,8 @@ public enum ErrorCode {
     RECRUIT_NOT_FOUND(404,"Recruit not found"),
 
     //Company
-    COMPANY_NOT_FOUND(404,"Company not found");
+    COMPANY_NOT_FOUND(404,"Company not found"),
+    COMPANY_COMMENT_NOT_FOUND(404,"Company comment not found");
 
 
     private final int status;
