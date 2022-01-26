@@ -10,8 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByEmailOrSocialId(String email, String socialId);
-
     List<User> findByAuthCheck(Sort modifiedDate, int check);
 
+    Optional<User> findBySocialId(String oauthId);
 }
