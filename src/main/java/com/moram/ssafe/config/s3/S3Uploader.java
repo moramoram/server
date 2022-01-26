@@ -36,9 +36,9 @@ public class S3Uploader {
     }
 
     private String upload(File uploadFile, String dirName) {
-        String str = "safe"+uploadFile.getName();
+        String str = "safe" + uploadFile.getName();
         String name = str.substring(6);
-        String fileName = dirName + "/" + UUID.randomUUID()+name;
+        String fileName = dirName + "/" + UUID.randomUUID() + name;
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
@@ -54,7 +54,8 @@ public class S3Uploader {
             log.info("File delete");
             return;
         }
-        log.info("File delete fail");;
+        log.info("File delete fail");
+        ;
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
@@ -71,7 +72,7 @@ public class S3Uploader {
 
     public void deleteObject(String key) {
         try {
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucket, "static/"+key.substring(59));
+            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucket, "static/" + key.substring(59));
             amazonS3Client.deleteObject(deleteObjectRequest);
         } catch (AmazonServiceException e) {
             e.printStackTrace();
