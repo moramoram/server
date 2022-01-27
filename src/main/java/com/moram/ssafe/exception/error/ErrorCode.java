@@ -36,7 +36,16 @@ public enum ErrorCode {
 
     //Company
     COMPANY_NOT_FOUND(404,"Company not found"),
-    COMPANY_COMMENT_NOT_FOUND(404,"Company comment not found");
+    COMPANY_COMMENT_NOT_FOUND(404,"Company comment not found"),
+
+    //Board
+    BOARD_NOT_FOUND(404, "Board not found"),
+
+    //Comment
+    COMMENT_NOT_FOUND(404, "Comment not found"),
+
+    //Like
+    LIKE_NOT_FOUND(404, "Like not found");
 
 
     private final int status;

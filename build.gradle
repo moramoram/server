@@ -38,7 +38,7 @@ dependencies {
 	runtimeOnly  'com.h2database:h2'
 
 	//aws
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
