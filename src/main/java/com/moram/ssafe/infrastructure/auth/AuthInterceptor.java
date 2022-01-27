@@ -46,7 +46,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         HandlerMethod method = (HandlerMethod) handler;
         Optional<PreAuthorize> preAuthorize = getPreAuthorize(method);
         Optional<String> jwt = resolveToken(request);
-
         if (preAuthorize.isPresent()) {
             String token = jwt.orElseThrow(NoTokenException::new);
             tokenProvider.validateToken(token);
