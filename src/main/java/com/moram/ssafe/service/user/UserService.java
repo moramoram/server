@@ -25,14 +25,14 @@ public class UserService {
 
     public UserProfileResponse getUserProfile() {
         Long id = UserContext.getCurrentUserId();
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = getUser(id);
         return UserProfileResponse.from(user);
     }
 
     @Transactional
     public Long updateUserAddAuth(UserUpdateAddAuthRequest request) {
         Long id = UserContext.getCurrentUserId();
-        User originUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User originUser = getUser(id);
         originUser.update(request);
         return originUser.getId();
     }
@@ -40,12 +40,16 @@ public class UserService {
     @Transactional
     public void deleteUser() {
         Long id = UserContext.getCurrentUserId();
-        User originUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User originUser = getUser(id);
         originUser.deleteUser();
     }
 
     public List<UserProfileResponse> userAuthApproveWait() {
         List<User> users = userRepository.findByAuthCheck(Sort.by(Sort.Direction.DESC, "modifiedDate"),1);
         return users.stream().map(UserProfileResponse::from).collect(Collectors.toList());
+    }
+
+    public User getUser(Long id){
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 }

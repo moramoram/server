@@ -17,14 +17,15 @@ public class UserUpdateAddAuthRequest {
     private String profileImg;
 
     @NotBlank(message = "닉네임이 존재하지 않습니다.")
-    @Length(min = 2, max = 8 ,message="길이가 2이상 8 이하여야 가능합니다")
+    @Size(min = 2, max = 8 ,message="길이가 2이상 8 이하여야 가능합니다")
     private String nickname;
 
     @NotBlank(message = "실명이 존재하지 않습니다.")
-    @Length(max = 5 ,message="길이가 1이상 5 이하여야 가능합니다")
+    @Size(max = 5 ,message="길이가 1이상 5 이하여야 가능합니다")
     private String realName;
 
     @NotNull(message = "ordinal이 존재하지 않습니다.")
+    @Size(max = 3 ,message="길이가 1이상 3 이하여야 가능합니다")
     private Integer ordinal;
 
     @NotBlank(message = "Campus가 존재하지 않습니다.")
