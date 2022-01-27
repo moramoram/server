@@ -1,5 +1,6 @@
 package com.moram.ssafe.controller.recruit;
 
+import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
 import com.moram.ssafe.dto.recruit.RecruitSaveRequest;
@@ -51,5 +52,20 @@ public class RecruitController {
         recruitService.deleteRecruit(id);
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.NO_CONTENT, SuccessMessage.SUCCESS_DELETE_RECRUIT, id));
+    }
+
+    @PutMapping("/{recruitId}/scraps")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> toggleRecruitScrap(@PathVariable Long recruitId) {
+
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_PUT_RECRUIT_SCRAP, recruitService.toggleRecruitScraps(recruitId)));
+    }
+
+    @GetMapping("/scraps/users")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public  ResponseEntity<CommonResponseDto> userRecruitScrapList(@RequestParam(value = "limit", defaultValue = "1") int limit){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList(limit)));
     }
 }
