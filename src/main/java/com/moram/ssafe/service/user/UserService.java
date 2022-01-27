@@ -4,7 +4,7 @@ import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.UserProfileResponse;
-import com.moram.ssafe.dto.user.UserUpdateAddAuthRequest;
+import com.moram.ssafe.dto.user.UserUpdateAddAuth;
 import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class UserService {
     }
 
     @Transactional
-    public Long updateUserAddAuth(UserUpdateAddAuthRequest request) {
+    public Long updateUserAddAuth(UserUpdateAddAuth request) {
         Long id = UserContext.getCurrentUserId();
         User originUser = getUser(id);
         originUser.update(request);

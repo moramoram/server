@@ -1,6 +1,7 @@
 package com.moram.ssafe.controller.company;
 
 import com.moram.ssafe.config.s3.S3Uploader;
+import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
 import com.moram.ssafe.dto.company.CompanySaveRequest;
@@ -25,6 +26,7 @@ public class CompanyController {
     private final S3Uploader s3Uploader;
 
     @PostMapping
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> createCompany(@ModelAttribute @Valid CompanySaveRequest companySaveRequest) throws IOException {
         String logoImg = s3Uploader.upload(companySaveRequest.getLogoImg(), "static/company");
         return ResponseEntity.ok().body(CommonResponseDto.of(
@@ -54,6 +56,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{companyId}/name")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId,@RequestParam String name) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMPANY_NAME,
@@ -61,6 +64,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{companyId}/logo-img")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> updateLogoImg(@PathVariable Long companyId,@ModelAttribute MultipartFile logoImg) throws IOException{
         String logoImgUrl = s3Uploader.upload(logoImg, "static/company");
         return ResponseEntity.ok().body(CommonResponseDto.of(
@@ -68,8 +72,8 @@ public class CompanyController {
                 companyService.updateLogoImg(companyId,logoImgUrl)));
     }
 
-
     @DeleteMapping("/{companyId}")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> deleteCompany(@PathVariable Long companyId) {
         companyService.deleteCompany(companyId);
         return ResponseEntity.ok().body(CommonResponseDto.of(
