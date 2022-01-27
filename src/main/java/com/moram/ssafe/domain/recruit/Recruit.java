@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "tbl_recruit")
+@Entity
+@Table(name = "tbl_recruit")
 public class Recruit extends BaseEntity {
 
     @Id
@@ -46,6 +49,13 @@ public class Recruit extends BaseEntity {
     private String content;
 
     private Integer views;
+
+//    @OneToMany(fetch = FetchType.LAZY)
+//    private List<RecruitScrap> recruitScraps = new ArrayList<>();
+
+    @Embedded
+    private final RecruitScraps recruitScraps = new RecruitScraps();
+
 
     @Builder
     public Recruit(Company company, String title, String recruitUrl, String job, String empType, String career, String location,
@@ -83,4 +93,11 @@ public class Recruit extends BaseEntity {
         this.content = recruit.getContent();
     }
 
+    public boolean toggleRecruitScarp(RecruitScrap recruitScarp) {
+        return recruitScraps.toggleRecruitScrap(recruitScarp);
+    }
+
+    public int recruitScarpCount(){
+        return recruitScraps.size();
+    }
 }
