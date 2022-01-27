@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class SuccessMessage {
+
     //User
     public static String SUCCESS_POST_LOGIN = "Login 성공.";
     public static String SUCCESS_GET_USER_PROFILE = "User Profile 조회 성공";
@@ -20,6 +21,8 @@ public class SuccessMessage {
     public static String SUCCESS_PUT_RECRUIT = "채용공고 수정 성공";
     public static String SUCCESS_DELETE_RECRUIT = "채용공고 삭제 성공";
     public static String SUCCESS_GET_RECRUIT_SEARCH_LIST = "채용공고 검색 리스트 성공";
+    public static String SUCCESS_PUT_RECRUIT_SCRAP = "채용공고 스크랩 성공";
+    public static String SUCCESS_GET_RECRUIT_SCRAP_LIST = "사용자 스크랩 리스트 조회 성공";
 
     //Company
     public static String SUCCESS_POST_COMPANY = "회사 등록 성공";
