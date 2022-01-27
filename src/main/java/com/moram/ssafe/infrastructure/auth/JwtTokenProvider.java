@@ -1,5 +1,6 @@
 package com.moram.ssafe.infrastructure.auth;
 
+import com.moram.ssafe.domain.user.Role;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.exception.auth.ExpiredAccessTokenException;
 import com.moram.ssafe.exception.auth.InvalidJwtSignatureException;
@@ -42,8 +43,14 @@ public class JwtTokenProvider {
     public String createToken(User user, long expireLength) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expireLength * 1000);
-//        log.info(user.getRoleType().getRole());
-        String authority = user.getRoleType().getRole();
+        String authority ="";
+
+        if(user.getRoleType()== Role.ADMIN){
+            authority=user.getRoleType().getRole()+AUTHORITIES_SPLITTER+Role.USER.getRole();
+        }else{
+            authority = user.getRoleType().getRole();
+        }
+
         return Jwts.builder()
                 .claim("id", user.getId())
                 .claim(AUTHORITIES_KEY, authority)

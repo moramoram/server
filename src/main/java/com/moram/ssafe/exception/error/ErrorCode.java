@@ -10,7 +10,14 @@ import lombok.Getter;
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum ErrorCode {
 
-    INVALID_INPUT_VALUE(400, "Invalid input value."),
+    // Common
+    INVALID_INPUT_VALUE(400 , "Invalid Input Value"),
+    METHOD_NOT_ALLOWED(405, "Method Not Allowed"),
+    ENTITY_NOT_FOUND(400, " Entity Not Found"),
+    INTERNAL_SERVER_ERROR(500, "Server Error"),
+    INVALID_TYPE_VALUE(400, " Invalid Type Value"),
+    HANDLE_ACCESS_DENIED(403, "Access is Denied"),
+    JSON_WRITE_ERROR(401, "JSON content that are not pure I/O problems"),
 
     //User
     USER_NOT_FOUND(404, "User not found."),
@@ -26,6 +33,8 @@ public enum ErrorCode {
 
     //Recruit
     RECRUIT_NOT_FOUND(404,"Recruit not found"),
+
+    //Company
     COMPANY_NOT_FOUND(404,"Company not found");
 
 

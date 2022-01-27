@@ -40,21 +40,16 @@ public class AuthService {
         User user = saveOrUpdate(userProfile);
 
         String accessToken = jwtTokenProvider.createAccessToken(user);
-        String refreshToken = jwtTokenProvider.createRefreshToken(user);
 
         return LoginResponse.builder()
-                .userId(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
                 .build();
     }
 
     public User saveOrUpdate(UserProfile profile) {
-        log.info(profile.getEmail() + " email");
-        log.info(profile.getOauthId() + " getOauthId");
-        Optional<User> optionalUser = userRepository.findByEmailOrSocialId(profile.getEmail(), profile.getOauthId());
+        Optional<User> optionalUser = userRepository.findBySocialId(profile.getOauthId());
         if (!optionalUser.isPresent()) {
             return userRepository.save(
                     User.builder()
@@ -64,7 +59,7 @@ public class AuthService {
                             .nickname(profile.getName())
                             .build());
         }
-        User user = userRepository.findByEmailOrSocialId(profile.getEmail(), profile.getOauthId())
+        User user = userRepository.findBySocialId(profile.getOauthId())
                 .orElseThrow(UserNotFoundException::new);
         return user;
     }

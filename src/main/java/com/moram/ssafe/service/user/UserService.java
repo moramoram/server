@@ -1,5 +1,6 @@
 package com.moram.ssafe.service.user;
 
+import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.UserProfileResponse;
@@ -22,21 +23,24 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserProfileResponse getUserProfile(Long id) {
+    public UserProfileResponse getUserProfile() {
+        Long id = UserContext.getCurrentUserId();
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return UserProfileResponse.from(user);
     }
 
     @Transactional
     public Long updateUserAddAuth(UserUpdateAddAuthRequest request) {
-        User originUser = userRepository.findById(request.getUserId()).orElseThrow(UserNotFoundException::new);
+        Long id = UserContext.getCurrentUserId();
+        User originUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         originUser.update(request);
         return originUser.getId();
     }
 
     @Transactional
-    public void deleteUser(Long userId) {
-        User originUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public void deleteUser() {
+        Long id = UserContext.getCurrentUserId();
+        User originUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         originUser.deleteUser();
     }
 

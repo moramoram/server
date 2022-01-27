@@ -1,9 +1,14 @@
 package com.moram.ssafe.infrastructure.auth;
 
 import com.moram.ssafe.controller.user.annotation.AnnotationHandler;
+import com.moram.ssafe.controller.user.annotation.JwtPayload;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
+import com.moram.ssafe.controller.user.annotation.UserContext;
+import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.exception.auth.NoTokenException;
+import com.moram.ssafe.exception.auth.UserAuthenticationException;
+import com.moram.ssafe.exception.user.UserNotFoundException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,12 +66,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     private String[] getAuthorities(String token) {
         Claims claims = tokenProvider.getData(token);
 
-//        Long userId = claims.get("id", Long.class);
-//        User optionalUser = userRepository.findById(userId).orElseThrow(UserAuthenticationException::new);
-//        UserContext.currentUser.set(optionalUser);
+        Long userId = claims.get("id", Long.class);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UserContext.USER_CONTEXT.set(new JwtPayload(user.getId()));
+
         String authorities = (String) claims.get(AUTHORITIES_KEY);
-//        log.info("userId "+ userId);
-//        log.info("getAuthorities " + Arrays.toString(authorities.split(AUTHORITIES_SPLITTER)));
+
         return authorities.split(AUTHORITIES_SPLITTER);
     }
 

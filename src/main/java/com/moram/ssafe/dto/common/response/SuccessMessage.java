@@ -20,4 +20,15 @@ public class SuccessMessage {
     public static String SUCCESS_PUT_RECRUIT = "채용공고 수정 성공";
     public static String SUCCESS_DELETE_RECRUIT = "채용공고 삭제 성공";
     public static String SUCCESS_GET_RECRUIT_SEARCH_LIST = "채용공고 검색 리스트 성공";
+
+    //Company
+    public static String SUCCESS_POST_COMPANY = "회사 등록 성공";
+    public static String SUCCESS_GET_COMPANY = "회사 조회 성공";
+    public static String SUCCESS_GET_COMPANY_LIST = "회사리스트 조회 성공";
+    public static String SUCCESS_PUT_COMPANY = "회사 수정 성공";
+    public static String SUCCESS_DELETE_COMPANY = "회사 삭제 성공";
+    public static String SUCCESS_GET_COMPANY_COMMENT_LIST = "회사 댓글리스트 조회 성공";
+    public static String SUCCESS_GET_COMPANY_NAME = "회사명 조회 성공";
+    public static String SUCCESS_PUT_COMPANY_NAME = "회사명 수정 성공";
+    public static String SUCCESS_PUT_COMPANY_LOGO = "회사 로고이미지 수정 성공";
 }

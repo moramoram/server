@@ -37,6 +37,11 @@ public class ErrorResponse {
         this.errors = Error.of(bindingResult);
     }
 
+    public ErrorResponse (ErrorCode code){
+        this.status = code.getStatus();
+        this.message = code.getMessage();
+    }
+
     @Getter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
