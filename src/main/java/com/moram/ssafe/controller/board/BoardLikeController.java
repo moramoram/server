@@ -1,5 +1,7 @@
 package com.moram.ssafe.controller.board;
 
+import com.moram.ssafe.controller.user.annotation.PreAuthorize;
+import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.service.board.BoardLikeService;
 import lombok.RequiredArgsConstructor;
@@ -18,21 +20,24 @@ public class BoardLikeController {
 
     private final BoardLikeService boardLikeService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<CommonResponseDto> findByUserId(@PathVariable Long userId){
+    @GetMapping
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> findByUserId(){
         return ResponseEntity.ok().body(
-                CommonResponseDto.of(HttpStatus.OK, SUCCESS_GET_LIKE, boardLikeService.findByUserId(userId)));
+                CommonResponseDto.of(HttpStatus.OK, SUCCESS_GET_LIKE, boardLikeService.findByUserId(UserContext.getCurrentUserId())));
     }
 
-    @PostMapping("/users/{userId}/boards/{boardId}")
-    public ResponseEntity<CommonResponseDto> pushLike(@PathVariable Long userId, @PathVariable Long boardId){
+    @PostMapping("/boards/{boardId}")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> pushLike(@PathVariable Long boardId){
         return ResponseEntity.ok().body(
-                CommonResponseDto.of(HttpStatus.OK, SUCCESS_PUSH_LIKE, boardLikeService.pushLike(userId, boardId)));
+                CommonResponseDto.of(HttpStatus.OK, SUCCESS_PUSH_LIKE, boardLikeService.pushLike(UserContext.getCurrentUserId(), boardId)));
     }
 
-    @DeleteMapping("/{commentId}")
-    public ResponseEntity<CommonResponseDto> deleteLike(@PathVariable Long commentId){
+    @DeleteMapping("/{likeId}")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> deleteLike(@PathVariable Long likeId){
         return ResponseEntity.ok().body(
-                CommonResponseDto.of(HttpStatus.OK, SUCCESS_DELETE_LIKE, boardLikeService.deleteLike(commentId)));
+                CommonResponseDto.of(HttpStatus.OK, SUCCESS_DELETE_LIKE, boardLikeService.deleteLike(likeId)));
     }
 }

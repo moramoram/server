@@ -33,7 +33,7 @@ public class BoardLikeService {
         List<BoardLikeResponse> list = new ArrayList<>();
         for (BoardLike boardLike : findLike) {
             Long likedBoardId = boardLike.getBoard().getId();
-            list.add(new BoardLikeResponse(likedBoardId));
+            list.add(BoardLikeResponse.of(likedBoardId));
         }
         return list;
     }
@@ -45,8 +45,8 @@ public class BoardLikeService {
         return true;
     }
 
-    public Boolean deleteLike(Long commentId){
-        boardLikeRepository.deleteById(commentId);
+    public Boolean deleteLike(Long likeId){
+        boardLikeRepository.deleteById(likeId);
         return false;
     }
 }
