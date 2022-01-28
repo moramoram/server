@@ -13,9 +13,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class BoardCommentSaveRequest {
 
-    @NotNull(message = "유저 아이디가 없습니다.")
-    private Long userId;
-
     @NotNull(message = "게시물 아이디가 없습니다.")
     private Long boardId;
 
