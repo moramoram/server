@@ -35,6 +35,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'mysql:mysql-connector-java'
 
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa'
+
 	runtimeOnly  'com.h2database:h2'
 
 	//aws

@@ -33,6 +33,7 @@ public enum ErrorCode {
 
     //Recruit
     RECRUIT_NOT_FOUND(404,"Recruit not found"),
+    RECRUIT_SCRAP_REMOVE_FAIL(404,"Recruit Scrap Remove fail"),
 
     //Company
     COMPANY_NOT_FOUND(404,"Company not found"),
