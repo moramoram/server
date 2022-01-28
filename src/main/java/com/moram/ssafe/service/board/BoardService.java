@@ -2,6 +2,7 @@ package com.moram.ssafe.service.board;
 
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.board.Board;
+import com.moram.ssafe.domain.board.BoardLikeRepository;
 import com.moram.ssafe.domain.board.BoardRepository;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
@@ -27,6 +28,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final BoardLikeRepository boardLikeRepository;
 
     @Transactional(readOnly = true)
     public List<BoardResponse> findAll(int boardType, int limit) {
@@ -46,7 +48,8 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
         board.addView();
         Integer totalLike = board.getLikeList().size();
-        return new BoardResponse(board, totalLike, false);
+        boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
+        return new BoardResponse(board, totalLike, likeStatus);
     }
 
     @Transactional(readOnly = true)
