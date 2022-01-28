@@ -1,5 +1,6 @@
 package com.moram.ssafe.service.board;
 
+import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.board.Board;
 import com.moram.ssafe.domain.board.BoardCommentRepository;
 import com.moram.ssafe.domain.board.BoardRepository;
@@ -30,22 +31,25 @@ public class BoardCommentService {
 
     @Transactional
     public Long save(BoardCommentSaveRequest requestDto){
-        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(UserContext.getCurrentUserId()).orElseThrow(UserNotFoundException::new);
         Board board = boardRepository.findById(requestDto.getBoardId()).orElseThrow(BoardNotFoundException::new);
         return boardCommentRepository.save(requestDto.from(user, board, requestDto.getContent())).getId();
     }
 
     public List<BoardCommentResponse> findByBoardId(Long boardId){
-        return boardCommentRepository.findByBoardId(boardId).stream().map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
+        return boardCommentRepository.
+                findByBoardId(boardId).stream().map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
     }
 
     public List<BoardCommentResponse> findByUserId(Long userId){
-        return boardCommentRepository.findByUserId(userId).stream().map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
+        return boardCommentRepository
+                .findByUserId(userId).stream().map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
     }
 
     @Transactional
     public Long update(Long commentId, BoardCommentUpdateRequest requestDto){
-        boardCommentRepository.findById(commentId).orElseThrow(BoardCommentNotFoundException::new).update(requestDto.getContent());
+        boardCommentRepository
+                .findById(commentId).orElseThrow(BoardCommentNotFoundException::new).update(requestDto.getContent());
         return commentId;
     }
 
