@@ -20,4 +20,8 @@ public class UserResponse {
         return new UserResponse(user.getNickname(), user.getOrdinal(),
                 user.getCampus(), user.getAuthCheck());
     }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
