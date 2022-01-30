@@ -30,10 +30,10 @@ public class BoardCommentService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public Long save(BoardCommentSaveRequest requestDto){
+    public Long save(BoardCommentSaveRequest request){
         User user = userRepository.findById(UserContext.getCurrentUserId()).orElseThrow(UserNotFoundException::new);
-        Board board = boardRepository.findById(requestDto.getBoardId()).orElseThrow(BoardNotFoundException::new);
-        return boardCommentRepository.save(requestDto.from(user, board, requestDto.getContent())).getId();
+        Board board = boardRepository.findById(request.getBoardId()).orElseThrow(BoardNotFoundException::new);
+        return boardCommentRepository.save(request.from(user, board, request.getContent())).getId();
     }
 
     public List<BoardCommentResponse> findByBoardId(Long boardId){
@@ -47,9 +47,9 @@ public class BoardCommentService {
     }
 
     @Transactional
-    public Long update(Long commentId, BoardCommentUpdateRequest requestDto){
+    public Long update(Long commentId, BoardCommentUpdateRequest request){
         boardCommentRepository
-                .findById(commentId).orElseThrow(BoardCommentNotFoundException::new).update(requestDto.getContent());
+                .findById(commentId).orElseThrow(BoardCommentNotFoundException::new).update(request.getContent());
         return commentId;
     }
 

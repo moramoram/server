@@ -34,35 +34,36 @@ public class BoardResponse {
     private boolean likeStatus;
 
 
-    public BoardResponse(Board allBoard, Integer totalLike, boolean likeStatus){
+    public BoardResponse(Board board, Integer totalLike, boolean likeStatus){
 
-        this.writerInfo = UserResponse.from(allBoard.getUser());
+        this.writerInfo = UserResponse.from(board.getUser());
 
-        if(allBoard.getBoard_type()==2)
+        if(board.getBoard_type()==2)
             this.writerInfo.setNickname("익명");
 
-        this.boardId = allBoard.getId();
-        this.boardType = allBoard.getBoard_type();
-        this.title = allBoard.getTitle();
-        this.content = allBoard.getContent();
-        this.views = allBoard.getViews();
-        this.comments = allBoard.getCommentList().stream().map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
+        this.boardId = board.getId();
+        this.boardType = board.getBoard_type();
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.views = board.getViews();
+        this.comments = board.getCommentList().stream()
+                .map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
         this.totalLike = totalLike;
         this.likeStatus = likeStatus;
     }
 
-    public BoardResponse(Board allBoard, Integer totalComment, Integer totalLike) {
+    public BoardResponse(Board board, Integer totalComment, Integer totalLike) {
 
-        this.writerInfo = UserResponse.from(allBoard.getUser());
+        this.writerInfo = UserResponse.from(board.getUser());
 
-        if (allBoard.getBoard_type() == 2)
+        if (board.getBoard_type() == 2)
             this.writerInfo.setNickname("익명");
 
-        this.boardId = allBoard.getId();
-        this.boardType = allBoard.getBoard_type();
-        this.title = allBoard.getTitle();
-        this.content = allBoard.getContent();
-        this.views = allBoard.getViews();
+        this.boardId = board.getId();
+        this.boardType = board.getBoard_type();
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.views = board.getViews();
         this.totalComment = totalComment;
         this.totalLike = totalLike;
     }

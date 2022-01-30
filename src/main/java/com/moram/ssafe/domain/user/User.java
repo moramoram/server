@@ -2,7 +2,6 @@ package com.moram.ssafe.domain.user;
 
 import com.moram.ssafe.domain.BaseEntity;
 import com.moram.ssafe.dto.user.UserUpdateAddAuth;
-import com.moram.ssafe.dto.user.UserUpdateAddAuthFormRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

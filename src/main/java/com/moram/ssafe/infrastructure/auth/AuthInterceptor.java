@@ -7,7 +7,6 @@ import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.exception.auth.NoTokenException;
-import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.user.UserNotFoundException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

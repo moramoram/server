@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.moram.ssafe.dto.common.response.SuccessMessage.*;
+import static com.moram.ssafe.dto.common.response.SuccessMessage.SUCCESS_DELETE_LIKE;
+import static com.moram.ssafe.dto.common.response.SuccessMessage.SUCCESS_PUSH_LIKE;
 
 @Slf4j
 @RestController
@@ -20,18 +21,11 @@ public class BoardLikeController {
 
     private final BoardLikeService boardLikeService;
 
-    @GetMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findByUserId(){
-        return ResponseEntity.ok().body(
-                CommonResponseDto.of(HttpStatus.OK, SUCCESS_GET_LIKE, boardLikeService.findByUserId(UserContext.getCurrentUserId())));
-    }
-
     @PostMapping("/boards/{boardId}")
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> pushLike(@PathVariable Long boardId){
-        return ResponseEntity.ok().body(
-                CommonResponseDto.of(HttpStatus.OK, SUCCESS_PUSH_LIKE, boardLikeService.pushLike(UserContext.getCurrentUserId(), boardId)));
+        return ResponseEntity.ok().body( CommonResponseDto.of(HttpStatus.OK,
+                SUCCESS_PUSH_LIKE, boardLikeService.pushLike(UserContext.getCurrentUserId(), boardId)));
     }
 
     @DeleteMapping("/{likeId}")
