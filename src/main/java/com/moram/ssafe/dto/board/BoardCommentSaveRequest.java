@@ -16,7 +16,7 @@ public class BoardCommentSaveRequest {
     @NotNull(message = "게시물 아이디가 없습니다.")
     private Long boardId;
 
-    @NotBlank(message = "댓글 내용이 없습니다.")
+    @NotBlank(message = "게시물 댓글 내용이 없습니다.")
     private String content;
 
     public BoardComment from(User user, Board board, String content){
