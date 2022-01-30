@@ -30,6 +30,13 @@ public class BoardService {
     private final UserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
 
+    @Transactional
+    public Long save(BoardSaveRequest requestDto) {
+        User user = userRepository.findById(UserContext.getCurrentUserId())
+                .orElseThrow(BoardNotFoundException::new);
+        return boardRepository.save(requestDto.of(user)).getId();
+    }
+
     @Transactional(readOnly = true)
     public List<BoardResponse> findAll(int boardType, int limit) {
 
@@ -61,12 +68,6 @@ public class BoardService {
         }).collect(Collectors.toList());
     }
 
-    @Transactional
-    public Long save(BoardSaveRequest requestDto) {
-        User user = userRepository.findById(UserContext.getCurrentUserId())
-                .orElseThrow(BoardNotFoundException::new);
-        return boardRepository.save(requestDto.of(user)).getId();
-    }
 
     @Transactional
     public Long update(Long boardId, BoardUpdateRequest requestDto) {

@@ -41,13 +41,14 @@ public enum ErrorCode {
 
     //Board
     BOARD_NOT_FOUND(404, "Board not found"),
+    LIKE_NOT_FOUND(404, "Like not found"),
 
     //Comment
     COMMENT_NOT_FOUND(404, "Comment not found"),
 
-    //Like
-    LIKE_NOT_FOUND(404, "Like not found");
-
+    //Study
+    STUDY_NOT_FOUND(404, "Study not found"),
+    STUDY_SCRAP_NOT_FOUND(404, "Study Scrap not found");
 
     private final int status;
     private final String message;
