@@ -3,6 +3,8 @@ package com.moram.ssafe.service.company;
 import com.moram.ssafe.config.s3.S3Uploader;
 import com.moram.ssafe.domain.company.Company;
 import com.moram.ssafe.domain.company.CompanyRepository;
+import com.moram.ssafe.domain.recruit.Recruit;
+import com.moram.ssafe.domain.recruit.RecruitRepository;
 import com.moram.ssafe.dto.company.CompanyResponse;
 import com.moram.ssafe.exception.company.CompanyNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final RecruitRepository recruitRepository;
     private final S3Uploader s3Uploader;
 
     @Transactional
@@ -53,6 +56,7 @@ public class CompanyService {
     public void deleteCompany(Long companyId) {
         Company company = getCompany(companyId);
         s3Uploader.deleteObject(company.getLogoImg());
+        recruitRepository.deleteByCompanyId(companyId);
         companyRepository.deleteById(company.getId());
     }
 

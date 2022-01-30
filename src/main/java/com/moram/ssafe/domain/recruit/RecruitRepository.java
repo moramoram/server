@@ -35,4 +35,5 @@ public interface RecruitRepository extends JpaRepository<Recruit,Long> {
     @Query(value = "select r from Recruit r")
     List<Recruit> findByRecruitLatest(Pageable pageable);
 
+    void deleteByCompanyId(Long companyId);
 }
