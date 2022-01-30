@@ -45,7 +45,6 @@ public class RecruitResponse {
 
     private LocalDateTime modifiedDate;
 
-
     public static RecruitResponse from(Recruit recruit) {
         return new RecruitResponse(
                 recruit.getId(), CompanyResponse.from(recruit.getCompany()), recruit.getTitle(),

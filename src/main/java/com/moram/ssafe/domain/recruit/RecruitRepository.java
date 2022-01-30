@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +24,15 @@ public interface RecruitRepository extends JpaRepository<Recruit,Long> {
     @EntityGraph(attributePaths = {"company"})
     @Query(value = "select r from Recruit r join RecruitScrap rc " +
             "on r.id = rc.recruit.id and rc.userId = :userId")
-    List<Recruit> findByUserScrap(@Param("userId") Long userId,  Pageable pageable);
+    List<Recruit> findByUserScrap(@Param("userId") Long userId);
+
+    @EntityGraph(attributePaths = {"company"})
+    @Query(value = "select r from Recruit r " +
+            "where r.sBenefit = true")
+    List<Recruit> findByRecruitBenefit(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"company"})
+    @Query(value = "select r from Recruit r")
+    List<Recruit> findByRecruitLatest(Pageable pageable);
 
 }
