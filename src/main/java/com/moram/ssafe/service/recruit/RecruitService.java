@@ -4,6 +4,7 @@ import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.company.Company;
 import com.moram.ssafe.domain.company.CompanyRepository;
 import com.moram.ssafe.domain.recruit.Recruit;
+import com.moram.ssafe.domain.recruit.RecruitQueryRepository;
 import com.moram.ssafe.domain.recruit.RecruitRepository;
 import com.moram.ssafe.domain.recruit.RecruitScrap;
 import com.moram.ssafe.dto.recruit.RecruitResponse;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 public class RecruitService {
 
     private final RecruitRepository recruitRepository;
+    private final RecruitQueryRepository recruitQueryRepository;
     private final CompanyRepository companyRepository;
 
 
@@ -40,6 +42,52 @@ public class RecruitService {
     public RecruitResponse findRecruit(Long id) {
         Recruit recruit = getRecruit(id);
         return RecruitResponse.from(recruit);
+    }
+
+    public List<RecruitResponse> findUserRecruitScrapList() {
+        Long userId = UserContext.getCurrentUserId();
+
+        List<Recruit> recruits = recruitRepository.findByUserScrap(userId);
+        return recruits.stream()
+                .map(RecruitResponse::from).collect(Collectors.toList());
+    }
+
+    public List<RecruitResponse> findRecruitBenefit(int limit) {
+        return recruitRepository.findByRecruitBenefit(
+                PageRequest.of(limit - 1, 2, Sort.by("createdDate").descending()))
+                .stream().map(RecruitResponse::from).collect(Collectors.toList());
+    }
+
+    public List<RecruitResponse> findRecruitLatest(int limit) {
+        return recruitRepository.findByRecruitLatest(
+                PageRequest.of(limit - 1, 2, Sort.by("createdDate").descending()))
+                .stream().map(RecruitResponse::from).collect(Collectors.toList());
+    }
+
+    public List<RecruitResponse> findByLotsOfScrap(int limit) {
+        return recruitQueryRepository.findByLotsOfScrap(PageRequest.of(limit - 1, 2))
+                .stream().map(RecruitResponse::from).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public RecruitScrapResponse toggleRecruitScraps(Long recruitId) {
+        Long userId = UserContext.getCurrentUserId();
+        Recruit recruit = getRecruit(recruitId);
+        RecruitScrap recruitScrap = RecruitScrap.builder()
+                .recruit(recruit)
+                .userId(userId)
+                .build();
+        return RecruitScrapResponse.from(
+                recruit.toggleRecruitScarp(recruitScrap)
+        );
+    }
+
+    public Recruit getRecruit(Long id) {
+        return recruitRepository.findById(id).orElseThrow(RecruitNotFoundException::new);
+    }
+
+    public Company getCompany(Long id) {
+        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
     @Transactional
@@ -67,36 +115,6 @@ public class RecruitService {
     public void addView(Long id) {
         Recruit recruit = getRecruit(id);
         recruit.addView();
-    }
-
-    public List<RecruitResponse> findUserRecruitScrapList(int limit) {
-        Long userId = UserContext.getCurrentUserId();
-        PageRequest pageRequest = PageRequest.of(limit-1, 2, Sort.by("id").descending());
-        List<Recruit> recruits = recruitRepository.findByUserScrap(userId, pageRequest);
-        return recruits.stream()
-                .map(RecruitResponse::from).collect(Collectors.toList());
-
-    }
-
-    @Transactional
-    public RecruitScrapResponse toggleRecruitScraps(Long recruitId) {
-        Long userId = UserContext.getCurrentUserId();
-        Recruit recruit = getRecruit(recruitId);
-        RecruitScrap recruitScrap = RecruitScrap.builder()
-                .recruit(recruit)
-                .userId(userId)
-                .build();
-        return RecruitScrapResponse.from(
-                recruit.toggleRecruitScarp(recruitScrap)
-        );
-    }
-
-    public Recruit getRecruit(Long id) {
-        return recruitRepository.findById(id).orElseThrow(RecruitNotFoundException::new);
-    }
-
-    public Company getCompany(Long id) {
-        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
 }
