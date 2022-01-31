@@ -19,4 +19,5 @@ public class BoardCommentResponse {
                 .userInfo(UserResponse.from(comment.getUser())).build();
     }
 
+
 }

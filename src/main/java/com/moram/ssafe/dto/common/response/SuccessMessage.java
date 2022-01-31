@@ -38,7 +38,6 @@ public class SuccessMessage {
     //Comment
     public static String SUCCESS_POST_COMMENT = "댓글 등록 성공";
     public static String SUCCESS_GET_COMMENT_LIST = "댓글 리스트 조회 성공";
-    public static String SUCCESS_GET_COMMENT = "댓글 단건 조회 성공";
     public static String SUCCESS_PUT_COMMENT = "댓글 수정 성공";
     public static String SUCCESS_DELETE_COMMENT = "댓글 삭제 성공";
 
@@ -54,4 +53,17 @@ public class SuccessMessage {
     public static String SUCCESS_PUSH_LIKE = "좋아요 표시 성공";
     public static String SUCCESS_DELETE_LIKE = "좋아요 삭제 성공";
     public static String SUCCESS_GET_LIKE = "좋아요 조회 성공";
+
+    //Study
+    public static String SUCCESS_GET_STUDY = "스터디 상세 조회 성공";
+    public static String SUCCESS_GET_STUDY_LIST = "스터디 리스트 조회 성공";
+    public static String SUCCESS_GET_STUDY_LIST_USER = "사용자 작성 스터디 리스트 조회 성공";
+    public static String SUCCESS_POST_STUDY = "스터디 등록 성공";
+    public static String SUCCESS_UPDATE_STUDY = "스터디 수정 성공";
+    public static String SUCCESS_DELETE_STUDY = "스터디 삭제 성공";
+
+    //Scrap
+    public static String SUCCESS_PUSH_SCRAP = "스크랩 성공";
+    public static String SUCCESS_DELETE_SCRAP = "스크랩 삭제 성공";
+    public static String SUCCESS_GET_STUDY_SCRAP_LIST = "스크랩 게시물 리스트 조회 성공";
 }

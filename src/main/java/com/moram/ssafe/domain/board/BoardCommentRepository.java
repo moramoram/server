@@ -17,5 +17,5 @@ public interface BoardCommentRepository extends JpaRepository<BoardComment, Long
     List<BoardComment> findByBoardId(@Param("boardId") Long boardId);
 
     @Query("select c from BoardComment c join fetch c.user where c.user.id = :userId")
-    List<BoardComment> findByUserId(Long userId);
+    List<BoardComment> findByUserId(@Param("userId") Long userId);
 }

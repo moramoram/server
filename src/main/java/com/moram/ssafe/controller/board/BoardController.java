@@ -23,6 +23,13 @@ import static com.moram.ssafe.dto.common.response.SuccessMessage.*;
 public class BoardController {
     private final BoardService boardService;
 
+    @PostMapping
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid BoardSaveRequest request){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_POST_BOARD, boardService.save(request)));
+    }
+
     @GetMapping("/types/{boardType}")
     public ResponseEntity<CommonResponseDto> findAll(@PathVariable int boardType,
                                                      @RequestParam(value = "limit", defaultValue = "1") int limit){
@@ -47,18 +54,11 @@ public class BoardController {
         ));
     }
 
-    @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid BoardSaveRequest requestDto){
-            return ResponseEntity.ok().body(CommonResponseDto.of(
-                    HttpStatus.OK, SUCCESS_POST_BOARD, boardService.save(requestDto)));
-    }
-
     @PutMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> update(@PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest requestDto){
+    public ResponseEntity<CommonResponseDto> update(@PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest request){
           return ResponseEntity.ok().body(CommonResponseDto.of(
-                  HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.update(boardId, requestDto)));
+                  HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.update(boardId, request)));
     }
 
     @DeleteMapping("/{boardId}")
