@@ -1,9 +1,11 @@
 package com.moram.ssafe.service.user;
 
+import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.user.Role;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.LoginResponse;
+import com.moram.ssafe.dto.user.auth.RefreshTokenResponse;
 import com.moram.ssafe.exception.user.UserNotFoundException;
 import com.moram.ssafe.infrastructure.auth.*;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +42,22 @@ public class AuthService {
         User user = saveOrUpdate(userProfile);
 
         String accessToken = jwtTokenProvider.createAccessToken(user);
+        String refreshToken = jwtTokenProvider.createRefreshToken(user);
 
         return LoginResponse.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
+                .authCheck(user.getAuthCheck())
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public RefreshTokenResponse refreshToken() {
+        Long userId = UserContext.getCurrentUserId();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return RefreshTokenResponse.builder()
+                .refreshToken(jwtTokenProvider.createRefreshToken(user))
                 .build();
     }
 
@@ -93,7 +106,6 @@ public class AuthService {
         return OauthAttributes.extract(providerName, userAttributes);
     }
 
-    // OAuth 서버에서 유저 정보 map으로 가져오기
     private Map<String, Object> getUserAttributes(OauthProvider provider, OauthTokenResponse tokenResponse) {
         return WebClient.create()
                 .get()
@@ -104,4 +116,5 @@ public class AuthService {
                 })
                 .block();
     }
+
 }
