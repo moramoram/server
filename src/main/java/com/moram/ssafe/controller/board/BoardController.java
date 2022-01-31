@@ -54,11 +54,25 @@ public class BoardController {
         ));
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<CommonResponseDto> findByBoardName(@RequestParam String name,
+    @GetMapping("/types/{boardType}/name")
+    public ResponseEntity<CommonResponseDto> findByBoardName(@PathVariable int boardType, @RequestParam String name,
                                                              @RequestParam(value = "limit", defaultValue = "1") int limit){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_NAME, boardService.findByBoardName(name, limit)));
+                HttpStatus.OK, SUCCESS_GET_BOARD_NAME, boardService.findByBoardName(boardType, name, limit)));
+    }
+
+    @GetMapping("/types/{boardType}/views")
+    public ResponseEntity<CommonResponseDto> findByLotsOfView(@PathVariable int boardType,
+                                                              @RequestParam(value="limit", defaultValue = "1") int limit){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_BOARD_VIEW, boardService.findByLotsOfView(boardType, limit)));
+    }
+
+    @GetMapping("/types/{boardType}/likes")
+    public ResponseEntity<CommonResponseDto> findByLotsOfLike(@PathVariable int boardType,
+                                                              @RequestParam(value="limit", defaultValue = "1") int limit){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIKE, boardService.findByLotsOfLike(boardType, limit)));
     }
 
     @PutMapping("/{boardId}")

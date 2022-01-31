@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -37,20 +38,15 @@ public class BoardService {
         return boardRepository.save(requestDto.of(user)).getId();
     }
 
-    @Transactional(readOnly = true)
-    public List<BoardResponse> findAll(int boardType, int limit) {
+    public List<BoardResponse> findAll(int boardType, int limit) { //쿼리 1번인지 체크. 아니면 paing 없는 findAll 만들기
 
         Page<Board> boards = boardRepository.findAll(boardType,
                 PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
 
-        return boards.stream().map(board -> {
-            Integer totalComment = board.getCommentList().size();
-            Integer totalLike = board.getLikeList().size();
-            return new BoardResponse(board, totalComment, totalLike);
-        }).collect(Collectors.toList());
+        return PageToResponse(boards);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public BoardResponse findById(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
         board.addView();
@@ -59,7 +55,6 @@ public class BoardService {
         return new BoardResponse(board, totalLike, likeStatus);
     }
 
-    @Transactional(readOnly = true)
     public List<BoardResponse> findByUserId(Long userId) {
         return boardRepository.findByUserId(userId).stream().map(board -> {
             Integer totalComment = board.getCommentList().size();
@@ -68,19 +63,26 @@ public class BoardService {
         }).collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
-    public List<BoardResponse> findByBoardName(String name, int limit){
+    public List<BoardResponse> findByBoardName(int boardType, String name, int limit){
 
-        Page<Board> boards = boardRepository.findByTitleContaining(name,
+        Page<Board> boards = boardRepository.findByTitleContaining(boardType, name,
                 PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
 
-        return boards.stream().map(board -> {
-            Integer totalComment = board.getCommentList().size();
-            Integer totalLike = board.getLikeList().size();
-            return new BoardResponse(board, totalComment, totalLike);
-        }).collect(Collectors.toList());
+        return PageToResponse(boards);
     }
 
+    public List<BoardResponse> findByLotsOfView(int boardType, int limit){
+        Page<Board> boards = boardRepository.findAll(boardType,
+                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "views")));
+
+        return PageToResponse(boards);
+    }
+
+    public List<BoardResponse> findByLotsOfLike(int boardType, int limit){
+        Page<Board> boards = boardRepository.findByLotsOfLike(boardType,
+                PageRequest.of(limit - 1, 6));
+        return PageToResponse(boards);
+    }
 
     @Transactional
     public Long update(Long boardId, BoardUpdateRequest requestDto) {
@@ -93,6 +95,14 @@ public class BoardService {
     public Long delete(Long boardId) {
         boardRepository.deleteById(boardId);
         return boardId;
+    }
+
+    public List<BoardResponse> PageToResponse(Page<Board> boards){
+        return boards.stream().map(board -> {
+            Integer totalComment = board.getCommentList().size();
+            Integer totalLike = board.getLikeList().size();
+            return new BoardResponse(board, totalComment, totalLike);
+        }).collect(Collectors.toList());
     }
 }
 
