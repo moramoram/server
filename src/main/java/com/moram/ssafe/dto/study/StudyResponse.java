@@ -7,6 +7,7 @@ import com.moram.ssafe.dto.user.UserResponse;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +44,10 @@ public class StudyResponse {
 
     private boolean scrapStatus;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
     public StudyResponse(Study study, Integer totalComment){ //전체 조회
         this.studyId = study.getId();
         this.writerInfo = UserResponse.from(study.getUser());
@@ -56,12 +61,14 @@ public class StudyResponse {
         this.content = study.getContent();
         this.views = study.getViews();
         this.totalComment = totalComment;
+        this.createdDate = study.getCreatedDate();
+        this.modifiedDate = study.getModifiedDate();
     }
 
     @Builder
     public StudyResponse(Long studyId, UserResponse writerInfo, String company_name, String title,
                          String study_type, String tech_stack, Integer recruitment, String location, Integer on_off,
-                         String content, Integer views, Integer totalComment) {
+                         String content, Integer views, LocalDateTime createdDate, LocalDateTime modifiedDate,Integer totalComment) {
         this.studyId = studyId;
         this.writerInfo = writerInfo;
         this.company_name = company_name;
@@ -74,6 +81,8 @@ public class StudyResponse {
         this.content = content;
         this.views = views;
         this.totalComment = totalComment;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 
 
@@ -92,10 +101,13 @@ public class StudyResponse {
         String content = study.getContent();
         Integer views = study.getViews();
         Integer totalComment = study.getCommentList().size();
+        LocalDateTime createdDate = study.getCreatedDate();
+        LocalDateTime modifiedDate = study.getModifiedDate();
 
         return StudyResponse.builder().studyId(studyId).writerInfo(writerInfo).company_name(company_name)
                 .title(title).study_type(study_type).tech_stack(tech_stack).recruitment(recruitment)
-                .location(location).on_off(on_off).content(content).views(views).totalComment(totalComment).build();
+                .location(location).on_off(on_off).content(content).views(views).totalComment(totalComment)
+                .createdDate(createdDate).modifiedDate(modifiedDate).build();
     }
 
     public StudyResponse(Study study, boolean scrapStatus){ //단건 조회
@@ -113,6 +125,8 @@ public class StudyResponse {
         this.content = study.getContent();
         this.views = study.getViews();
         this.scrapStatus = scrapStatus;
+        this.createdDate = study.getCreatedDate();
+        this.modifiedDate = study.getModifiedDate();
     }
 
 }
