@@ -4,10 +4,8 @@ import com.moram.ssafe.controller.user.annotation.AnnotationHandler;
 import com.moram.ssafe.controller.user.annotation.JwtPayload;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.controller.user.annotation.UserContext;
-import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.exception.auth.NoTokenException;
-import com.moram.ssafe.exception.user.UserNotFoundException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +31,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String TOKEN_HEADER = "Bearer ";
-    private final UserRepository userRepository;
     private final JwtTokenProvider tokenProvider;
 
     @Override
@@ -45,6 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         HandlerMethod method = (HandlerMethod) handler;
         Optional<PreAuthorize> preAuthorize = getPreAuthorize(method);
         Optional<String> jwt = resolveToken(request);
+
         if (preAuthorize.isPresent()) {
             String token = jwt.orElseThrow(NoTokenException::new);
             tokenProvider.validateToken(token);
@@ -65,8 +63,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         Claims claims = tokenProvider.getData(token);
 
         Long userId = claims.get("id", Long.class);
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        UserContext.USER_CONTEXT.set(new JwtPayload(user.getId()));
+        UserContext.USER_CONTEXT.set(new JwtPayload(userId));
 
         String authorities = (String) claims.get(AUTHORITIES_KEY);
 

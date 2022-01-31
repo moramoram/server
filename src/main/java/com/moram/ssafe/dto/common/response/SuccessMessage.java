@@ -13,6 +13,7 @@ public class SuccessMessage {
     public static String SUCCESS_UPDATE_USER_ADD_AUTH = "User 추가 인증 업데이트 성공";
     public static String SUCCESS_DELETE_USER = "User 삭제 성공";
     public static String SUCCESS_WAITING_AUTH_USER = "인증대기 사용자 조회 성공";
+    public static String SUCCESS_SSAFE_AUTH_USER ="SSAFE 승인 성공";
 
     //Recruit
     public static String SUCCESS_GET_RECRUIT = "채용공고 조회 성공";

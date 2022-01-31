@@ -3,6 +3,7 @@ package com.moram.ssafe.service.user;
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
+import com.moram.ssafe.dto.user.UserAuthResponse;
 import com.moram.ssafe.dto.user.UserProfileResponse;
 import com.moram.ssafe.dto.user.UserUpdateAddAuth;
 import com.moram.ssafe.exception.user.UserNotFoundException;
@@ -44,12 +45,21 @@ public class UserService {
         originUser.deleteUser();
     }
 
-    public List<UserProfileResponse> userAuthApproveWait() {
-        List<User> users = userRepository.findByAuthCheck(Sort.by(Sort.Direction.DESC, "modifiedDate"),1);
-        return users.stream().map(UserProfileResponse::from).collect(Collectors.toList());
+    @Transactional
+    public UserAuthResponse userAuthApprove(Long id) {
+        User originUser = getUser(id);
+        originUser.authUpdate();
+        return UserAuthResponse.from(originUser);
+    }
+
+    public List<UserAuthResponse> userAuthApproveWait() {
+        List<User> users = userRepository.findByAuthCheck(Sort.by(Sort.Direction.DESC, "modifiedDate"),2);
+        return users.stream().map(UserAuthResponse::from).collect(Collectors.toList());
     }
 
     public User getUser(Long id){
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
+
+
 }

@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Random;
 
@@ -36,28 +35,34 @@ public class JwtTokenProvider {
     public String createRefreshToken(User user) {
         byte[] array = new byte[7];
         new Random().nextBytes(array);
-        String generatedString = new String(array, StandardCharsets.UTF_8);
+//        String generatedString = new String(array, StandardCharsets.UTF_8);
         return createToken(user, refreshTokenValidityInMilliseconds);
     }
 
     public String createToken(User user, long expireLength) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expireLength * 1000);
-        String authority ="";
-
-        if(user.getRoleType()== Role.ADMIN){
-            authority=user.getRoleType().getRole()+AUTHORITIES_SPLITTER+Role.USER.getRole();
-        }else{
-            authority = user.getRoleType().getRole();
-        }
 
         return Jwts.builder()
                 .claim("id", user.getId())
-                .claim(AUTHORITIES_KEY, authority)
+                .claim(AUTHORITIES_KEY, authorityConvert(user.getRoleType()))
                 .setIssuedAt(now)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setExpiration(validity)
                 .compact();
+    }
+
+    public String authorityConvert(Role userRole) {
+        String authority = "";
+
+        if (userRole == Role.ADMIN) {
+            authority = userRole.getRole() + AUTHORITIES_SPLITTER + Role.AUTH.getRole() + AUTHORITIES_SPLITTER + Role.USER.getRole();
+        } else if (userRole == Role.AUTH) {
+            authority = userRole.getRole() + AUTHORITIES_SPLITTER + Role.USER.getRole();
+        } else {
+            authority = userRole.getRole();
+        }
+        return authority;
     }
 
     public boolean validateToken(String token) {
