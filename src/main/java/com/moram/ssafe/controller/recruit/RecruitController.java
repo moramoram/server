@@ -35,6 +35,32 @@ public class RecruitController {
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT, recruitService.findRecruit(id)));
     }
 
+    @GetMapping("/benefits")
+    public ResponseEntity<CommonResponseDto> findRecruitBenefit(@RequestParam int limit) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_BENEFIT, recruitService.findRecruitBenefit(limit)));
+    }
+
+    @GetMapping("/popularity")
+    public ResponseEntity<CommonResponseDto> findByLotsOfScrap(@RequestParam int limit) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_POPULARITY, recruitService.findByLotsOfScrap(limit)));
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<CommonResponseDto> findRecruitLatest(@RequestParam int limit) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_LATEST, recruitService.findRecruitLatest(limit)));
+    }
+
+
+    @GetMapping("/scraps/users")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public  ResponseEntity<CommonResponseDto> userRecruitScrapList(){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList()));
+    }
+
     @PostMapping
     public ResponseEntity<CommonResponseDto> createRecruit(@RequestBody @Valid RecruitSaveRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
@@ -62,10 +88,4 @@ public class RecruitController {
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_RECRUIT_SCRAP, recruitService.toggleRecruitScraps(recruitId)));
     }
 
-    @GetMapping("/scraps/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public  ResponseEntity<CommonResponseDto> userRecruitScrapList(@RequestParam(value = "limit", defaultValue = "1") int limit){
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList(limit)));
-    }
 }

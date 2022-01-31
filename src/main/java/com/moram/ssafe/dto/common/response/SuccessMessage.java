@@ -17,12 +17,16 @@ public class SuccessMessage {
     //Recruit
     public static String SUCCESS_GET_RECRUIT = "채용공고 조회 성공";
     public static String SUCCESS_GET_RECRUIT_LIST = "채용공고 리스트 조회 성공";
+    public static String SUCCESS_GET_RECRUIT_BENEFIT = "싸피우대 채용공고 리스트 조회 성공";
+    public static String SUCCESS_GET_RECRUIT_LATEST = "채용공고 최신순 리스트 조회 성공";
+    public static String SUCCESS_GET_RECRUIT_POPULARITY ="채용공고 인기순 리스트 조회 성공";
     public static String SUCCESS_POST_RECRUIT = "채용공고 등록 성공";
     public static String SUCCESS_PUT_RECRUIT = "채용공고 수정 성공";
     public static String SUCCESS_DELETE_RECRUIT = "채용공고 삭제 성공";
     public static String SUCCESS_GET_RECRUIT_SEARCH_LIST = "채용공고 검색 리스트 성공";
     public static String SUCCESS_PUT_RECRUIT_SCRAP = "채용공고 스크랩 성공";
     public static String SUCCESS_GET_RECRUIT_SCRAP_LIST = "사용자 스크랩 리스트 조회 성공";
+
 
     //Company
     public static String SUCCESS_POST_COMPANY = "회사 등록 성공";
