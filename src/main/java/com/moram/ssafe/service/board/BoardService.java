@@ -41,7 +41,7 @@ public class BoardService {
     public List<BoardResponse> findAll(int boardType, int limit) {
 
         Page<Board> boards = boardRepository.findAll(boardType,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "id")));
+                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return boards.stream().map(board -> {
             Integer totalComment = board.getCommentList().size();
@@ -50,7 +50,7 @@ public class BoardService {
         }).collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public BoardResponse findById(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
         board.addView();
@@ -62,6 +62,19 @@ public class BoardService {
     @Transactional(readOnly = true)
     public List<BoardResponse> findByUserId(Long userId) {
         return boardRepository.findByUserId(userId).stream().map(board -> {
+            Integer totalComment = board.getCommentList().size();
+            Integer totalLike = board.getLikeList().size();
+            return new BoardResponse(board, totalComment, totalLike);
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardResponse> findByBoardName(String name, int limit){
+
+        Page<Board> boards = boardRepository.findByTitleContaining(name,
+                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+
+        return boards.stream().map(board -> {
             Integer totalComment = board.getCommentList().size();
             Integer totalLike = board.getLikeList().size();
             return new BoardResponse(board, totalComment, totalLike);

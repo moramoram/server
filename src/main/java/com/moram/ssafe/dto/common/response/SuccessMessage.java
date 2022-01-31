@@ -52,6 +52,7 @@ public class SuccessMessage {
     public static String SUCCESS_POST_BOARD = "게시물 등록 성공";
     public static String SUCCESS_UPDATE_BOARD = "게시물 수정 성공";
     public static String SUCCESS_DELETE_BOARD = "게시물 삭제 성공";
+    public static String SUCCESS_GET_BOARD_NAME = "게시물명 조회 성공";
 
     //Like
     public static String SUCCESS_PUSH_LIKE = "좋아요 표시 성공";

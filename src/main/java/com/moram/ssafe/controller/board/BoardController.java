@@ -54,6 +54,13 @@ public class BoardController {
         ));
     }
 
+    @GetMapping("/name")
+    public ResponseEntity<CommonResponseDto> findByBoardName(@RequestParam String name,
+                                                             @RequestParam(value = "limit", defaultValue = "1") int limit){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_BOARD_NAME, boardService.findByBoardName(name, limit)));
+    }
+
     @PutMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> update(@PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest request){
