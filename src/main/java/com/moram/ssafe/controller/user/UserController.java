@@ -6,6 +6,8 @@ import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
 import com.moram.ssafe.dto.user.UserUpdateAddAuth;
 import com.moram.ssafe.dto.user.UserUpdateAddAuthFormRequest;
+import com.moram.ssafe.infrastructure.auth.JwtTokenProvider;
+import com.moram.ssafe.service.user.AuthService;
 import com.moram.ssafe.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ import static com.moram.ssafe.dto.common.response.SuccessMessage.*;
 public class UserController {
 
     private final UserService userService;
+    private final AuthService authService;
     private final S3Uploader s3Uploader;
 
     @GetMapping("/me")
@@ -34,6 +37,13 @@ public class UserController {
 
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_PROFILE, userService.getUserProfile()));
+    }
+
+    @PutMapping("/refresh")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> refresh() {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_POST_LOGIN, authService.refreshToken()));
     }
 
     @PutMapping
@@ -64,9 +74,18 @@ public class UserController {
 
     @GetMapping("/auth-approve/wait")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> userAuthApprove() {
+    public ResponseEntity<CommonResponseDto> userAuthApproveWait() {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_WAITING_AUTH_USER, userService.userAuthApproveWait()));
 
     }
+
+    @PutMapping("/auth-approve/{userId}")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
+    public ResponseEntity<CommonResponseDto> userAuthApprove(@PathVariable Long userId) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_SSAFE_AUTH_USER, userService.userAuthApprove(userId)));
+
+    }
+
 }
