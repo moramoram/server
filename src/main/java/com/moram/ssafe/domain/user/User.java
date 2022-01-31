@@ -44,11 +44,12 @@ public class User extends BaseEntity {
     private String likeJob;
 
     @Builder
-    public User(String socialId,String email, Role roleType,String nickname) {
-        this.socialId =socialId;
+    public User(String socialId, String email, Role roleType, String nickname) {
+        this.socialId = socialId;
         this.email = email;
         this.roleType = roleType;
-        this.nickname=nickname;
+        this.nickname = nickname;
+        this.authCheck = 1;
     }
 
     public void update(UserUpdateAddAuth user) {
@@ -58,19 +59,15 @@ public class User extends BaseEntity {
         this.ordinal = user.getOrdinal();
         this.campus = user.getCampus();
         this.authImg = user.getAuthImg();
-        this.authCheck = 1;
-    }
-
-    public void authApprove() {
         this.authCheck = 2;
     }
 
-    public void deleteUser(){
+    public void deleteUser() {
         this.email = "";
-        this.socialId ="";
+        this.socialId = "";
         this.nickname = "익명의 사용자";
         this.realName = "탈퇴한 사용자";
-        this.authImg ="";
+        this.authImg = "";
     }
 
     public void updateLikeJob(String likeJob) {
@@ -79,5 +76,10 @@ public class User extends BaseEntity {
 
     public Role getRole() {
         return roleType;
+    }
+
+    public void authUpdate() {
+        this.roleType = Role.AUTH;
+        this.authCheck = 3;
     }
 }
