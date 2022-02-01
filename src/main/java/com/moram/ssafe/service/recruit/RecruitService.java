@@ -7,10 +7,7 @@ import com.moram.ssafe.domain.recruit.Recruit;
 import com.moram.ssafe.domain.recruit.RecruitQueryRepository;
 import com.moram.ssafe.domain.recruit.RecruitRepository;
 import com.moram.ssafe.domain.recruit.RecruitScrap;
-import com.moram.ssafe.dto.recruit.RecruitResponse;
-import com.moram.ssafe.dto.recruit.RecruitSaveRequest;
-import com.moram.ssafe.dto.recruit.RecruitScrapResponse;
-import com.moram.ssafe.dto.recruit.RecruitUpdateRequest;
+import com.moram.ssafe.dto.recruit.*;
 import com.moram.ssafe.exception.company.CompanyNotFoundException;
 import com.moram.ssafe.exception.recruit.RecruitNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -52,22 +49,33 @@ public class RecruitService {
                 .map(RecruitResponse::from).collect(Collectors.toList());
     }
 
-    public List<RecruitResponse> findRecruitBenefit(int limit) {
+    public List<RecruitResponse> findRecruitBenefit(int offset) {
         return recruitRepository.findByRecruitBenefit(
-                PageRequest.of(limit - 1, 2, Sort.by("createdDate").descending()))
+                PageRequest.of(offset - 1, 2, Sort.by("createdDate").descending()))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 
-    public List<RecruitResponse> findRecruitLatest(int limit) {
+    public List<RecruitResponse> findRecruitLatest(int offset) {
         return recruitRepository.findByRecruitLatest(
-                PageRequest.of(limit - 1, 2, Sort.by("createdDate").descending()))
+                PageRequest.of(offset - 1, 2, Sort.by("createdDate").descending()))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 
-    public List<RecruitResponse> findByLotsOfScrap(int limit) {
-        return recruitQueryRepository.findByLotsOfScrap(PageRequest.of(limit - 1, 2))
+    public List<RecruitResponse> findByLotsOfScrap(int offset) {
+        return recruitQueryRepository.findByLotsOfScrap(PageRequest.of(offset - 1, 2))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
+
+    public List<RecruitResponse> findRecruitCloseDate(int offset) {
+        return recruitQueryRepository.findRecruitCloseDate(PageRequest.of(offset - 1, 2))
+                .stream().map(RecruitResponse::from).collect(Collectors.toList());
+    }
+
+    public List<RecruitResponse> findRecruitTitleAndTechStack(int offset, RecruitSearch recruitSearch) {
+        return recruitQueryRepository.findRecruitTitleAndTechStack(PageRequest.of(offset - 1, 2),recruitSearch)
+                .stream().map(RecruitResponse::from).collect(Collectors.toList());
+    }
+
 
     @Transactional
     public RecruitScrapResponse toggleRecruitScraps(Long recruitId) {

@@ -1,9 +1,11 @@
 package com.moram.ssafe.controller.recruit;
 
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
+import com.moram.ssafe.domain.recruit.Recruit;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
 import com.moram.ssafe.dto.recruit.RecruitSaveRequest;
+import com.moram.ssafe.dto.recruit.RecruitSearch;
 import com.moram.ssafe.dto.recruit.RecruitUpdateRequest;
 import com.moram.ssafe.service.recruit.RecruitService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -36,21 +39,33 @@ public class RecruitController {
     }
 
     @GetMapping("/benefits")
-    public ResponseEntity<CommonResponseDto> findRecruitBenefit(@RequestParam int limit) {
+    public ResponseEntity<CommonResponseDto> findRecruitBenefit(@RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_BENEFIT, recruitService.findRecruitBenefit(limit)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_BENEFIT, recruitService.findRecruitBenefit(offset)));
     }
 
     @GetMapping("/popularity")
-    public ResponseEntity<CommonResponseDto> findByLotsOfScrap(@RequestParam int limit) {
+    public ResponseEntity<CommonResponseDto> findByLotsOfScrap(@RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_POPULARITY, recruitService.findByLotsOfScrap(limit)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_POPULARITY, recruitService.findByLotsOfScrap(offset)));
     }
 
     @GetMapping("/latest")
-    public ResponseEntity<CommonResponseDto> findRecruitLatest(@RequestParam int limit) {
+    public ResponseEntity<CommonResponseDto> findRecruitLatest(@RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_LATEST, recruitService.findRecruitLatest(limit)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_LATEST, recruitService.findRecruitLatest(offset)));
+    }
+
+    @GetMapping("/close-date")
+    public ResponseEntity<CommonResponseDto> findRecruitCloseDate(@RequestParam int offset) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_CLOSE_DATE, recruitService.findRecruitCloseDate(offset)));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<CommonResponseDto> findRecruitTitleAndTechStack(@RequestParam int offset, @RequestBody RecruitSearch recruitSearch) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_CLOSE_DATE, recruitService.findRecruitTitleAndTechStack(offset,recruitSearch)));
     }
 
 
@@ -62,18 +77,21 @@ public class RecruitController {
     }
 
     @PostMapping
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> createRecruit(@RequestBody @Valid RecruitSaveRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_POST_RECRUIT, recruitService.createRecruit(request)));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> updateRecruit(@PathVariable Long id, @RequestBody @Valid RecruitUpdateRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_RECRUIT, recruitService.updateRecruit(id, request)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> deleteRecruit(@PathVariable Long id) {
         recruitService.deleteRecruit(id);
         return ResponseEntity.ok().body(CommonResponseDto.of(

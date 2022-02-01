@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -93,6 +95,10 @@ public class Recruit extends BaseEntity {
 
     public boolean toggleRecruitScarp(RecruitScrap recruitScarp) {
         return recruitScraps.toggleRecruitScrap(recruitScarp);
+    }
+
+    public List<String> techStackSplit(){
+        return Arrays.asList(this.techStack.split(",").clone());
     }
 
     public int recruitScarpCount(){
