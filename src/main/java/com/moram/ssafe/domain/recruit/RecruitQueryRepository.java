@@ -2,16 +2,17 @@ package com.moram.ssafe.domain.recruit;
 
 import com.moram.ssafe.dto.recruit.RecruitSearch;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.moram.ssafe.domain.recruit.QRecruit.recruit;
+import static com.querydsl.jpa.JPAExpressions.select;
 
 @RequiredArgsConstructor
 @Repository
@@ -41,18 +42,22 @@ public class RecruitQueryRepository {
     }
 
     public List<Recruit> findRecruitTitleAndTechStack(PageRequest pageable, RecruitSearch recruitSearch) {
+
         return jpaQueryFactory.selectFrom(recruit)
                 .innerJoin(recruit.company).fetchJoin()
                 .where(recruit.title.contains(recruitSearch.getTitle()),
-                        containsTechStack(recruitSearch.getTechStack()),
-                        recruit.job.contains(recruitSearch.getJob()))
+                        recruit.job.contains(recruitSearch.getJob())
+                        , containsTechStack(recruitSearch.getTechStack()))
                 .orderBy(recruit.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(4)
                 .fetch();
     }
 
-    public BooleanExpression containsTechStack(List<String> techStack){
-        return recruit.techStack.in(techStack);
+    public BooleanExpression containsTechStack(List<String> techStack) {
+        if (techStack.isEmpty()|| techStack==null) {
+            return null;
+        }
+        return Expressions.stringTemplate("SUBSTRING_INDEX({0},',',1)", recruit.techStack).in(techStack);
     }
 }
