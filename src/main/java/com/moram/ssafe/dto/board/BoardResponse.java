@@ -5,6 +5,7 @@ import com.moram.ssafe.domain.board.Board;
 import com.moram.ssafe.dto.user.UserResponse;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,10 @@ public class BoardResponse {
 
     private boolean likeStatus;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
 
     public BoardResponse(Board board, Integer totalLike, boolean likeStatus){
 
@@ -49,6 +54,8 @@ public class BoardResponse {
         this.comments = board.getCommentList().stream()
                 .map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
         this.totalLike = totalLike;
+        this.createdDate = board.getCreatedDate();
+        this.modifiedDate = board.getModifiedDate();
         this.likeStatus = likeStatus;
     }
 
@@ -65,6 +72,8 @@ public class BoardResponse {
         this.content = board.getContent();
         this.views = board.getViews();
         this.totalComment = totalComment;
+        this.createdDate = board.getCreatedDate();
+        this.modifiedDate = board.getModifiedDate();
         this.totalLike = totalLike;
     }
 }

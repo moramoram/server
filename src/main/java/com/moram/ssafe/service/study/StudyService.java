@@ -43,14 +43,12 @@ public class StudyService {
     public List<StudyResponse> findAll(int limit){
 
         Page<Study> studies = studyRepository.findAll(
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "id")));
+                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
 
-        return studies.stream().map(study -> {
-            Integer totalComment = study.getCommentList().size();
-            return new StudyResponse(study, totalComment);
-        }).collect(Collectors.toList());
+        return PageToResponse(studies);
     }
 
+    @Transactional
     public StudyResponse findById(Long studyId){
         Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
         study.addView();
@@ -66,6 +64,24 @@ public class StudyService {
                 }).collect(Collectors.toList());
     }
 
+    public List<StudyResponse> findByStudyName(String name, int limit){
+        Page<Study> studies = studyRepository.findByTitleContaining(name,
+                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+        return PageToResponse(studies);
+    }
+
+    public List<StudyResponse> findByLotsOfView(int limit){
+        Page<Study> studies = studyRepository.findAll(
+                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "views")));
+        return PageToResponse(studies);
+    }
+
+    public List<StudyResponse> findByLotsOfScrap(int limit){
+        Page<Study> studies = studyRepository.findByLotsOfScrap(
+                PageRequest.of(limit - 1, 6));
+        return PageToResponse(studies);
+    }
+
     @Transactional
     public Long update(Long studyId, StudyUpdateRequest request){
         studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new)
@@ -78,5 +94,12 @@ public class StudyService {
     public Long delete(Long studyId){
         studyRepository.deleteById(studyId);
         return studyId;
+    }
+
+    public List<StudyResponse> PageToResponse(Page<Study> studies){
+        return studies.stream().map(study -> {
+            Integer totalComment = study.getCommentList().size();
+            return new StudyResponse(study, totalComment);
+        }).collect(Collectors.toList());
     }
 }
