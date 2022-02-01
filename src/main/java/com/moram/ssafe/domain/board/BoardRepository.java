@@ -16,7 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @EntityGraph(attributePaths = {"user"})
     @Query("select b from Board b where b.board_type = :boardType")
-    Page<Board> findAll(@Param("boardType") int boardType,  Pageable pageable);
+    Page<Board> findAll(@Param("boardType") int boardType, Pageable pageable);
 
     @Query("select b from Board b join fetch b.user where b.id = :boardId")
     Optional<Board> findById(@Param("boardId") Long boardId);
@@ -24,4 +24,13 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("select b from Board b join fetch b.user where b.user.id = :userId")
     List<Board> findByUserId(@Param("userId") Long userId);
 
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select b from Board b where b.board_type = :boardType and b.title like %:name%")
+    Page<Board> findByTitleContaining(@Param("boardType") int boardType, @Param("name") String name,
+                                      Pageable pageable);
+
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select b from Board b where b.board_type = :boardType " +
+            "order by b.likeList.size desc")
+    Page<Board> findByLotsOfLike(@Param("boardType") int boardType, Pageable pageable);
 }

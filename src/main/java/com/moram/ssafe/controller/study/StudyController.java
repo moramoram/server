@@ -51,6 +51,25 @@ public class StudyController {
                 SUCCESS_GET_BOARD_LIST_USER, studyService.findByUserId(UserContext.getCurrentUserId())));
     }
 
+    @GetMapping("/name")
+    public ResponseEntity<CommonResponseDto> findByStudyName(@RequestParam String name,
+                                                             @RequestParam(value = "limit", defaultValue = "1") int limit){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyName(name, limit)));
+    }
+
+    @GetMapping("/views")
+    public ResponseEntity<CommonResponseDto> findByLotsOfView( @RequestParam(value = "limit", defaultValue = "1") int limit){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_STUDY_VIEWS, studyService.findByLotsOfView(limit)));
+    }
+
+    @GetMapping("/scraps")
+    public ResponseEntity<CommonResponseDto> findByLotsOfScrap( @RequestParam(value = "limit", defaultValue = "1") int limit){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_STUDY_SCRAP, studyService.findByLotsOfScrap(limit)));
+    }
+
     @PutMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> update(@PathVariable Long studyId, @RequestBody @Valid StudyUpdateRequest request){

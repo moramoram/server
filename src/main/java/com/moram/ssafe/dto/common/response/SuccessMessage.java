@@ -48,11 +48,14 @@ public class SuccessMessage {
 
     //Board
     public static String SUCCESS_GET_BOARD = "게시판 상세 조회 성공";
-    public static String SUCCESS_GET_BOARD_LIST = "게시판 리스트 조회 성공";
+    public static String SUCCESS_GET_BOARD_LIST = "게시판 리스트 최신순 조회 성공";
     public static String SUCCESS_GET_BOARD_LIST_USER = "사용자 작성 게시판 리스트 조회 성공";
     public static String SUCCESS_POST_BOARD = "게시물 등록 성공";
     public static String SUCCESS_UPDATE_BOARD = "게시물 수정 성공";
     public static String SUCCESS_DELETE_BOARD = "게시물 삭제 성공";
+    public static String SUCCESS_GET_BOARD_NAME = "게시물명 검색 조회 성공";
+    public static String SUCCESS_GET_BOARD_VIEW = "게시물 조회순 조회 성공";
+    public static String SUCCESS_GET_BOARD_LIKE = "게시물 좋아요순 조회 성공";
 
     //Like
     public static String SUCCESS_PUSH_LIKE = "좋아요 표시 성공";
@@ -61,11 +64,14 @@ public class SuccessMessage {
 
     //Study
     public static String SUCCESS_GET_STUDY = "스터디 상세 조회 성공";
-    public static String SUCCESS_GET_STUDY_LIST = "스터디 리스트 조회 성공";
+    public static String SUCCESS_GET_STUDY_LIST = "스터디 리스트 최신순 조회 성공";
     public static String SUCCESS_GET_STUDY_LIST_USER = "사용자 작성 스터디 리스트 조회 성공";
     public static String SUCCESS_POST_STUDY = "스터디 등록 성공";
     public static String SUCCESS_UPDATE_STUDY = "스터디 수정 성공";
     public static String SUCCESS_DELETE_STUDY = "스터디 삭제 성공";
+    public static String SUCCESS_GET_STUDY_NAME = "스터디명 검색 조회 성공";
+    public static String SUCCESS_GET_STUDY_VIEWS = "스터디 조회순 조회 성공";
+    public static String SUCCESS_GET_STUDY_SCRAP = "스터디명 스크랩순 조회 성공";
 
     //Scrap
     public static String SUCCESS_PUSH_SCRAP = "스크랩 성공";
