@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company,Long> {
 
-    List<Company> findByCompanyNameContaining(@Param("name")String name);
+    List<Company> findByCompanyNameContaining(String companyName);
 }
