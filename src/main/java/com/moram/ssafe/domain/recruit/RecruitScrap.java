@@ -26,14 +26,7 @@ public class RecruitScrap {
     private Long userId;
 
     @Builder
-    public RecruitScrap(Long id, Recruit recruit, Long userId) {
-        this.id = id;
-        this.recruit = recruit;
-        this.userId = userId;
-    }
-
-    @Builder
-    public RecruitScrap( Recruit recruit, Long userId) {
+    public RecruitScrap(Recruit recruit, Long userId) {
         this.recruit = recruit;
         this.userId = userId;
     }
