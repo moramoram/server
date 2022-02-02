@@ -4,9 +4,10 @@ import com.moram.ssafe.config.s3.S3Uploader;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
+import com.moram.ssafe.dto.user.UserNickNameRequest;
+import com.moram.ssafe.dto.user.UserProfileImgRequest;
 import com.moram.ssafe.dto.user.UserUpdateAddAuth;
 import com.moram.ssafe.dto.user.UserUpdateAddAuthFormRequest;
-import com.moram.ssafe.infrastructure.auth.JwtTokenProvider;
 import com.moram.ssafe.service.user.AuthService;
 import com.moram.ssafe.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,14 @@ public class UserController {
     @GetMapping("/me")
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> getUserProfile() {
-
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_PROFILE, userService.getUserProfile()));
+    }
+
+    @GetMapping("/nickname-check")
+    public ResponseEntity<CommonResponseDto> nicknameCheck(@RequestBody @Valid UserNickNameRequest request) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_USER_CHECK_NICKNAME, userService.nicknameCheck(request.getNickname())));
     }
 
     @PutMapping("/refresh")
@@ -44,6 +50,30 @@ public class UserController {
     public ResponseEntity<CommonResponseDto> refresh() {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_POST_LOGIN, authService.refreshToken()));
+    }
+
+    @GetMapping
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
+    public ResponseEntity<CommonResponseDto> getUserList() {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_USER_LIST, userService.getUserList()));
+
+    }
+
+    @PutMapping("/nickname")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> userNicknameUpdate(@RequestBody @Valid UserNickNameRequest request) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_UPDATE_USER_NICKNAME, userService.nicknameUpdate(request.getNickname())));
+
+    }
+
+    @PutMapping("/profile-images")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> userProfileImgUpdate(@RequestBody @Valid UserProfileImgRequest request) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileImgUpdate(request.getProfileImg())));
+
     }
 
     @PutMapping
@@ -87,5 +117,4 @@ public class UserController {
                 HttpStatus.OK, SUCCESS_SSAFE_AUTH_USER, userService.userAuthApprove(userId)));
 
     }
-
 }
