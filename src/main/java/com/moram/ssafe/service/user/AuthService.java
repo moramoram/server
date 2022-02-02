@@ -69,7 +69,7 @@ public class AuthService {
                             .email(profile.getEmail())
                             .roleType(Role.USER)
                             .socialId(profile.getOauthId())
-                            .nickname(profile.getName())
+                            .nickname("Guest")
                             .build());
         }
         User user = userRepository.findBySocialId(profile.getOauthId())
