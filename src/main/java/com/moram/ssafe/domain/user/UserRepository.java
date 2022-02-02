@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByAuthCheck(Sort modifiedDate, int check);
 
     Optional<User> findBySocialId(String oauthId);
+
+    boolean existsByNickname(String nickname);
 }
