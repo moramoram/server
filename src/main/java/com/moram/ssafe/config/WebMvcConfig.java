@@ -28,6 +28,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/auth/**")
+                .excludePathPatterns("/recruits/search")
+                .excludePathPatterns("/recruits/benefits")
+                .excludePathPatterns("/recruits/latest")
+                .excludePathPatterns("/recruits/popularity")
+                .excludePathPatterns("/recruits/close-date")
                 .excludePathPatterns("/index.html/**");
     }
 }
