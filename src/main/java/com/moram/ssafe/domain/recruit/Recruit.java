@@ -95,7 +95,7 @@ public class Recruit extends BaseEntity {
         return recruitScraps.toggleRecruitScrap(recruitScarp);
     }
 
-    public int recruitScarpCount(){
+    public int recruitScarpCount() {
         return recruitScraps.size();
     }
 }
