@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 @Entity(name = "tbl_user")
 public class User extends BaseEntity {
 
@@ -81,5 +83,13 @@ public class User extends BaseEntity {
     public void authUpdate() {
         this.roleType = Role.AUTH;
         this.authCheck = 3;
+    }
+
+    public void nickNameUpdate(String nickname) {
+        this.nickname =nickname;
+    }
+
+    public void profileImageUpdate(String profileImg) {
+        this.profileImg = profileImg;
     }
 }
