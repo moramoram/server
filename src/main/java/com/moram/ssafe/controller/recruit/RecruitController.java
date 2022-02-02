@@ -38,6 +38,14 @@ public class RecruitController {
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT, recruitService.findRecruit(id)));
     }
 
+    @GetMapping("/{id}/users")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> findUserRecruit(@PathVariable Long id) {
+        recruitService.addView(id);
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT, recruitService.findUserRecruit(id)));
+    }
+
     @GetMapping("/benefits")
     public ResponseEntity<CommonResponseDto> findRecruitBenefit(@RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
@@ -70,7 +78,7 @@ public class RecruitController {
 
 
     @GetMapping("/scraps/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public  ResponseEntity<CommonResponseDto> userRecruitScrapList(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList()));
@@ -99,9 +107,8 @@ public class RecruitController {
     }
 
     @PutMapping("/{recruitId}/scraps")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> toggleRecruitScrap(@PathVariable Long recruitId) {
-
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_RECRUIT_SCRAP, recruitService.toggleRecruitScraps(recruitId)));
     }
