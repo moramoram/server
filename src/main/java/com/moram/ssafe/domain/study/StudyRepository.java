@@ -25,8 +25,17 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findUserStudy(@Param("userId") Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
-    @Query("select s from Study s where s.title like %:name%")
-    Page<Study> findByTitleContaining(@Param("name")String name, Pageable pageable);
+    @Query("select s from Study s where s.title like %:title%")
+    Page<Study> findByTitleContaining(@Param("title") String title, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select s from Study s where s.study_type = :type and s.title like %:title%")
+    Page<Study> findByTitleAndTypeContaining(@Param("title")String title, @Param("type") String type,
+                                             Pageable pageable);
+
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select s from Study s where s.study_type = :type")
+    Page<Study> findByTypeContaining(@Param("type") String type, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
     @Query("select s from Study s order by s.scrapList.size desc")

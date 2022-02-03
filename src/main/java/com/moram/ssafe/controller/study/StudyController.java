@@ -4,6 +4,7 @@ import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.study.StudySaveRequest;
+import com.moram.ssafe.dto.study.StudySearch;
 import com.moram.ssafe.dto.study.StudyUpdateRequest;
 import com.moram.ssafe.service.study.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -50,10 +51,10 @@ public class StudyController {
                 SUCCESS_GET_BOARD_LIST_USER, studyService.findUserStudy(UserContext.getCurrentUserId(), offset)));
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<CommonResponseDto> findByStudyName(@RequestParam String name, @RequestParam int offset){
+    @GetMapping("/search")
+    public ResponseEntity<CommonResponseDto> findByStudyNameAndType(@RequestParam int offset, @RequestBody StudySearch studySearch){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyName(name, offset)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyNameAndType(offset, studySearch)));
     }
 
     @GetMapping("/views")

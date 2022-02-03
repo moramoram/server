@@ -9,6 +9,7 @@ import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.study.StudyResponse;
 import com.moram.ssafe.dto.study.StudySaveRequest;
+import com.moram.ssafe.dto.study.StudySearch;
 import com.moram.ssafe.dto.study.StudyUpdateRequest;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
 import com.moram.ssafe.exception.user.UserNotFoundException;
@@ -61,9 +62,23 @@ public class StudyService {
         return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyResponse> findByStudyName(String name, int offset){
-        Page<Study> studies = studyRepository.findByTitleContaining(name,
-                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+    public List<StudyResponse> findByStudyNameAndType(int offset, StudySearch studySearch){
+
+        String title = studySearch.getTitle();
+        String type = studySearch.getType();
+        Page<Study> studies = null;
+
+        if(title != null && type != null){
+            studies = studyRepository.findByTitleAndTypeContaining(title, type,
+                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        } else if(title == null && type != null){
+            studies = studyRepository.findByTypeContaining(type,
+                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        } else if(title !=null && type == null){
+            studies = studyRepository.findByTitleContaining(title,
+                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        }
+
         return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
