@@ -49,7 +49,7 @@ public class UserController {
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> refresh() {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_LOGIN, authService.refreshToken()));
+                HttpStatus.OK, SUCCESS_PUT_REFRESH, authService.refreshToken()));
     }
 
     @GetMapping
