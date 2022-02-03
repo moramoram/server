@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +27,8 @@ public class StudyScrapService {
     private final StudyRepository studyRepository;
 
     public List<StudyResponse> findUserScrap(Long userId, int offset){
-
         Page<StudyScrap> studies = studyScrapRepository.findUserScrap(userId,
-                PageRequest.of(offset - 1, 12));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return studies.stream().map(StudyResponse::of).collect(Collectors.toList());
     }

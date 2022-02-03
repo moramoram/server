@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +44,7 @@ public class StudyCommentService {
     public List<StudyCommentResponse> findUserStudyComment(Long userId, int offset){
 
         Page<StudyComment> comments = studyCommentRepository.findUserStudyComment(userId,
-                PageRequest.of(offset - 1, 12));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return comments.stream().map(StudyCommentResponse::from).collect(Collectors.toList());
     }

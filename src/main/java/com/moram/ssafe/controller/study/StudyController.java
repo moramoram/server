@@ -31,10 +31,9 @@ public class StudyController {
     }
 
     @GetMapping
-    public ResponseEntity<CommonResponseDto> findStudyList(@RequestParam(value = "limit", defaultValue = "1")
-                                                                 int limit){
+    public ResponseEntity<CommonResponseDto> findStudyList(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_LIST, studyService.findStudyList(limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_LIST, studyService.findStudyList(offset)));
     }
 
     @GetMapping("/{studyId}")
@@ -52,22 +51,21 @@ public class StudyController {
     }
 
     @GetMapping("/name")
-    public ResponseEntity<CommonResponseDto> findByStudyName(@RequestParam String name,
-                                                             @RequestParam(value = "limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findByStudyName(@RequestParam String name, @RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyName(name, limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyName(name, offset)));
     }
 
     @GetMapping("/views")
-    public ResponseEntity<CommonResponseDto> findByLotsOfView( @RequestParam(value = "limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findByLotsOfView(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_VIEWS, studyService.findByLotsOfView(limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_VIEWS, studyService.findByLotsOfView(offset)));
     }
 
     @GetMapping("/scraps")
-    public ResponseEntity<CommonResponseDto> findByLotsOfScrap( @RequestParam(value = "limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findByLotsOfScrap(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_SCRAP, studyService.findByLotsOfScrap(limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_SCRAP, studyService.findByLotsOfScrap(offset)));
     }
 
     @PutMapping("/{studyId}")

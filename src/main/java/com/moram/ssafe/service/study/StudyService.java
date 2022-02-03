@@ -40,9 +40,9 @@ public class StudyService {
         return studyRepository.save(request.of(user)).getId();
     }
 
-    public List<StudyResponse> findStudyList(int limit){
+    public List<StudyResponse> findStudyList(int offset){
         Page<Study> studies = studyRepository.findAll(
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return PageToResponse(studies);
     }
@@ -63,21 +63,21 @@ public class StudyService {
                 }).collect(Collectors.toList());
     }
 
-    public List<StudyResponse> findByStudyName(String name, int limit){
+    public List<StudyResponse> findByStudyName(String name, int offset){
         Page<Study> studies = studyRepository.findByTitleContaining(name,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
         return PageToResponse(studies);
     }
 
-    public List<StudyResponse> findByLotsOfView(int limit){
+    public List<StudyResponse> findByLotsOfView(int offset){
         Page<Study> studies = studyRepository.findAll(
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "views")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "views")));
         return PageToResponse(studies);
     }
 
-    public List<StudyResponse> findByLotsOfScrap(int limit){
+    public List<StudyResponse> findByLotsOfScrap(int offset){
         Page<Study> studies = studyRepository.findByLotsOfScrap(
-                PageRequest.of(limit - 1, 6));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
         return PageToResponse(studies);
     }
 

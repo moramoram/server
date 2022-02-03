@@ -31,10 +31,9 @@ public class BoardController {
     }
 
     @GetMapping("/types/{boardType}")
-    public ResponseEntity<CommonResponseDto> findBoardList(@PathVariable int boardType,
-                                                     @RequestParam(value = "limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findBoardList(@PathVariable int boardType, @RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_LIST, boardService.findBoardList(boardType, limit))
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIST, boardService.findBoardList(boardType, offset))
         );
     }
 
@@ -48,31 +47,29 @@ public class BoardController {
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserBoard(){
+    public ResponseEntity<CommonResponseDto> findUserBoard(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_LIST_USER, boardService.findUserBoard(UserContext.getCurrentUserId())
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIST_USER, boardService.findUserBoard(UserContext.getCurrentUserId(), offset)
         ));
     }
 
     @GetMapping("/types/{boardType}/name")
     public ResponseEntity<CommonResponseDto> findByBoardName(@PathVariable int boardType, @RequestParam String name,
-                                                             @RequestParam(value = "limit", defaultValue = "1") int limit){
+                                                             @RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_NAME, boardService.findByBoardName(boardType, name, limit)));
+                HttpStatus.OK, SUCCESS_GET_BOARD_NAME, boardService.findByBoardName(boardType, name, offset)));
     }
 
     @GetMapping("/types/{boardType}/views")
-    public ResponseEntity<CommonResponseDto> findByLotsOfView(@PathVariable int boardType,
-                                                              @RequestParam(value="limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findByLotsOfView(@PathVariable int boardType, @RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_VIEW, boardService.findByLotsOfView(boardType, limit)));
+                HttpStatus.OK, SUCCESS_GET_BOARD_VIEW, boardService.findByLotsOfView(boardType, offset)));
     }
 
     @GetMapping("/types/{boardType}/likes")
-    public ResponseEntity<CommonResponseDto> findByLotsOfLike(@PathVariable int boardType,
-                                                              @RequestParam(value="limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findByLotsOfLike(@PathVariable int boardType, @RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_LIKE, boardService.findByLotsOfLike(boardType, limit)));
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIKE, boardService.findByLotsOfLike(boardType, offset)));
     }
 
     @PutMapping("/{boardId}")

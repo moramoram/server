@@ -38,10 +38,10 @@ public class BoardService {
         return boardRepository.save(requestDto.of(user)).getId();
     }
 
-    public List<BoardResponse> findBoardList(int boardType, int limit) { //쿼리 1번인지 체크. 아니면 paing 없는 findAll 만들기
+    public List<BoardResponse> findBoardList(int boardType, int offset) {
 
         Page<Board> boards = boardRepository.findBoardList(boardType,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return PageToResponse(boards);
     }
@@ -55,32 +55,32 @@ public class BoardService {
         return new BoardResponse(board, totalLike, likeStatus);
     }
 
-    public List<BoardResponse> findUserBoard(Long userId) {
-        return boardRepository.findUserBoard(userId).stream().map(board -> {
-            Integer totalComment = board.getCommentList().size();
-            Integer totalLike = board.getLikeList().size();
-            return new BoardResponse(board, totalComment, totalLike);
-        }).collect(Collectors.toList());
+    public List<BoardResponse> findUserBoard(Long userId, int offset) {
+
+        Page<Board> boards = boardRepository.findUserBoard(userId,
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+
+        return PageToResponse(boards);
     }
 
-    public List<BoardResponse> findByBoardName(int boardType, String name, int limit){
+    public List<BoardResponse> findByBoardName(int boardType, String name, int offset){
 
         Page<Board> boards = boardRepository.findByTitleContaining(boardType, name,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return PageToResponse(boards);
     }
 
-    public List<BoardResponse> findByLotsOfView(int boardType, int limit){
+    public List<BoardResponse> findByLotsOfView(int boardType, int offset){
         Page<Board> boards = boardRepository.findBoardList(boardType,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "views")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "views")));
 
         return PageToResponse(boards);
     }
 
-    public List<BoardResponse> findByLotsOfLike(int boardType, int limit){
+    public List<BoardResponse> findByLotsOfLike(int boardType, int offset){
         Page<Board> boards = boardRepository.findByLotsOfLike(boardType,
-                PageRequest.of(limit - 1, 6));
+                PageRequest.of(offset - 1, 12));
         return PageToResponse(boards);
     }
 
