@@ -39,9 +39,9 @@ public class StudyCommentController {
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserStudyComment(){
+    public ResponseEntity<CommonResponseDto> findUserStudyComment(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findUserStudyComment(UserContext.getCurrentUserId())));
+                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findUserStudyComment(UserContext.getCurrentUserId(), offset)));
     }
 
     @PutMapping("/{commentId}")

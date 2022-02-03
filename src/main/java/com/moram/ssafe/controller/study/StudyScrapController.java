@@ -29,9 +29,9 @@ public class StudyScrapController {
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserScrap(){
+    public ResponseEntity<CommonResponseDto> findUserScrap(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_RECRUIT_SCRAP_LIST, studyScrapService.findUserScrap(UserContext.getCurrentUserId())));
+                HttpStatus.OK, SUCCESS_GET_RECRUIT_SCRAP_LIST, studyScrapService.findUserScrap(UserContext.getCurrentUserId(), offset)));
     }
 
     @DeleteMapping("/{scrapId}")

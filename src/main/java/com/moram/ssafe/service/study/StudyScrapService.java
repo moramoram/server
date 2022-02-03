@@ -8,6 +8,8 @@ import com.moram.ssafe.dto.study.StudyResponse;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +25,12 @@ public class StudyScrapService {
     private final StudyScrapRepository studyScrapRepository;
     private final StudyRepository studyRepository;
 
-    public List<StudyResponse> findUserScrap(Long userId){
-        return studyScrapRepository.findUserScrap(userId).stream()
-                .map(scrap -> StudyResponse.of(scrap)).collect(Collectors.toList());
+    public List<StudyResponse> findUserScrap(Long userId, int offset){
 
+        Page<StudyScrap> studies = studyScrapRepository.findUserScrap(userId,
+                PageRequest.of(offset - 1, 12));
+
+        return studies.stream().map(StudyResponse::of).collect(Collectors.toList());
     }
 
     public Boolean pushScrap(Long studyId){

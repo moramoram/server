@@ -4,7 +4,6 @@ import com.moram.ssafe.domain.board.Board;
 import com.moram.ssafe.domain.board.BoardLike;
 import com.moram.ssafe.domain.board.BoardLikeRepository;
 import com.moram.ssafe.domain.board.BoardRepository;
-import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.exception.board.BoardNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

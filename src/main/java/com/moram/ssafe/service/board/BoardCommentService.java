@@ -32,12 +32,12 @@ public class BoardCommentService {
 
     public List<BoardCommentResponse> findBoardCommentList(Long boardId){
         return boardCommentRepository.
-                findBoardCommentList(boardId).stream().map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
+                findBoardCommentList(boardId).stream().map(BoardCommentResponse::from).collect(Collectors.toList());
     }
 
     public List<BoardCommentResponse> findUserBoardComment(Long userId){
         return boardCommentRepository
-                .findUserBoardComment(userId).stream().map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
+                .findUserBoardComment(userId).stream().map(BoardCommentResponse::from).collect(Collectors.toList());
     }
 
     @Transactional

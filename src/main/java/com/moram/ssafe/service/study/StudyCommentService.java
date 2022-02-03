@@ -2,6 +2,7 @@ package com.moram.ssafe.service.study;
 
 
 import com.moram.ssafe.domain.study.Study;
+import com.moram.ssafe.domain.study.StudyComment;
 import com.moram.ssafe.domain.study.StudyCommentRepository;
 import com.moram.ssafe.domain.study.StudyRepository;
 import com.moram.ssafe.dto.study.StudyCommentResponse;
@@ -11,6 +12,8 @@ import com.moram.ssafe.exception.study.StudyCommentNotFound;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,12 +37,15 @@ public class StudyCommentService {
 
     public List<StudyCommentResponse> findStudyComment(Long studyId){
         return studyCommentRepository.findStudyComment(studyId).stream()
-                .map(comment -> StudyCommentResponse.from(comment)).collect(Collectors.toList());
+                .map(StudyCommentResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyCommentResponse> findUserStudyComment(Long userId){
-        return studyCommentRepository.findUserStudyComment(userId).stream()
-                .map(comment -> StudyCommentResponse.from(comment)).collect(Collectors.toList());
+    public List<StudyCommentResponse> findUserStudyComment(Long userId, int offset){
+
+        Page<StudyComment> comments = studyCommentRepository.findUserStudyComment(userId,
+                PageRequest.of(offset - 1, 12));
+
+        return comments.stream().map(StudyCommentResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
