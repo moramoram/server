@@ -31,11 +31,11 @@ public class UserService {
     }
 
     @Transactional
-    public Long updateUserAddAuth(UserUpdateAddAuth request) {
+    public UserProfileResponse updateUserAddAuth(UserUpdateAddAuth request) {
         Long id = UserContext.getCurrentUserId();
         User originUser = getUser(id);
         originUser.update(request);
-        return originUser.getId();
+        return UserProfileResponse.from(originUser);
     }
 
     @Transactional
