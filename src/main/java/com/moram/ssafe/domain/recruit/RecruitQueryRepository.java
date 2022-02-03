@@ -45,7 +45,7 @@ public class RecruitQueryRepository {
         return jpaQueryFactory.selectFrom(recruit)
                 .innerJoin(recruit.company).fetchJoin()
                 .where(recruit.title.contains(recruitSearch.getTitle()),
-                        recruit.job.contains(recruitSearch.getJob())
+                        containsJob(recruitSearch.getJob())
                         , containsTechStack(recruitSearch.getTechStack()))
                 .orderBy(recruit.createdDate.desc())
                 .offset(pageable.getOffset())
@@ -53,8 +53,15 @@ public class RecruitQueryRepository {
                 .fetch();
     }
 
+    public BooleanExpression containsJob(String job) {
+        if (job.isEmpty() || job == null) {
+            return null;
+        }
+        return recruit.job.contains(job);
+    }
+
     public BooleanExpression containsTechStack(List<String> techStack) {
-        if (techStack.isEmpty()|| techStack==null) {
+        if (techStack.isEmpty() || techStack == null) {
             return null;
         }
         return Expressions.anyOf(techStack.stream().map(this::isFilteredTechStack).toArray(BooleanExpression[]::new));
