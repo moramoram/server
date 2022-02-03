@@ -56,6 +56,15 @@ public class CompanyController {
                 companyService.findCompanyName(request.getName())));
     }
 
+    @GetMapping("/users")
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findUserCommentsByCompany() {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_COMMENT_LIST,
+                companyService.findUserCommentsByCompany()));
+    }
+
+
     @PutMapping("/{companyId}/name")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId,@RequestBody CompanyNameRequest request) {
