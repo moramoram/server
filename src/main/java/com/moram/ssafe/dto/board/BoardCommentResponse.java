@@ -26,5 +26,10 @@ public class BoardCommentResponse {
                 .userInfo(UserResponse.from(comment.getUser())).createdDate(comment.getCreatedDate()).modifiedDate(comment.getModifiedDate()).build();
     }
 
+    public static BoardCommentResponse from_anon(BoardComment comment){
+        return BoardCommentResponse.builder().commentId(comment.getId()).content(comment.getContent())
+                .userInfo(UserResponse.from_anon(comment.getUser())).createdDate(comment.getCreatedDate()).modifiedDate(comment.getModifiedDate()).build();
+    }
+
 
 }

@@ -61,17 +61,20 @@ public class BoardResponse {
 
         this.boardType = board.getBoard_type();
 
-        if(this.boardType==2)
+        if(this.boardType==2){
             this.writerInfo = UserResponse.from_anon(board.getUser());
-        else
+            this.comments = board.getCommentList().stream().map(BoardCommentResponse::from_anon).collect(Collectors.toList());
+        }
+        else{
             this.writerInfo = UserResponse.from(board.getUser());
+            this.comments = board.getCommentList().stream()
+                    .map(BoardCommentResponse::from).collect(Collectors.toList());
+        }
 
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.comments = board.getCommentList().stream()
-                .map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
         this.totalLike = totalLike;
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
