@@ -9,24 +9,28 @@ public class SuccessMessage {
 
     //User
     public static String SUCCESS_POST_LOGIN = "Login 성공.";
+    public static String SUCCESS_GET_USER_LIST = "User List 조회 성공";
     public static String SUCCESS_GET_USER_PROFILE = "User Profile 조회 성공";
+    public static String SUCCESS_GET_USER_CHECK_NICKNAME = "User 닉네임 체크 결과";
+    public static String SUCCESS_UPDATE_USER_NICKNAME = "User 닉네임 수정 성공";
+    public static String SUCCESS_UPDATE_USER_PROFILE_IMG = "User 프로필 이미지 수정 성공";
     public static String SUCCESS_UPDATE_USER_ADD_AUTH = "User 추가 인증 업데이트 성공";
     public static String SUCCESS_DELETE_USER = "User 삭제 성공";
     public static String SUCCESS_WAITING_AUTH_USER = "인증대기 사용자 조회 성공";
-    public static String SUCCESS_SSAFE_AUTH_USER ="SSAFE 승인 성공";
+    public static String SUCCESS_SSAFE_AUTH_USER = "SSAFE 승인 성공";
 
     //Recruit
     public static String SUCCESS_GET_RECRUIT = "채용공고 조회 성공";
     public static String SUCCESS_GET_RECRUIT_LIST = "채용공고 리스트 조회 성공";
     public static String SUCCESS_GET_RECRUIT_BENEFIT = "싸피우대 채용공고 리스트 조회 성공";
     public static String SUCCESS_GET_RECRUIT_LATEST = "채용공고 최신순 리스트 조회 성공";
-    public static String SUCCESS_GET_RECRUIT_POPULARITY ="채용공고 인기순 리스트 조회 성공";
-    public static String SUCCESS_GET_RECRUIT_CLOSE_DATE ="채용공고 마감임박순 리스트 조회 성공";
+    public static String SUCCESS_GET_RECRUIT_POPULARITY = "채용공고 인기순 리스트 조회 성공";
+    public static String SUCCESS_GET_RECRUIT_CLOSE_DATE = "채용공고 마감임박순 리스트 조회 성공";
     public static String SUCCESS_POST_RECRUIT = "채용공고 등록 성공";
     public static String SUCCESS_PUT_RECRUIT = "채용공고 수정 성공";
     public static String SUCCESS_DELETE_RECRUIT = "채용공고 삭제 성공";
     public static String SUCCESS_GET_RECRUIT_SEARCH_LIST = "채용공고 검색 리스트 성공";
-    public static String SUCCESS_GET_RECRUIT_TITLE_TECH ="채용공고 제목 기술스택 검색 성공";
+    public static String SUCCESS_GET_RECRUIT_TITLE_TECH = "채용공고 제목 기술스택 검색 성공";
     public static String SUCCESS_PUT_RECRUIT_SCRAP = "채용공고 스크랩 성공";
     public static String SUCCESS_GET_RECRUIT_SCRAP_LIST = "사용자 스크랩 리스트 조회 성공";
 

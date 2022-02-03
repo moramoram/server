@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.moram.ssafe.domain.recruit.QRecruit.recruit;
-import static com.querydsl.jpa.JPAExpressions.select;
 
 @RequiredArgsConstructor
 @Repository
@@ -26,7 +25,7 @@ public class RecruitQueryRepository {
                 .innerJoin(recruit.company).fetchJoin()
                 .orderBy(recruit.recruitScraps.recruitScraps.size().desc())
                 .offset(pageable.getOffset())
-                .limit(4)
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
@@ -37,7 +36,7 @@ public class RecruitQueryRepository {
                 .where(recruit.closeDate.goe(LocalDateTime.now()))
                 .orderBy(recruit.closeDate.asc())
                 .offset(pageable.getOffset())
-                .limit(4)
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
@@ -46,18 +45,29 @@ public class RecruitQueryRepository {
         return jpaQueryFactory.selectFrom(recruit)
                 .innerJoin(recruit.company).fetchJoin()
                 .where(recruit.title.contains(recruitSearch.getTitle()),
-                        recruit.job.contains(recruitSearch.getJob())
+                        containsJob(recruitSearch.getJob())
                         , containsTechStack(recruitSearch.getTechStack()))
                 .orderBy(recruit.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(4)
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
-    public BooleanExpression containsTechStack(List<String> techStack) {
-        if (techStack.isEmpty()|| techStack==null) {
+    public BooleanExpression containsJob(String job) {
+        if (job.isEmpty() || job == null) {
             return null;
         }
-        return Expressions.stringTemplate("SUBSTRING_INDEX({0},',',1)", recruit.techStack).in(techStack);
+        return recruit.job.contains(job);
+    }
+
+    public BooleanExpression containsTechStack(List<String> techStack) {
+        if (techStack.isEmpty() || techStack == null) {
+            return null;
+        }
+        return Expressions.anyOf(techStack.stream().map(this::isFilteredTechStack).toArray(BooleanExpression[]::new));
+    }
+
+    private BooleanExpression isFilteredTechStack(String techStack) {
+        return recruit.techStack.contains(techStack);
     }
 }

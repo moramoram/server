@@ -3,10 +3,7 @@ package com.moram.ssafe.service.recruit;
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.company.Company;
 import com.moram.ssafe.domain.company.CompanyRepository;
-import com.moram.ssafe.domain.recruit.Recruit;
-import com.moram.ssafe.domain.recruit.RecruitQueryRepository;
-import com.moram.ssafe.domain.recruit.RecruitRepository;
-import com.moram.ssafe.domain.recruit.RecruitScrap;
+import com.moram.ssafe.domain.recruit.*;
 import com.moram.ssafe.dto.recruit.*;
 import com.moram.ssafe.exception.company.CompanyNotFoundException;
 import com.moram.ssafe.exception.recruit.RecruitNotFoundException;
@@ -29,6 +26,7 @@ public class RecruitService {
     private final RecruitRepository recruitRepository;
     private final RecruitQueryRepository recruitQueryRepository;
     private final CompanyRepository companyRepository;
+    private final RecruitScrapRepository recruitScrapRepository;
 
 
     public List<RecruitResponse> findRecruitList() {
@@ -38,7 +36,13 @@ public class RecruitService {
 
     public RecruitResponse findRecruit(Long id) {
         Recruit recruit = getRecruit(id);
-        return RecruitResponse.from(recruit);
+        return RecruitResponse.from(recruit, false);
+    }
+
+    public RecruitResponse findUserRecruit(Long id) {
+        Long userId = UserContext.getCurrentUserId();
+        Recruit recruit = getRecruit(id);
+        return RecruitResponse.from(recruit, recruitScrapRepository.existsByUserIdAndRecruitId(userId, recruit.getId()));
     }
 
     public List<RecruitResponse> findUserRecruitScrapList() {
@@ -51,28 +55,28 @@ public class RecruitService {
 
     public List<RecruitResponse> findRecruitBenefit(int offset) {
         return recruitRepository.findByRecruitBenefit(
-                PageRequest.of(offset - 1, 2, Sort.by("createdDate").descending()))
+                PageRequest.of(offset - 1, 12, Sort.by("createdDate").descending()))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 
     public List<RecruitResponse> findRecruitLatest(int offset) {
         return recruitRepository.findByRecruitLatest(
-                PageRequest.of(offset - 1, 2, Sort.by("createdDate").descending()))
+                PageRequest.of(offset - 1, 12, Sort.by("createdDate").descending()))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 
     public List<RecruitResponse> findByLotsOfScrap(int offset) {
-        return recruitQueryRepository.findByLotsOfScrap(PageRequest.of(offset - 1, 2))
+        return recruitQueryRepository.findByLotsOfScrap(PageRequest.of(offset - 1, 12))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 
     public List<RecruitResponse> findRecruitCloseDate(int offset) {
-        return recruitQueryRepository.findRecruitCloseDate(PageRequest.of(offset - 1, 2))
+        return recruitQueryRepository.findRecruitCloseDate(PageRequest.of(offset - 1, 12))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 
     public List<RecruitResponse> findRecruitTitleAndTechStack(int offset, RecruitSearch recruitSearch) {
-        return recruitQueryRepository.findRecruitTitleAndTechStack(PageRequest.of(offset - 1, 2),recruitSearch)
+        return recruitQueryRepository.findRecruitTitleAndTechStack(PageRequest.of(offset - 1, 12), recruitSearch)
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 

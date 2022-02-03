@@ -19,12 +19,13 @@ public class UserAuthResponse {
     private String campus;
     private int authCheck;
     private String likeJob;
+    private String role;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
     public static UserAuthResponse from(User user) {
         return new UserAuthResponse(user.getId(), user.getEmail(),
                 user.getProfileImg(), user.getNickname(), user.getRealName(), user.getOrdinal(),
-                user.getCampus(), user.getAuthCheck(), user.getLikeJob(), user.getCreatedDate(), user.getModifiedDate());
+                user.getCampus(), user.getAuthCheck(), user.getLikeJob(),user.getRoleType().getRole(), user.getCreatedDate(), user.getModifiedDate());
     }
 }

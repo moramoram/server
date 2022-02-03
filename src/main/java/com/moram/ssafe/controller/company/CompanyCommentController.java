@@ -21,7 +21,7 @@ public class CompanyCommentController {
     private final CompanyCommentService companyCommentService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> createComment(@RequestBody @Valid CompanyCommentRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_POST_COMMENT,
@@ -36,7 +36,7 @@ public class CompanyCommentController {
     }
 
     @PutMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> updateComment(@RequestBody @Valid CompanyCommentUpdateRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMMENT,
@@ -44,7 +44,7 @@ public class CompanyCommentController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> deleteComment(@PathVariable Long id) {
         companyCommentService.deleteComment(id);
         return ResponseEntity.ok().body(CommonResponseDto.of(

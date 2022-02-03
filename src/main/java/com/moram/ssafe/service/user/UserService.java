@@ -53,13 +53,37 @@ public class UserService {
     }
 
     public List<UserAuthResponse> userAuthApproveWait() {
-        List<User> users = userRepository.findByAuthCheck(Sort.by(Sort.Direction.DESC, "modifiedDate"),2);
+        List<User> users = userRepository.findByAuthCheck(Sort.by(Sort.Direction.DESC, "modifiedDate"), 2);
         return users.stream().map(UserAuthResponse::from).collect(Collectors.toList());
     }
 
-    public User getUser(Long id){
+    public User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
 
+    public List<UserAuthResponse> getUserList() {
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
+        return users.stream().map(UserAuthResponse::from).collect(Collectors.toList());
+    }
+
+    public boolean nicknameCheck(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    @Transactional
+    public String nicknameUpdate(String nickname) {
+        Long id = UserContext.getCurrentUserId();
+        User originUser = getUser(id);
+        originUser.nickNameUpdate(nickname);
+        return originUser.getNickname();
+    }
+
+    @Transactional
+    public String userProfileImgUpdate(String profileImg) {
+        Long id = UserContext.getCurrentUserId();
+        User originUser = getUser(id);
+        originUser.profileImageUpdate(profileImg);
+        return originUser.getProfileImg();
+    }
 }

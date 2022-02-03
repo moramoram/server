@@ -4,6 +4,7 @@ import com.moram.ssafe.config.s3.S3Uploader;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
+import com.moram.ssafe.dto.company.CompanyNameRequest;
 import com.moram.ssafe.dto.company.CompanySaveRequest;
 import com.moram.ssafe.service.company.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -49,18 +50,18 @@ public class CompanyController {
     }
 
     @GetMapping("/name")
-    public ResponseEntity<CommonResponseDto> findCompanyName(@RequestParam String name) {
+    public ResponseEntity<CommonResponseDto> findCompanyName(@RequestBody CompanyNameRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_COMPANY_NAME,
-                companyService.findCompanyName(name)));
+                companyService.findCompanyName(request.getName())));
     }
 
     @PutMapping("/{companyId}/name")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId,@RequestParam String name) {
+    public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId,@RequestBody CompanyNameRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMPANY_NAME,
-                companyService.updateCompanyName(companyId,name)));
+                companyService.updateCompanyName(companyId,request.getName())));
     }
 
     @PutMapping("/{companyId}/logo-img")

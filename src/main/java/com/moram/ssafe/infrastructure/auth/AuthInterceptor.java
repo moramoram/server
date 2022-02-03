@@ -4,7 +4,6 @@ import com.moram.ssafe.controller.user.annotation.AnnotationHandler;
 import com.moram.ssafe.controller.user.annotation.JwtPayload;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.controller.user.annotation.UserContext;
-import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.exception.auth.NoTokenException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
