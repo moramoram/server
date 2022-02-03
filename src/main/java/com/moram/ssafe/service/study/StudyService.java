@@ -34,14 +34,13 @@ public class StudyService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(StudySaveRequest request){
+    public Long createStudy(StudySaveRequest request){
         User user = userRepository.findById(UserContext.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
         return studyRepository.save(request.of(user)).getId();
     }
 
-    public List<StudyResponse> findAll(int limit){
-
+    public List<StudyResponse> findStudyList(int limit){
         Page<Study> studies = studyRepository.findAll(
                 PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
 
@@ -49,15 +48,15 @@ public class StudyService {
     }
 
     @Transactional
-    public StudyResponse findById(Long studyId){
-        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+    public StudyResponse findStudy(Long studyId){
+        Study study = studyRepository.findStudy(studyId).orElseThrow(StudyNotFoundException::new);
         study.addView();
         boolean scrapStatus = studyScrapRepository.existsByStudyIdAndUserId(studyId, UserContext.getCurrentUserId());
         return new StudyResponse(study, scrapStatus);
     }
 
-    public List<StudyResponse> findByUserId(Long userId){
-        return studyRepository.findByUserId(userId).stream()
+    public List<StudyResponse> findUserStudy(Long userId){
+        return studyRepository.findUserStudy(userId).stream()
                 .map(study -> {
                     Integer totalComment = study.getCommentList().size();
                     return new StudyResponse(study, totalComment);
@@ -83,7 +82,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Long update(Long studyId, StudyUpdateRequest request){
+    public Long updateStudy(Long studyId, StudyUpdateRequest request){
         studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new)
                 .update(request);
 
@@ -91,7 +90,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Long delete(Long studyId){
+    public Long deleteStudy(Long studyId){
         studyRepository.deleteById(studyId);
         return studyId;
     }

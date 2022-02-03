@@ -25,32 +25,32 @@ public class BoardController {
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid BoardSaveRequest request){
+    public ResponseEntity<CommonResponseDto> createBoard(@RequestBody @Valid BoardSaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_BOARD, boardService.save(request)));
+                HttpStatus.OK, SUCCESS_POST_BOARD, boardService.createBoard(request)));
     }
 
     @GetMapping("/types/{boardType}")
-    public ResponseEntity<CommonResponseDto> findAll(@PathVariable int boardType,
+    public ResponseEntity<CommonResponseDto> findBoardList(@PathVariable int boardType,
                                                      @RequestParam(value = "limit", defaultValue = "1") int limit){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_LIST, boardService.findAll(boardType, limit))
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIST, boardService.findBoardList(boardType, limit))
         );
     }
 
     @GetMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findById(@PathVariable Long boardId){
+    public ResponseEntity<CommonResponseDto> findBoard(@PathVariable Long boardId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD, boardService.findById(boardId)
+                HttpStatus.OK, SUCCESS_GET_BOARD, boardService.findBoard(boardId)
         ));
     }
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findByUserId(){
+    public ResponseEntity<CommonResponseDto> findUserBoard(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_LIST_USER, boardService.findByUserId(UserContext.getCurrentUserId())
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIST_USER, boardService.findUserBoard(UserContext.getCurrentUserId())
         ));
     }
 
@@ -77,16 +77,16 @@ public class BoardController {
 
     @PutMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> update(@PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest request){
+    public ResponseEntity<CommonResponseDto> updateBoard(@PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest request){
           return ResponseEntity.ok().body(CommonResponseDto.of(
-                  HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.update(boardId, request)));
+                  HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.updateBoard(boardId, request)));
     }
 
     @DeleteMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> delete(@PathVariable Long boardId){
+    public ResponseEntity<CommonResponseDto> deleteBoard(@PathVariable Long boardId){
             return ResponseEntity.ok().body(CommonResponseDto.of(
-                    HttpStatus.OK, SUCCESS_DELETE_BOARD, boardService.delete(boardId)));
+                    HttpStatus.OK, SUCCESS_DELETE_BOARD, boardService.deleteBoard(boardId)));
     }
 
 }

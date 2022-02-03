@@ -25,30 +25,30 @@ public class StudyController {
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid StudySaveRequest request){
+    public ResponseEntity<CommonResponseDto> createStudy(@RequestBody @Valid StudySaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.save(request)));
+                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.createStudy(request)));
     }
 
     @GetMapping
-    public ResponseEntity<CommonResponseDto> findAll(@RequestParam(value = "limit", defaultValue = "1")
+    public ResponseEntity<CommonResponseDto> findStudyList(@RequestParam(value = "limit", defaultValue = "1")
                                                                  int limit){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_LIST, studyService.findAll(limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_LIST, studyService.findStudyList(limit)));
     }
 
     @GetMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findById(@PathVariable Long studyId){
+    public ResponseEntity<CommonResponseDto> findStudy(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY, studyService.findById(studyId)));
+                HttpStatus.OK, SUCCESS_GET_STUDY, studyService.findStudy(studyId)));
     }
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findByUserId(){
+    public ResponseEntity<CommonResponseDto> findUserStudy(){
         return ResponseEntity.ok().body(CommonResponseDto.of(HttpStatus.OK,
-                SUCCESS_GET_BOARD_LIST_USER, studyService.findByUserId(UserContext.getCurrentUserId())));
+                SUCCESS_GET_BOARD_LIST_USER, studyService.findUserStudy(UserContext.getCurrentUserId())));
     }
 
     @GetMapping("/name")
@@ -72,15 +72,15 @@ public class StudyController {
 
     @PutMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> update(@PathVariable Long studyId, @RequestBody @Valid StudyUpdateRequest request){
+    public ResponseEntity<CommonResponseDto> updateStudy(@PathVariable Long studyId, @RequestBody @Valid StudyUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.update(studyId, request)));
+                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateStudy(studyId, request)));
     }
 
     @DeleteMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> delete(@PathVariable Long studyId){
+    public ResponseEntity<CommonResponseDto> deleteStudy(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.delete(studyId)));
+                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.deleteStudy(studyId)));
     }
 }

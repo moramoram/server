@@ -11,5 +11,5 @@ public interface StudyScrapRepository extends JpaRepository<StudyScrap, Long> {
     boolean existsByStudyIdAndUserId(Long studyId, Long userId);
 
     @Query("select s from StudyScrap s join fetch s.study where s.user.id = :userId")
-    List<StudyScrap> findByUserId(@Param("userId") Long userId);
+    List<StudyScrap> findUserScrap(@Param("userId") Long userId);
 }

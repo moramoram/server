@@ -25,7 +25,7 @@ public class BoardLikeController {
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> pushLike(@PathVariable Long boardId){
         return ResponseEntity.ok().body( CommonResponseDto.of(HttpStatus.OK,
-                SUCCESS_PUSH_LIKE, boardLikeService.pushLike(UserContext.getCurrentUserId(), boardId)));
+                SUCCESS_PUSH_LIKE, boardLikeService.pushLike(boardId)));
     }
 
     @DeleteMapping("/{likeId}")

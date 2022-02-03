@@ -14,9 +14,9 @@ public interface StudyCommentRepository extends JpaRepository<StudyComment, Long
     Optional<StudyComment> findById(Long commentId);
 
     @Query("select s from StudyComment s join fetch s.user where s.study.id = :studyId")
-    List<StudyComment> findByStudyId(@Param("studyId") Long studyId);
+    List<StudyComment> findStudyComment(@Param("studyId") Long studyId);
 
     @Query("select s from StudyComment s join fetch s.user where s.user.id = :userId")
-    List<StudyComment> findByUserId(@Param("userId") Long userId);
+    List<StudyComment> findUserStudyComment(@Param("userId") Long userId);
 
 }

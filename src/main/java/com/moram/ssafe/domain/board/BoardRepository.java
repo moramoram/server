@@ -16,13 +16,13 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @EntityGraph(attributePaths = {"user"})
     @Query("select b from Board b where b.board_type = :boardType")
-    Page<Board> findAll(@Param("boardType") int boardType, Pageable pageable);
+    Page<Board> findBoardList(@Param("boardType") int boardType, Pageable pageable);
 
     @Query("select b from Board b join fetch b.user where b.id = :boardId")
-    Optional<Board> findById(@Param("boardId") Long boardId);
+    Optional<Board> findBoard(@Param("boardId") Long boardId);
 
     @Query("select b from Board b join fetch b.user where b.user.id = :userId")
-    List<Board> findByUserId(@Param("userId") Long userId);
+    List<Board> findUserBoard(@Param("userId") Long userId);
 
     @EntityGraph(attributePaths = {"user"})
     @Query("select b from Board b where b.board_type = :boardType and b.title like %:name%")

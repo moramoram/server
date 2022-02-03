@@ -24,14 +24,14 @@ public class StudyScrapController {
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> pushScrap(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(HttpStatus.OK,
-                SUCCESS_PUSH_SCRAP, studyScrapService.pushScrap(UserContext.getCurrentUserId(), studyId)));
+                SUCCESS_PUSH_SCRAP, studyScrapService.pushScrap(studyId)));
     }
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findByUserId(){
+    public ResponseEntity<CommonResponseDto> findUserScrap(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_RECRUIT_SCRAP_LIST, studyScrapService.findByUserId(UserContext.getCurrentUserId())));
+                HttpStatus.OK, SUCCESS_GET_RECRUIT_SCRAP_LIST, studyScrapService.findUserScrap(UserContext.getCurrentUserId())));
     }
 
     @DeleteMapping("/{scrapId}")
