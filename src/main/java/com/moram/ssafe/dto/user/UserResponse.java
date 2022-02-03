@@ -10,6 +10,8 @@ public class UserResponse {
 
     private String nickname;
 
+    private String profileImg;
+
     private int ordinal;
 
     private String campus;
@@ -17,7 +19,7 @@ public class UserResponse {
     private int authCheck;
 
     public static UserResponse from(User user) {
-        return new UserResponse(user.getNickname(), user.getOrdinal(),
+        return new UserResponse(user.getNickname(), user.getProfileImg(), user.getOrdinal(),
                 user.getCampus(), user.getAuthCheck());
     }
 
