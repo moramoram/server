@@ -22,14 +22,14 @@ public class BoardLikeController {
     private final BoardLikeService boardLikeService;
 
     @PostMapping("/boards/{boardId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> pushLike(@PathVariable Long boardId){
         return ResponseEntity.ok().body( CommonResponseDto.of(HttpStatus.OK,
                 SUCCESS_PUSH_LIKE, boardLikeService.pushLike(UserContext.getCurrentUserId(), boardId)));
     }
 
     @DeleteMapping("/{likeId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> deleteLike(@PathVariable Long likeId){
         return ResponseEntity.ok().body(
                 CommonResponseDto.of(HttpStatus.OK, SUCCESS_DELETE_LIKE, boardLikeService.deleteLike(likeId)));

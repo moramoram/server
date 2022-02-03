@@ -24,35 +24,35 @@ public class StudyCommentController {
     private final StudyCommentService studyCommentService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid StudyCommentSaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_POST_COMMENT, studyCommentService.save(request)));
     }
 
     @GetMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findByStudyId(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findByStudyId(studyId)));
     }
 
     @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findByUserId(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findByUserId(UserContext.getCurrentUserId())));
     }
 
     @PutMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> update(@PathVariable Long commentId, @RequestBody @Valid StudyCommentUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_PUT_COMMENT, studyCommentService.update(commentId, request)));
     }
 
     @DeleteMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> delete(@PathVariable Long commentId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_DELETE_COMMENT, studyCommentService.delete(commentId)));

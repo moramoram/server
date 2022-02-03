@@ -24,35 +24,35 @@ public class BoardCommentController {
     private final BoardCommentService boardCommentService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid BoardCommentSaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_POST_COMMENT, boardCommentService.save(request)));
     }
 
     @GetMapping("/{boardId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findByBoardId(@PathVariable Long boardId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findByBoardId(boardId)));
     }
 
     @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findByUserId(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findByUserId(UserContext.getCurrentUserId())));
     }
 
     @PutMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> update(@PathVariable Long commentId, @RequestBody @Valid BoardCommentUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                         HttpStatus.OK, SUCCESS_PUT_COMMENT, boardCommentService.update(commentId, request)));
     }
 
     @DeleteMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> delete(@PathVariable Long commentId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                         HttpStatus.OK, SUCCESS_DELETE_COMMENT, boardCommentService.delete(commentId)));

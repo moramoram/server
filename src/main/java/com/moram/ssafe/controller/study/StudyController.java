@@ -24,7 +24,7 @@ public class StudyController {
     private final StudyService studyService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid StudySaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_POST_STUDY, studyService.save(request)));
@@ -38,14 +38,14 @@ public class StudyController {
     }
 
     @GetMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findById(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_STUDY, studyService.findById(studyId)));
     }
 
     @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findByUserId(){
         return ResponseEntity.ok().body(CommonResponseDto.of(HttpStatus.OK,
                 SUCCESS_GET_BOARD_LIST_USER, studyService.findByUserId(UserContext.getCurrentUserId())));
@@ -71,14 +71,14 @@ public class StudyController {
     }
 
     @PutMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> update(@PathVariable Long studyId, @RequestBody @Valid StudyUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.update(studyId, request)));
     }
 
     @DeleteMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> delete(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.delete(studyId)));

@@ -24,7 +24,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid BoardSaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_POST_BOARD, boardService.save(request)));
@@ -39,7 +39,7 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findById(@PathVariable Long boardId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD, boardService.findById(boardId)
@@ -47,7 +47,7 @@ public class BoardController {
     }
 
     @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findByUserId(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_LIST_USER, boardService.findByUserId(UserContext.getCurrentUserId())
@@ -76,14 +76,14 @@ public class BoardController {
     }
 
     @PutMapping("/{boardId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> update(@PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest request){
           return ResponseEntity.ok().body(CommonResponseDto.of(
                   HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.update(boardId, request)));
     }
 
     @DeleteMapping("/{boardId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> delete(@PathVariable Long boardId){
             return ResponseEntity.ok().body(CommonResponseDto.of(
                     HttpStatus.OK, SUCCESS_DELETE_BOARD, boardService.delete(boardId)));
