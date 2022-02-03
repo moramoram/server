@@ -51,7 +51,7 @@ public class BoardService {
         Board board = boardRepository.findBoard(boardId).orElseThrow(BoardNotFoundException::new);
         board.addView();
         Integer totalLike = board.getLikeList().size();
-        boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
+        Boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
         return new BoardResponse(board, totalLike, likeStatus);
     }
 

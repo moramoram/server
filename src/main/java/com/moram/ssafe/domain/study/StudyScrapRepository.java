@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface StudyScrapRepository extends JpaRepository<StudyScrap, Long> {
 
-    boolean existsByStudyIdAndUserId(Long studyId, Long userId);
+    Boolean existsByStudyIdAndUserId(Long studyId, Long userId);
 
     @EntityGraph(attributePaths = {"study"})
     @Query("select s from StudyScrap s where s.user.id = :userId")
