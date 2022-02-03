@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecruitScrapResponse {
-    private boolean scrap;
+    private boolean scrapStatus;
 
     public static RecruitScrapResponse from(boolean scrap){
         return new RecruitScrapResponse(scrap);
