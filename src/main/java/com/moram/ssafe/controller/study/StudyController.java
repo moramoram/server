@@ -45,9 +45,9 @@ public class StudyController {
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserStudy(){
+    public ResponseEntity<CommonResponseDto> findUserStudy(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(HttpStatus.OK,
-                SUCCESS_GET_BOARD_LIST_USER, studyService.findUserStudy(UserContext.getCurrentUserId())));
+                SUCCESS_GET_BOARD_LIST_USER, studyService.findUserStudy(UserContext.getCurrentUserId(), offset)));
     }
 
     @GetMapping("/name")

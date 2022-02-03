@@ -20,8 +20,9 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @Query("select s from Study s join fetch s.user where s.id = :studyId")
     Optional<Study> findStudy(@Param("studyId") Long studyId);
 
-    @Query("select s from Study s join fetch s.user where s.user.id = :userId")
-    List<Study> findUserStudy(@Param("userId") Long userId);
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select s from Study s where s.user.id = :userId")
+    Page<Study> findUserStudy(@Param("userId") Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
     @Query("select s from Study s where s.title like %:name%")

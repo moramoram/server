@@ -28,9 +28,9 @@ public class StudyScrapService {
 
     public List<StudyResponse> findUserScrap(Long userId, int offset){
         Page<StudyScrap> studies = studyScrapRepository.findUserScrap(userId,
-                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "id")));
 
-        return studies.stream().map(StudyResponse::of).collect(Collectors.toList());
+        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
     public Boolean pushScrap(Long studyId){
