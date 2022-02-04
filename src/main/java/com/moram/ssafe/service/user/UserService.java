@@ -6,6 +6,7 @@ import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.UserAuthResponse;
 import com.moram.ssafe.dto.user.UserProfileResponse;
 import com.moram.ssafe.dto.user.UserUpdateAddAuth;
+import com.moram.ssafe.exception.user.DuplicateNicknameException;
 import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,9 @@ public class UserService {
 
     @Transactional
     public UserProfileResponse updateUserAddAuth(UserUpdateAddAuth request) {
+        if (userRepository.existsByNickname(request.getNickname())) {
+            throw new DuplicateNicknameException();
+        }
         Long id = UserContext.getCurrentUserId();
         User originUser = getUser(id);
         originUser.update(request);
@@ -73,6 +77,9 @@ public class UserService {
 
     @Transactional
     public String nicknameUpdate(String nickname) {
+        if (userRepository.existsByNickname(nickname)) {
+            throw new DuplicateNicknameException();
+        }
         Long id = UserContext.getCurrentUserId();
         User originUser = getUser(id);
         originUser.nickNameUpdate(nickname);
