@@ -9,6 +9,7 @@ import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.study.StudyResponse;
 import com.moram.ssafe.dto.study.StudySaveRequest;
+import com.moram.ssafe.dto.study.StudySearch;
 import com.moram.ssafe.dto.study.StudyUpdateRequest;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
 import com.moram.ssafe.exception.user.UserNotFoundException;
@@ -34,56 +35,67 @@ public class StudyService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(StudySaveRequest request){
+    public Long createStudy(StudySaveRequest request){
         User user = userRepository.findById(UserContext.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
         return studyRepository.save(request.of(user)).getId();
     }
 
-    public List<StudyResponse> findAll(int limit){
-
+    public List<StudyResponse> findStudyList(int offset){
         Page<Study> studies = studyRepository.findAll(
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
-
-        return PageToResponse(studies);
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
-    public StudyResponse findById(Long studyId){
-        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+    public StudyResponse findStudy(Long studyId){
+        Study study = studyRepository.findStudy(studyId).orElseThrow(StudyNotFoundException::new);
         study.addView();
-        boolean scrapStatus = studyScrapRepository.existsByStudyIdAndUserId(studyId, UserContext.getCurrentUserId());
+        Boolean scrapStatus = studyScrapRepository.existsByStudyIdAndUserId(studyId, UserContext.getCurrentUserId());
         return new StudyResponse(study, scrapStatus);
     }
 
-    public List<StudyResponse> findByUserId(Long userId){
-        return studyRepository.findByUserId(userId).stream()
-                .map(study -> {
-                    Integer totalComment = study.getCommentList().size();
-                    return new StudyResponse(study, totalComment);
-                }).collect(Collectors.toList());
+    public List<StudyResponse> findUserStudy(Long userId, int offset){
+
+        Page<Study> studies = studyRepository.findUserStudy(userId,
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyResponse> findByStudyName(String name, int limit){
-        Page<Study> studies = studyRepository.findByTitleContaining(name,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
-        return PageToResponse(studies);
+    public List<StudyResponse> findByStudyNameAndType(int offset, StudySearch studySearch){
+
+        String title = studySearch.getTitle();
+        String type = studySearch.getType();
+        Page<Study> studies = null;
+
+        if(title != null && type != null){
+            studies = studyRepository.findByTitleAndTypeContaining(title, type,
+                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        } else if(title == null && type != null){
+            studies = studyRepository.findByTypeContaining(type,
+                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        } else if(title !=null && type == null){
+            studies = studyRepository.findByTitleContaining(title,
+                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        }
+
+        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyResponse> findByLotsOfView(int limit){
+    public List<StudyResponse> findByLotsOfView(int offset){
         Page<Study> studies = studyRepository.findAll(
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "views")));
-        return PageToResponse(studies);
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "views")));
+        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyResponse> findByLotsOfScrap(int limit){
+    public List<StudyResponse> findByLotsOfScrap(int offset){
         Page<Study> studies = studyRepository.findByLotsOfScrap(
-                PageRequest.of(limit - 1, 6));
-        return PageToResponse(studies);
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
-    public Long update(Long studyId, StudyUpdateRequest request){
+    public Long updateStudy(Long studyId, StudyUpdateRequest request){
         studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new)
                 .update(request);
 
@@ -91,15 +103,8 @@ public class StudyService {
     }
 
     @Transactional
-    public Long delete(Long studyId){
+    public Long deleteStudy(Long studyId) {
         studyRepository.deleteById(studyId);
         return studyId;
-    }
-
-    public List<StudyResponse> PageToResponse(Page<Study> studies){
-        return studies.stream().map(study -> {
-            Integer totalComment = study.getCommentList().size();
-            return new StudyResponse(study, totalComment);
-        }).collect(Collectors.toList());
     }
 }

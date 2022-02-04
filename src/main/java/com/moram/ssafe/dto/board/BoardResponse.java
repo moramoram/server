@@ -32,48 +32,53 @@ public class BoardResponse {
 
     private Integer totalLike;
 
-    private boolean likeStatus;
+    private Boolean likeStatus;
 
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
 
+    public BoardResponse(Board board, Integer totalComment, Integer totalLike) { //전체 조회
 
-    public BoardResponse(Board board, Integer totalLike, boolean likeStatus){
+        this.boardType = board.getBoard_type();
 
-        this.writerInfo = UserResponse.from(board.getUser());
-
-        if(board.getBoard_type()==2)
-            this.writerInfo.setNickname("익명");
+        if(this.boardType==2)
+            this.writerInfo = UserResponse.from_anon(board.getUser());
+        else
+            this.writerInfo = UserResponse.from(board.getUser());
 
         this.boardId = board.getId();
-        this.boardType = board.getBoard_type();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.comments = board.getCommentList().stream()
-                .map(comment -> BoardCommentResponse.from(comment)).collect(Collectors.toList());
+        this.totalComment = totalComment;
+        this.totalLike = totalLike;
+        this.createdDate = board.getCreatedDate();
+        this.modifiedDate = board.getModifiedDate();
+    }
+
+    public BoardResponse(Board board, Integer totalLike, Boolean likeStatus){ //단건 조회
+
+        this.boardType = board.getBoard_type();
+
+        if(this.boardType==2){
+            this.writerInfo = UserResponse.from_anon(board.getUser());
+            this.comments = board.getCommentList().stream().map(BoardCommentResponse::from_anon).collect(Collectors.toList());
+        }
+        else{
+            this.writerInfo = UserResponse.from(board.getUser());
+            this.comments = board.getCommentList().stream()
+                    .map(BoardCommentResponse::from).collect(Collectors.toList());
+        }
+
+        this.boardId = board.getId();
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.views = board.getViews();
         this.totalLike = totalLike;
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
         this.likeStatus = likeStatus;
     }
 
-    public BoardResponse(Board board, Integer totalComment, Integer totalLike) {
-
-        this.writerInfo = UserResponse.from(board.getUser());
-
-        if (board.getBoard_type() == 2)
-            this.writerInfo.setNickname("익명");
-
-        this.boardId = board.getId();
-        this.boardType = board.getBoard_type();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.views = board.getViews();
-        this.totalComment = totalComment;
-        this.createdDate = board.getCreatedDate();
-        this.modifiedDate = board.getModifiedDate();
-        this.totalLike = totalLike;
-    }
 }

@@ -24,38 +24,38 @@ public class BoardCommentController {
     private final BoardCommentService boardCommentService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid BoardCommentSaveRequest request){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> createBoardComment(@RequestBody @Valid BoardCommentSaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_COMMENT, boardCommentService.save(request)));
+                HttpStatus.OK, SUCCESS_POST_COMMENT, boardCommentService.createBoardComment(request)));
     }
 
     @GetMapping("/{boardId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findByBoardId(@PathVariable Long boardId){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findBoardCommentList(@PathVariable Long boardId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findByBoardId(boardId)));
+                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findBoardCommentList(boardId)));
     }
 
     @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findByUserId(){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findUserBoardComment(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findByUserId(UserContext.getCurrentUserId())));
+                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findUserBoardComment(UserContext.getCurrentUserId())));
     }
 
     @PutMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> update(@PathVariable Long commentId, @RequestBody @Valid BoardCommentUpdateRequest request){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> updateBoardComment(@PathVariable Long commentId, @RequestBody @Valid BoardCommentUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                        HttpStatus.OK, SUCCESS_PUT_COMMENT, boardCommentService.update(commentId, request)));
+                        HttpStatus.OK, SUCCESS_PUT_COMMENT, boardCommentService.updateBoardComment(commentId, request)));
     }
 
     @DeleteMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> delete(@PathVariable Long commentId){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> deleteBoardComment(@PathVariable Long commentId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                        HttpStatus.OK, SUCCESS_DELETE_COMMENT, boardCommentService.delete(commentId)));
+                        HttpStatus.OK, SUCCESS_DELETE_COMMENT, boardCommentService.deleteBoardComment(commentId)));
     }
 
 }

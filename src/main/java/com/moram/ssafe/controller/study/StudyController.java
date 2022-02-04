@@ -4,6 +4,7 @@ import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.study.StudySaveRequest;
+import com.moram.ssafe.dto.study.StudySearch;
 import com.moram.ssafe.dto.study.StudyUpdateRequest;
 import com.moram.ssafe.service.study.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -24,63 +25,61 @@ public class StudyController {
     private final StudyService studyService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid StudySaveRequest request){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> createStudy(@RequestBody @Valid StudySaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.save(request)));
+                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.createStudy(request)));
     }
 
     @GetMapping
-    public ResponseEntity<CommonResponseDto> findAll(@RequestParam(value = "limit", defaultValue = "1")
-                                                                 int limit){
+    public ResponseEntity<CommonResponseDto> findStudyList(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_LIST, studyService.findAll(limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_LIST, studyService.findStudyList(offset)));
     }
 
     @GetMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findById(@PathVariable Long studyId){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findStudy(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY, studyService.findById(studyId)));
+                HttpStatus.OK, SUCCESS_GET_STUDY, studyService.findStudy(studyId)));
     }
 
     @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findByUserId(){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findUserStudy(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(HttpStatus.OK,
-                SUCCESS_GET_BOARD_LIST_USER, studyService.findByUserId(UserContext.getCurrentUserId())));
+                SUCCESS_GET_BOARD_LIST_USER, studyService.findUserStudy(UserContext.getCurrentUserId(), offset)));
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<CommonResponseDto> findByStudyName(@RequestParam String name,
-                                                             @RequestParam(value = "limit", defaultValue = "1") int limit){
+    @GetMapping("/search")
+    public ResponseEntity<CommonResponseDto> findByStudyNameAndType(@RequestParam int offset, @RequestBody StudySearch studySearch){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyName(name, limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyNameAndType(offset, studySearch)));
     }
 
     @GetMapping("/views")
-    public ResponseEntity<CommonResponseDto> findByLotsOfView( @RequestParam(value = "limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findByLotsOfView(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_VIEWS, studyService.findByLotsOfView(limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_VIEWS, studyService.findByLotsOfView(offset)));
     }
 
     @GetMapping("/scraps")
-    public ResponseEntity<CommonResponseDto> findByLotsOfScrap( @RequestParam(value = "limit", defaultValue = "1") int limit){
+    public ResponseEntity<CommonResponseDto> findByLotsOfScrap(@RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_SCRAP, studyService.findByLotsOfScrap(limit)));
+                HttpStatus.OK, SUCCESS_GET_STUDY_SCRAP, studyService.findByLotsOfScrap(offset)));
     }
 
     @PutMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> update(@PathVariable Long studyId, @RequestBody @Valid StudyUpdateRequest request){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> updateStudy(@PathVariable Long studyId, @RequestBody @Valid StudyUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.update(studyId, request)));
+                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateStudy(studyId, request)));
     }
 
     @DeleteMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> delete(@PathVariable Long studyId){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> deleteStudy(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.delete(studyId)));
+                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.deleteStudy(studyId)));
     }
 }

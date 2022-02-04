@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Long> {
 
-    boolean existsByBoardIdAndUserId(Long boardId, Long userId);
+    Boolean existsByBoardIdAndUserId(Long boardId, Long userId);
 }

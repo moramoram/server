@@ -18,14 +18,24 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findAll(Pageable pageable);
 
     @Query("select s from Study s join fetch s.user where s.id = :studyId")
-    Optional<Study> findById(@Param("studyId") Long studyId);
-
-    @Query("select s from Study s join fetch s.user where s.user.id = :userId")
-    List<Study> findByUserId(@Param("userId") Long userId);
+    Optional<Study> findStudy(@Param("studyId") Long studyId);
 
     @EntityGraph(attributePaths = {"user"})
-    @Query("select s from Study s where s.title like %:name%")
-    Page<Study> findByTitleContaining(@Param("name")String name, Pageable pageable);
+    @Query("select s from Study s where s.user.id = :userId")
+    Page<Study> findUserStudy(@Param("userId") Long userId, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select s from Study s where s.title like %:title%")
+    Page<Study> findByTitleContaining(@Param("title") String title, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select s from Study s where s.study_type = :type and s.title like %:title%")
+    Page<Study> findByTitleAndTypeContaining(@Param("title")String title, @Param("type") String type,
+                                             Pageable pageable);
+
+    @EntityGraph(attributePaths = {"user"})
+    @Query("select s from Study s where s.study_type = :type")
+    Page<Study> findByTypeContaining(@Param("type") String type, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
     @Query("select s from Study s order by s.scrapList.size desc")
