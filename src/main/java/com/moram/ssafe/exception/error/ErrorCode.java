@@ -21,6 +21,7 @@ public enum ErrorCode {
 
     //User
     USER_NOT_FOUND(404, "User not found."),
+    DUPLICATE_NICKNAME(409,"Duplicate nickname."),
 
     //Auth and Jwt
     FAIL_TO_AUTHENTICATION(401,"Fail To Authentication"),
