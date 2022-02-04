@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CompanyCommentRepository extends JpaRepository<CompanyComment,Long> {
+public interface CompanyCommentRepository extends JpaRepository<CompanyComment, Long> {
 
     List<CompanyComment> findByCompanyId(Long companyId);
 }

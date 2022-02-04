@@ -1,12 +1,16 @@
 package com.moram.ssafe.service.company;
 
 import com.moram.ssafe.config.s3.S3Uploader;
+import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.company.Company;
+import com.moram.ssafe.domain.company.CompanyQueryRepository;
 import com.moram.ssafe.domain.company.CompanyRepository;
-import com.moram.ssafe.domain.recruit.Recruit;
 import com.moram.ssafe.domain.recruit.RecruitRepository;
+import com.moram.ssafe.domain.user.User;
+import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.company.CompanyResponse;
 import com.moram.ssafe.exception.company.CompanyNotFoundException;
+import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -23,6 +27,8 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final CompanyQueryRepository companyQueryRepository;
+    private final UserRepository userRepository;
     private final RecruitRepository recruitRepository;
     private final S3Uploader s3Uploader;
 
@@ -52,6 +58,15 @@ public class CompanyService {
 
     }
 
+    public List<CompanyResponse> findUserCommentsByCompany() {
+        Long userId = UserContext.getCurrentUserId();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        List<Company> companyList = companyQueryRepository.findUserCommentsByCompany(user.getId());
+        return companyList.stream()
+                .map(CompanyResponse::from).collect(Collectors.toList());
+    }
+
     @Transactional
     public void deleteCompany(Long companyId) {
         Company company = getCompany(companyId);
@@ -77,6 +92,4 @@ public class CompanyService {
     public Company getCompany(Long id) {
         return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
-
-
 }
