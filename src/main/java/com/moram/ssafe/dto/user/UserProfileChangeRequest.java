@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class UserProfileImgRequest {
+public class UserProfileChangeRequest {
 
     @NotNull(message = "null을 허용하지 않습니다.")
     private MultipartFile profileImg;
