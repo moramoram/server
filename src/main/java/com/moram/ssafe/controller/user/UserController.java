@@ -70,9 +70,10 @@ public class UserController {
 
     @PutMapping("/profile-images")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> userProfileImgUpdate(@RequestBody @Valid UserProfileImgRequest request) {
+    public ResponseEntity<CommonResponseDto> userProfileImgUpdate(@ModelAttribute @Valid UserProfileImgRequest request) throws IOException {
+        String profileImg = s3Uploader.upload(request.getProfileImg(), "static/profile");
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileImgUpdate(request.getProfileImg())));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileImgUpdate(profileImg)));
 
     }
 
