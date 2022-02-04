@@ -2,6 +2,7 @@ buildscript {
 	dependencies {
 		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
 	}
+
 }
 
 
@@ -52,6 +53,7 @@ dependencies {
 
 	//aws
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
