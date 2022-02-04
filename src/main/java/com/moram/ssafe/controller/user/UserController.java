@@ -5,9 +5,10 @@ import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
 import com.moram.ssafe.dto.user.UserNickNameRequest;
-import com.moram.ssafe.dto.user.UserProfileImgRequest;
+import com.moram.ssafe.dto.user.UserProfileChangeRequest;
 import com.moram.ssafe.dto.user.UserUpdateAddAuth;
 import com.moram.ssafe.dto.user.UserUpdateAddAuthFormRequest;
+import com.moram.ssafe.exception.user.DuplicateNicknameException;
 import com.moram.ssafe.service.user.AuthService;
 import com.moram.ssafe.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -68,12 +69,15 @@ public class UserController {
 
     }
 
-    @PutMapping("/profile-images")
+    @PutMapping("/profile-change")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> userProfileImgUpdate(@ModelAttribute @Valid UserProfileImgRequest request) throws IOException {
+    public ResponseEntity<CommonResponseDto> userProfileUpdate(@ModelAttribute @Valid UserProfileChangeRequest request) throws IOException {
+        if (userService.nicknameCheck(request.getNickname())) {
+            throw new DuplicateNicknameException();
+        }
         String profileImg = s3Uploader.upload(request.getProfileImg(), "static/profile");
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileImgUpdate(profileImg)));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileUpdate(request.getNickname(), profileImg)));
 
     }
 

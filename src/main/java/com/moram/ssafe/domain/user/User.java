@@ -86,10 +86,15 @@ public class User extends BaseEntity {
     }
 
     public void nickNameUpdate(String nickname) {
-        this.nickname =nickname;
+        this.nickname = nickname;
     }
 
     public void profileImageUpdate(String profileImg) {
+        this.profileImg = profileImg;
+    }
+
+    public void profileUpdate(String nickname, String profileImg) {
+        this.nickname = nickname;
         this.profileImg = profileImg;
     }
 }
