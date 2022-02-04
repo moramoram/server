@@ -32,67 +32,67 @@ public class BoardService {
     private final BoardLikeRepository boardLikeRepository;
 
     @Transactional
-    public Long save(BoardSaveRequest requestDto) {
+    public Long createBoard(BoardSaveRequest requestDto) {
         User user = userRepository.findById(UserContext.getCurrentUserId())
                 .orElseThrow(BoardNotFoundException::new);
         return boardRepository.save(requestDto.of(user)).getId();
     }
 
-    public List<BoardResponse> findAll(int boardType, int limit) { //쿼리 1번인지 체크. 아니면 paing 없는 findAll 만들기
+    public List<BoardResponse> findBoardList(int boardType, int offset) {
 
-        Page<Board> boards = boardRepository.findAll(boardType,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+        Page<Board> boards = boardRepository.findBoardList(boardType,
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return PageToResponse(boards);
     }
 
     @Transactional
-    public BoardResponse findById(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+    public BoardResponse findBoard(Long boardId) {
+        Board board = boardRepository.findBoard(boardId).orElseThrow(BoardNotFoundException::new);
         board.addView();
         Integer totalLike = board.getLikeList().size();
-        boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
+        Boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
         return new BoardResponse(board, totalLike, likeStatus);
     }
 
-    public List<BoardResponse> findByUserId(Long userId) {
-        return boardRepository.findByUserId(userId).stream().map(board -> {
-            Integer totalComment = board.getCommentList().size();
-            Integer totalLike = board.getLikeList().size();
-            return new BoardResponse(board, totalComment, totalLike);
-        }).collect(Collectors.toList());
+    public List<BoardResponse> findUserBoard(Long userId, int offset) {
+
+        Page<Board> boards = boardRepository.findUserBoard(userId,
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
+
+        return PageToResponse(boards);
     }
 
-    public List<BoardResponse> findByBoardName(int boardType, String name, int limit){
+    public List<BoardResponse> findByBoardName(int boardType, String name, int offset){
 
         Page<Board> boards = boardRepository.findByTitleContaining(boardType, name,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "createdDate")));
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
         return PageToResponse(boards);
     }
 
-    public List<BoardResponse> findByLotsOfView(int boardType, int limit){
-        Page<Board> boards = boardRepository.findAll(boardType,
-                PageRequest.of(limit - 1, 6, Sort.by(Sort.Direction.DESC, "views")));
+    public List<BoardResponse> findByLotsOfView(int boardType, int offset){
+        Page<Board> boards = boardRepository.findBoardList(boardType,
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "views")));
 
         return PageToResponse(boards);
     }
 
-    public List<BoardResponse> findByLotsOfLike(int boardType, int limit){
+    public List<BoardResponse> findByLotsOfLike(int boardType, int offset){
         Page<Board> boards = boardRepository.findByLotsOfLike(boardType,
-                PageRequest.of(limit - 1, 6));
+                PageRequest.of(offset - 1, 12));
         return PageToResponse(boards);
     }
 
     @Transactional
-    public Long update(Long boardId, BoardUpdateRequest requestDto) {
+    public Long updateBoard(Long boardId, BoardUpdateRequest requestDto) {
         boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new)
                 .update(requestDto.getTitle(), requestDto.getContent());
         return boardId;
     }
 
     @Transactional
-    public Long delete(Long boardId) {
+    public Long deleteBoard(Long boardId) {
         boardRepository.deleteById(boardId);
         return boardId;
     }

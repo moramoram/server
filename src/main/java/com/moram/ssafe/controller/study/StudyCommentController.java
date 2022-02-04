@@ -24,38 +24,38 @@ public class StudyCommentController {
     private final StudyCommentService studyCommentService;
 
     @PostMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> save(@RequestBody @Valid StudyCommentSaveRequest request){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> createStudyComment(@RequestBody @Valid StudyCommentSaveRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_COMMENT, studyCommentService.save(request)));
+                HttpStatus.OK, SUCCESS_POST_COMMENT, studyCommentService.createStudyComment(request)));
     }
 
     @GetMapping("/{studyId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findByStudyId(@PathVariable Long studyId){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findStudyComment(@PathVariable Long studyId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findByStudyId(studyId)));
+                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findStudyComment(studyId)));
     }
 
     @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findByUserId(){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findUserStudyComment(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findByUserId(UserContext.getCurrentUserId())));
+                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findUserStudyComment(UserContext.getCurrentUserId())));
     }
 
     @PutMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> update(@PathVariable Long commentId, @RequestBody @Valid StudyCommentUpdateRequest request){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> updateStudyComment(@PathVariable Long commentId, @RequestBody @Valid StudyCommentUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_PUT_COMMENT, studyCommentService.update(commentId, request)));
+                HttpStatus.OK, SUCCESS_PUT_COMMENT, studyCommentService.updateStudyComment(commentId, request)));
     }
 
     @DeleteMapping("/{commentId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> delete(@PathVariable Long commentId){
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> deleteStudyComment(@PathVariable Long commentId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_COMMENT, studyCommentService.delete(commentId)));
+                HttpStatus.OK, SUCCESS_DELETE_COMMENT, studyCommentService.deleteStudyComment(commentId)));
     }
 
 }

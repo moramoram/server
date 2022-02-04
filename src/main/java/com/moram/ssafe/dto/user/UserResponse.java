@@ -10,7 +10,7 @@ public class UserResponse {
 
     private String nickname;
 
-    private int ordinal;
+    private Integer ordinal;
 
     private String campus;
 
@@ -19,6 +19,10 @@ public class UserResponse {
     public static UserResponse from(User user) {
         return new UserResponse(user.getNickname(), user.getOrdinal(),
                 user.getCampus(), user.getAuthCheck());
+    }
+
+    public static UserResponse from_anon(User user){
+        return new UserResponse("익명", null, null, user.getAuthCheck());
     }
 
     public void setNickname(String nickname) {
