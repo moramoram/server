@@ -1,16 +1,15 @@
 package com.moram.ssafe.dto.user;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 @Getter
-@NoArgsConstructor
+@Setter
 public class UserProfileImgRequest {
 
-    @NotBlank(message = "빈문자열을 허용하지 않습니다.")
-    @Size(max = 100, message = "255자 이하의 길이만 가능합니다.")
-    private String profileImg;
+    @NotNull(message = "null을 허용하지 않습니다.")
+    private MultipartFile profileImg;
 }
