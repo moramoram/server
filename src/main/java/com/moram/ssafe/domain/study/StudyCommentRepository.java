@@ -1,6 +1,5 @@
 package com.moram.ssafe.domain.study;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +15,5 @@ public interface StudyCommentRepository extends JpaRepository<StudyComment, Long
 
     @Query("select s from StudyComment s join fetch s.user where s.study.id = :studyId")
     List<StudyComment> findStudyComment(@Param("studyId") Long studyId);
-
-    @Query("select s from StudyComment s join fetch s.user where s.user.id = :userId")
-    List<StudyComment> findUserStudyComment(@Param("userId") Long userId);
 
 }

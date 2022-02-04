@@ -3,6 +3,7 @@ package com.moram.ssafe.service.study;
 
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.study.Study;
+import com.moram.ssafe.domain.study.StudyQueryRepository;
 import com.moram.ssafe.domain.study.StudyRepository;
 import com.moram.ssafe.domain.study.StudyScrapRepository;
 import com.moram.ssafe.domain.user.User;
@@ -33,6 +34,7 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final StudyScrapRepository studyScrapRepository;
     private final UserRepository userRepository;
+    private final StudyQueryRepository studyQueryRepository;
 
     @Transactional
     public Long createStudy(StudySaveRequest request){
@@ -92,6 +94,11 @@ public class StudyService {
         Page<Study> studies = studyRepository.findByLotsOfScrap(
                 PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
         return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
+    }
+
+    public List<StudyResponse> findByUserComments(){
+        return studyQueryRepository.findByUserComment(UserContext.getCurrentUserId())
+                .stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
     @Transactional

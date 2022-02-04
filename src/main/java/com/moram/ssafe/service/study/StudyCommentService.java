@@ -37,11 +37,6 @@ public class StudyCommentService {
                 .map(StudyCommentResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyCommentResponse> findUserStudyComment(Long userId){
-        return studyCommentRepository.findUserStudyComment(userId).stream()
-                .map(StudyCommentResponse::from).collect(Collectors.toList());
-    }
-
     @Transactional
     public Long updateStudyComment(Long commentId, StudyCommentUpdateRequest request){
         studyCommentRepository
