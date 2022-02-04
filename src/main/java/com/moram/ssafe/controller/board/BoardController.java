@@ -72,6 +72,13 @@ public class BoardController {
                 HttpStatus.OK, SUCCESS_GET_BOARD_LIKE, boardService.findByLotsOfLike(boardType, offset)));
     }
 
+    @GetMapping("/user-comments")
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findByUserComments(){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIST_COMMENTS, boardService.findByUserComments()));
+    }
+
     @PutMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> updateBoard(@PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest request){

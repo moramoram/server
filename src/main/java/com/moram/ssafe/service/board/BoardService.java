@@ -3,6 +3,7 @@ package com.moram.ssafe.service.board;
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.board.Board;
 import com.moram.ssafe.domain.board.BoardLikeRepository;
+import com.moram.ssafe.domain.board.BoardQueryRepository;
 import com.moram.ssafe.domain.board.BoardRepository;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
@@ -30,6 +31,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
+    private final BoardQueryRepository boardQueryRepository;
 
     @Transactional
     public Long createBoard(BoardSaveRequest requestDto) {
@@ -82,6 +84,16 @@ public class BoardService {
         Page<Board> boards = boardRepository.findByLotsOfLike(boardType,
                 PageRequest.of(offset - 1, 12));
         return PageToResponse(boards);
+    }
+
+    public List<BoardResponse> findByUserComments(){
+        List<Board> boards =  boardQueryRepository.findByUserComment(UserContext.getCurrentUserId());
+
+        return boards.stream().map(board -> {
+            Integer totalComment = board.getCommentList().size();
+            Integer totalLike = board.getLikeList().size();
+            return new BoardResponse(board, totalComment, totalLike);
+        }).collect(Collectors.toList());
     }
 
     @Transactional

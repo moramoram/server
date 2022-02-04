@@ -37,13 +37,6 @@ public class BoardCommentController {
                 HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findBoardCommentList(boardId)));
     }
 
-    @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserBoardComment(){
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findUserBoardComment(UserContext.getCurrentUserId())));
-    }
-
     @PutMapping("/{commentId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> updateBoardComment(@PathVariable Long commentId, @RequestBody @Valid BoardCommentUpdateRequest request){

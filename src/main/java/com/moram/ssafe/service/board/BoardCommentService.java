@@ -25,8 +25,10 @@ public class BoardCommentService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public Long createBoardComment(BoardCommentSaveRequest request){
-        Board board = boardRepository.findBoard(request.getBoardId()).orElseThrow(BoardNotFoundException::new);
+    public Long createBoardComment(BoardCommentSaveRequest request){ //고치기. board.getUser가 아니라 현재 user를 넣어야 함.
+        Board board = boardRepository.findBoard(request.getBoardId())
+                .orElseThrow(BoardNotFoundException::new);
+
         return boardCommentRepository.save(request.from(board.getUser(), board, request.getContent())).getId();
     }
 
@@ -35,13 +37,8 @@ public class BoardCommentService {
                 findBoardCommentList(boardId).stream().map(BoardCommentResponse::from).collect(Collectors.toList());
     }
 
-    public List<BoardCommentResponse> findUserBoardComment(Long userId){
-        return boardCommentRepository
-                .findUserBoardComment(userId).stream().map(BoardCommentResponse::from).collect(Collectors.toList());
-    }
-
     @Transactional
-    public Long updateBoardComment(Long commentId, BoardCommentUpdateRequest request){
+    public Long updateBoardComment(Long commentId, BoardCommentUpdateRequest request){ //CUD에 유저 검증 다 걸기
         boardCommentRepository
                 .findById(commentId).orElseThrow(BoardCommentNotFoundException::new).update(request.getContent());
         return commentId;
