@@ -41,7 +41,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findByTypeContaining(@Param("type") String type, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
-    @Query("select s from Study s order by s.scrapList.size desc")
+    @Query("select s from Study s order by size(s.scrapList) desc")
     Page<Study> findByLotsOfScrap(Pageable pageable);
 
 }

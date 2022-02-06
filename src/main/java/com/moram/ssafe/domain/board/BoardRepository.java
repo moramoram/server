@@ -35,6 +35,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @EntityGraph(attributePaths = {"user"})
     @Query("select b from Board b where b.board_type = :boardType " +
-            "order by b.likeList.size desc")
+            "order by size(b.likeList) desc")
     Page<Board> findByLotsOfLike(@Param("boardType") int boardType, Pageable pageable);
 }
