@@ -10,6 +10,7 @@ import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.board.BoardResponse;
 import com.moram.ssafe.dto.board.BoardSaveRequest;
 import com.moram.ssafe.dto.board.BoardUpdateRequest;
+import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.board.BoardNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,6 @@ public class BoardService {
     }
 
     public List<BoardResponse> findBoardList(int boardType, int offset) {
-
         Page<Board> boards = boardRepository.findBoardList(boardType,
                 PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
 
@@ -54,6 +54,7 @@ public class BoardService {
         board.addView();
         Integer totalLike = board.getLikeList().size();
         Boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
+
         return new BoardResponse(board, totalLike, likeStatus);
     }
 
@@ -98,13 +99,24 @@ public class BoardService {
 
     @Transactional
     public Long updateBoard(Long boardId, BoardUpdateRequest requestDto) {
-        boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new)
-                .update(requestDto.getTitle(), requestDto.getContent());
+        Long userId = UserContext.getCurrentUserId();
+
+        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+
+        validBoardUser(userId, board.getUser().getId());
+
+        board.update(requestDto.getTitle(), requestDto.getContent());
         return boardId;
     }
 
     @Transactional
     public Long deleteBoard(Long boardId) {
+        Long userId = UserContext.getCurrentUserId();
+
+        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+
+        validBoardUser(userId, board.getUser().getId());
+
         boardRepository.deleteById(boardId);
         return boardId;
     }
@@ -115,6 +127,12 @@ public class BoardService {
             Integer totalLike = board.getLikeList().size();
             return new BoardResponse(board, totalComment, totalLike);
         }).collect(Collectors.toList());
+    }
+
+    public void validBoardUser(Long currentUser, Long boardUser){
+        if(currentUser == boardUser)
+            return;
+        throw new UserAuthenticationException();
     }
 }
 
