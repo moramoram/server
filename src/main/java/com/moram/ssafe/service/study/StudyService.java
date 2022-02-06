@@ -12,6 +12,7 @@ import com.moram.ssafe.dto.study.StudyResponse;
 import com.moram.ssafe.dto.study.StudySaveRequest;
 import com.moram.ssafe.dto.study.StudySearch;
 import com.moram.ssafe.dto.study.StudyUpdateRequest;
+import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
 import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -103,15 +104,31 @@ public class StudyService {
 
     @Transactional
     public Long updateStudy(Long studyId, StudyUpdateRequest request){
-        studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new)
-                .update(request);
+        Long userId = UserContext.getCurrentUserId();
 
+        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+
+        validStudyUser(userId, study.getUser().getId());
+
+        study.update(request);
         return studyId;
     }
 
     @Transactional
     public Long deleteStudy(Long studyId) {
+        Long userId = UserContext.getCurrentUserId();
+
+        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+
+        validStudyUser(userId, study.getUser().getId());
+
         studyRepository.deleteById(studyId);
         return studyId;
+    }
+
+    public void validStudyUser(Long currentUser, Long studyUser){
+        if(currentUser == studyUser)
+            return;
+        throw new UserAuthenticationException();
     }
 }

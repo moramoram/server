@@ -11,7 +11,8 @@ import java.util.Optional;
 @Repository
 public interface StudyCommentRepository extends JpaRepository<StudyComment, Long> {
 
-    Optional<StudyComment> findById(Long commentId);
+    @Query("select s from StudyComment s join fetch s.user where s.id = :commentId")
+    Optional<StudyComment> findById(@Param("commentId") Long commentId);
 
     @Query("select s from StudyComment s join fetch s.user where s.study.id = :studyId")
     List<StudyComment> findStudyComment(@Param("studyId") Long studyId);
