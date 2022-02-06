@@ -1,6 +1,7 @@
 package com.moram.ssafe.domain.recruit;
 
 import com.moram.ssafe.dto.recruit.RecruitSearch;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -44,23 +45,30 @@ public class RecruitQueryRepository {
 
         return jpaQueryFactory.selectFrom(recruit)
                 .innerJoin(recruit.company).fetchJoin()
-                .where(recruit.title.contains(recruitSearch.getTitle()),
-                        containsJob(recruitSearch.getJob())
-                        , containsTechStack(recruitSearch.getTechStack()))
-                .orderBy(recruit.createdDate.desc())
+                .where(containTitle(recruitSearch.getTitle()),
+                        containJob(recruitSearch.getJob())
+                        , containTechStack(recruitSearch.getTechStack()))
+                .orderBy(findCriteria(recruitSearch.getCriteria()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
     }
 
-    public BooleanExpression containsJob(String job) {
+    private BooleanExpression containTitle(String title) {
+        if (title.isEmpty() || title == null) {
+            return null;
+        }
+        return recruit.title.contains(title);
+    }
+
+    private BooleanExpression containJob(String job) {
         if (job.isEmpty() || job == null) {
             return null;
         }
         return recruit.job.contains(job);
     }
 
-    public BooleanExpression containsTechStack(List<String> techStack) {
+    private BooleanExpression containTechStack(List<String> techStack) {
         if (techStack.isEmpty() || techStack == null) {
             return null;
         }
@@ -69,5 +77,16 @@ public class RecruitQueryRepository {
 
     private BooleanExpression isFilteredTechStack(String techStack) {
         return recruit.techStack.contains(techStack);
+    }
+
+    private OrderSpecifier<?> findCriteria(String criteria) {
+        if (criteria.equals("date")) {
+            return recruit.createdDate.desc();
+        }
+
+        if (criteria.equals("scrap")) {
+            return recruit.recruitScraps.recruitScraps.size().desc();
+        }
+        return recruit.createdDate.desc();
     }
 }
