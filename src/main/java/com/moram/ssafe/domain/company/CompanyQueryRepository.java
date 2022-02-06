@@ -19,8 +19,7 @@ public class CompanyQueryRepository {
                 .select(companyComment.company)
                 .distinct()
                 .from(companyComment)
-                .where(companyComment.user.id.eq(userId),
-                        companyComment.company.id.eq(companyComment.company.id))
+                .where(companyComment.user.id.eq(userId))
                 .fetch();
     }
     

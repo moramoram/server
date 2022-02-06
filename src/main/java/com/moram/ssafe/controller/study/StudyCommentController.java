@@ -1,7 +1,6 @@
 package com.moram.ssafe.controller.study;
 
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.study.StudyCommentSaveRequest;
 import com.moram.ssafe.dto.study.StudyCommentUpdateRequest;
@@ -37,16 +36,11 @@ public class StudyCommentController {
                 HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findStudyComment(studyId)));
     }
 
-    @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserStudyComment(){
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, studyCommentService.findUserStudyComment(UserContext.getCurrentUserId())));
-    }
 
     @PutMapping("/{commentId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateStudyComment(@PathVariable Long commentId, @RequestBody @Valid StudyCommentUpdateRequest request){
+    public ResponseEntity<CommonResponseDto> updateStudyComment(@PathVariable Long commentId,
+                                                                @RequestBody @Valid StudyCommentUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_PUT_COMMENT, studyCommentService.updateStudyComment(commentId, request)));
     }

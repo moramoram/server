@@ -11,11 +11,9 @@ import java.util.Optional;
 @Repository
 public interface BoardCommentRepository extends JpaRepository<BoardComment, Long> {
 
+    @Query("select c from BoardComment c join fetch c.user join fetch c.board")
     Optional<BoardComment> findById(Long commentId);
 
     @Query("select c from BoardComment c join fetch c.user where c.board.id = :boardId")
     List<BoardComment> findBoardCommentList(@Param("boardId") Long boardId);
-
-    @Query("select c from BoardComment c join fetch c.user where c.user.id = :userId")
-    List<BoardComment> findUserBoardComment(@Param("userId") Long userId);
 }

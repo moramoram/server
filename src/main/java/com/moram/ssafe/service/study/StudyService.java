@@ -3,6 +3,7 @@ package com.moram.ssafe.service.study;
 
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.study.Study;
+import com.moram.ssafe.domain.study.StudyQueryRepository;
 import com.moram.ssafe.domain.study.StudyRepository;
 import com.moram.ssafe.domain.study.StudyScrapRepository;
 import com.moram.ssafe.domain.user.User;
@@ -11,6 +12,7 @@ import com.moram.ssafe.dto.study.StudyResponse;
 import com.moram.ssafe.dto.study.StudySaveRequest;
 import com.moram.ssafe.dto.study.StudySearch;
 import com.moram.ssafe.dto.study.StudyUpdateRequest;
+import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
 import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final StudyScrapRepository studyScrapRepository;
     private final UserRepository userRepository;
+    private final StudyQueryRepository studyQueryRepository;
 
     @Transactional
     public Long createStudy(StudySaveRequest request){
@@ -94,17 +97,38 @@ public class StudyService {
         return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
+    public List<StudyResponse> findByUserComments(){
+        return studyQueryRepository.findByUserComment(UserContext.getCurrentUserId())
+                .stream().map(StudyResponse::from).collect(Collectors.toList());
+    }
+
     @Transactional
     public Long updateStudy(Long studyId, StudyUpdateRequest request){
-        studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new)
-                .update(request);
+        Long userId = UserContext.getCurrentUserId();
 
+        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+
+        validStudyUser(userId, study.getUser().getId());
+
+        study.update(request);
         return studyId;
     }
 
     @Transactional
     public Long deleteStudy(Long studyId) {
+        Long userId = UserContext.getCurrentUserId();
+
+        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+
+        validStudyUser(userId, study.getUser().getId());
+
         studyRepository.deleteById(studyId);
         return studyId;
+    }
+
+    public void validStudyUser(Long currentUser, Long studyUser){
+        if(currentUser == studyUser)
+            return;
+        throw new UserAuthenticationException();
     }
 }

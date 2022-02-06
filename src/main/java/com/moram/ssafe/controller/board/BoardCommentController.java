@@ -1,7 +1,6 @@
 package com.moram.ssafe.controller.board;
 
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.board.BoardCommentSaveRequest;
 import com.moram.ssafe.dto.board.BoardCommentUpdateRequest;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
@@ -37,16 +36,10 @@ public class BoardCommentController {
                 HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findBoardCommentList(boardId)));
     }
 
-    @GetMapping("/users")
-    @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserBoardComment(){
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_COMMENT_LIST, boardCommentService.findUserBoardComment(UserContext.getCurrentUserId())));
-    }
-
     @PutMapping("/{commentId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateBoardComment(@PathVariable Long commentId, @RequestBody @Valid BoardCommentUpdateRequest request){
+    public ResponseEntity<CommonResponseDto> updateBoardComment(@PathVariable Long commentId,
+                                                                @RequestBody @Valid BoardCommentUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                         HttpStatus.OK, SUCCESS_PUT_COMMENT, boardCommentService.updateBoardComment(commentId, request)));
     }
