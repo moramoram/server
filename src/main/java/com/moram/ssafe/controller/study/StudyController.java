@@ -52,7 +52,8 @@ public class StudyController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<CommonResponseDto> findByStudyNameAndType(@RequestParam int offset, @RequestBody StudySearch studySearch){
+    public ResponseEntity<CommonResponseDto> findByStudyNameAndType(@RequestParam int offset,
+                                                                    @RequestBody StudySearch studySearch){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_STUDY_NAME, studyService.findByStudyNameAndType(offset, studySearch)));
     }
@@ -69,9 +70,17 @@ public class StudyController {
                 HttpStatus.OK, SUCCESS_GET_STUDY_SCRAP, studyService.findByLotsOfScrap(offset)));
     }
 
+    @GetMapping("/user-comments")
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findByUserComments(){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_STUDY_LIST_COMMENTS, studyService.findByUserComments()));
+    }
+
     @PutMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateStudy(@PathVariable Long studyId, @RequestBody @Valid StudyUpdateRequest request){
+    public ResponseEntity<CommonResponseDto> updateStudy(@PathVariable Long studyId,
+                                                         @RequestBody @Valid StudyUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateStudy(studyId, request)));
     }

@@ -47,7 +47,8 @@ public class StudyResponse {
     private LocalDateTime modifiedDate;
 
     @Builder
-    private StudyResponse(Long studyId, UserResponse writerInfo, String title, String tech_stack, Integer recruitment) {
+    private StudyResponse(Long studyId, UserResponse writerInfo, String title,
+                          String tech_stack, Integer recruitment) {
         this.studyId = studyId;
         this.writerInfo = writerInfo;
         this.title = title;

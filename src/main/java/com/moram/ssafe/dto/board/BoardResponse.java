@@ -63,7 +63,8 @@ public class BoardResponse {
 
         if(this.boardType==2){
             this.writerInfo = UserResponse.from_anon(board.getUser());
-            this.comments = board.getCommentList().stream().map(BoardCommentResponse::from_anon).collect(Collectors.toList());
+            this.comments = board.getCommentList().stream()
+                    .map(BoardCommentResponse::from_anon).collect(Collectors.toList());
         }
         else{
             this.writerInfo = UserResponse.from(board.getUser());

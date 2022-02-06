@@ -1,14 +1,20 @@
 package com.moram.ssafe.service.study;
 
 
+import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.study.Study;
+import com.moram.ssafe.domain.study.StudyComment;
 import com.moram.ssafe.domain.study.StudyCommentRepository;
 import com.moram.ssafe.domain.study.StudyRepository;
+import com.moram.ssafe.domain.user.User;
+import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.study.StudyCommentResponse;
 import com.moram.ssafe.dto.study.StudyCommentSaveRequest;
 import com.moram.ssafe.dto.study.StudyCommentUpdateRequest;
+import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.study.StudyCommentNotFound;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
+import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,11 +31,17 @@ public class StudyCommentService {
 
     private final StudyCommentRepository studyCommentRepository;
     private final StudyRepository studyRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Long createStudyComment(StudyCommentSaveRequest request){
+        Long userId = UserContext.getCurrentUserId();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
         Study study = studyRepository.findStudy(request.getStudyId()).orElseThrow(StudyNotFoundException::new);
-        return studyCommentRepository.save(StudyCommentSaveRequest.from(study.getUser(), study, request.getContent())).getId();
+
+        return studyCommentRepository
+                .save(StudyCommentSaveRequest.from(user, study, request.getContent())).getId();
     }
 
     public List<StudyCommentResponse> findStudyComment(Long studyId){
@@ -37,21 +49,31 @@ public class StudyCommentService {
                 .map(StudyCommentResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyCommentResponse> findUserStudyComment(Long userId){
-        return studyCommentRepository.findUserStudyComment(userId).stream()
-                .map(StudyCommentResponse::from).collect(Collectors.toList());
-    }
-
     @Transactional
     public Long updateStudyComment(Long commentId, StudyCommentUpdateRequest request){
-        studyCommentRepository
-                .findById(commentId).orElseThrow(StudyCommentNotFound::new).update(request.getContent());
+        Long userId = UserContext.getCurrentUserId();
+        StudyComment comment = studyCommentRepository.findById(commentId).orElseThrow(StudyCommentNotFound::new);
+
+        validCommentUser(userId, comment.getUser().getId());
+
+        comment.update(request.getContent());
         return commentId;
     }
 
     @Transactional
     public Long deleteStudyComment(Long commentId){
+        Long userId = UserContext.getCurrentUserId();
+        StudyComment comment = studyCommentRepository.findById(commentId).orElseThrow(StudyCommentNotFound::new);
+
+        validCommentUser(userId, comment.getUser().getId());
+
         studyCommentRepository.deleteById(commentId);
         return commentId;
+    }
+
+    public void validCommentUser(Long currentUser, Long commentUser){
+        if(currentUser == commentUser)
+            return;
+        throw new UserAuthenticationException();
     }
 }
