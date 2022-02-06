@@ -1,13 +1,18 @@
 package com.moram.ssafe.service.board;
 
+import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.board.Board;
+import com.moram.ssafe.domain.board.BoardComment;
 import com.moram.ssafe.domain.board.BoardCommentRepository;
 import com.moram.ssafe.domain.board.BoardRepository;
+import com.moram.ssafe.domain.user.User;
+import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.board.BoardCommentResponse;
 import com.moram.ssafe.dto.board.BoardCommentSaveRequest;
 import com.moram.ssafe.dto.board.BoardCommentUpdateRequest;
 import com.moram.ssafe.exception.board.BoardCommentNotFoundException;
 import com.moram.ssafe.exception.board.BoardNotFoundException;
+import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,30 +28,55 @@ import java.util.stream.Collectors;
 public class BoardCommentService {
     private final BoardCommentRepository boardCommentRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public Long createBoardComment(BoardCommentSaveRequest request){ //고치기. board.getUser가 아니라 현재 user를 넣어야 함.
+    public Long createBoardComment(BoardCommentSaveRequest request){
+
+        User user = userRepository.findById(UserContext.getCurrentUserId()).orElseThrow(UserNotFoundException::new);
+
         Board board = boardRepository.findBoard(request.getBoardId())
                 .orElseThrow(BoardNotFoundException::new);
 
-        return boardCommentRepository.save(request.from(board.getUser(), board, request.getContent())).getId();
+        return boardCommentRepository.save(request.from(user, board, request.getContent())).getId();
     }
 
     public List<BoardCommentResponse> findBoardCommentList(Long boardId){
-        return boardCommentRepository.
-                findBoardCommentList(boardId).stream().map(BoardCommentResponse::from).collect(Collectors.toList());
+        return boardCommentRepository.findBoardCommentList(boardId).stream()
+                .map(BoardCommentResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
-    public Long updateBoardComment(Long commentId, BoardCommentUpdateRequest request){ //CUD에 유저 검증 다 걸기
-        boardCommentRepository
-                .findById(commentId).orElseThrow(BoardCommentNotFoundException::new).update(request.getContent());
+    public Long updateBoardComment(Long commentId, BoardCommentUpdateRequest request){
+        Long userId = UserContext.getCurrentUserId();
+
+        BoardComment comment = boardCommentRepository.findById(commentId)
+                .orElseThrow(BoardCommentNotFoundException::new);
+
+        validCommentUser(userId, comment.getUser().getId());
+
+        comment.update(request.getContent());
+
         return commentId;
     }
 
     @Transactional
     public Long deleteBoardComment(Long commentId){
+        Long userId = UserContext.getCurrentUserId();
+
+        BoardComment comment = boardCommentRepository.findById(commentId)
+                        .orElseThrow(BoardCommentNotFoundException::new);
+
+        validCommentUser(userId, comment.getUser().getId());
+
         boardCommentRepository.deleteById(commentId);
+
         return commentId;
+    }
+
+    public void validCommentUser(Long currentUser, Long commentUser){
+        if(currentUser == commentUser)
+            return;
+        throw new UserNotFoundException();
     }
 }
