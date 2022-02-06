@@ -79,7 +79,7 @@ public class CompanyCommentService {
     }
 
     public void validCommentUser(Long currentUser, Long commentUser) {
-        if (currentUser == commentUser) { //토큰 보낸 사람이랑 실제 댓글 쓴 사람이랑 같은지 검증
+        if (currentUser == commentUser) {
             return;
         }
         throw new UserAuthenticationException();
