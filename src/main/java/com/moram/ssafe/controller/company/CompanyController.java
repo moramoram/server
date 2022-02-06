@@ -60,7 +60,7 @@ public class CompanyController {
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findUserCommentsByCompany() {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_COMMENT_LIST,
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_COMPANY_LIST,
                 companyService.findUserCommentsByCompany()));
     }
 

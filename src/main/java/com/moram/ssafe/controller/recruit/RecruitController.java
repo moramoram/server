@@ -71,9 +71,9 @@ public class RecruitController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<CommonResponseDto> findRecruitTitleAndTechStack(@RequestParam int offset, @RequestBody RecruitSearch recruitSearch) {
+    public ResponseEntity<CommonResponseDto> findRecruitTitleAndTechStack(@RequestParam int offset, @RequestBody @Valid RecruitSearch recruitSearch) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_TITLE_TECH, recruitService.findRecruitTitleAndTechStack(offset,recruitSearch)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_LIST, recruitService.findRecruitTitleAndTechStack(offset,recruitSearch)));
     }
 
 

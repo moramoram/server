@@ -52,6 +52,7 @@ public class SuccessMessage {
     public static String SUCCESS_GET_COMMENT_LIST = "댓글 리스트 조회 성공";
     public static String SUCCESS_PUT_COMMENT = "댓글 수정 성공";
     public static String SUCCESS_DELETE_COMMENT = "댓글 삭제 성공";
+    public static String SUCCESS_GET_USER_COMPANY_LIST = "댓글 단 회사리스트 조회 성공";
 
     //Board
     public static String SUCCESS_GET_BOARD = "게시판 상세 조회 성공";
