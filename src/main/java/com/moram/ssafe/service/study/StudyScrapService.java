@@ -1,10 +1,7 @@
 package com.moram.ssafe.service.study;
 
 import com.moram.ssafe.controller.user.annotation.UserContext;
-import com.moram.ssafe.domain.study.Study;
-import com.moram.ssafe.domain.study.StudyRepository;
-import com.moram.ssafe.domain.study.StudyScrap;
-import com.moram.ssafe.domain.study.StudyScrapRepository;
+import com.moram.ssafe.domain.study.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.study.StudyResponse;
@@ -32,13 +29,13 @@ public class StudyScrapService {
     private final StudyScrapRepository studyScrapRepository;
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
+    private final StudyScrapQueryRepository studyScrapQueryRepository;
 
     public List<StudyResponse> findUserScrap(Long userId, int offset){
 
-        Page<StudyScrap> studies = studyScrapRepository.findUserScrap(userId,
-                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "id")));
-
-        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
+       return studyScrapQueryRepository.findByUserScrap(userId,
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")))
+               .stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
     public Boolean pushScrap(Long studyId){
