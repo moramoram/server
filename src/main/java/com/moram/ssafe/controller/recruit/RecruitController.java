@@ -1,7 +1,6 @@
 package com.moram.ssafe.controller.recruit;
 
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
-import com.moram.ssafe.domain.recruit.Recruit;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
 import com.moram.ssafe.dto.recruit.RecruitSaveRequest;
@@ -71,15 +70,20 @@ public class RecruitController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<CommonResponseDto> findRecruitTitleAndTechStack(@RequestParam int offset, @RequestBody @Valid RecruitSearch recruitSearch) {
+    public ResponseEntity<CommonResponseDto> findRecruitTitleAndTechStack(@RequestParam(required = false) String title,
+                                                                          @RequestParam(required = false) List<String> techStack,
+                                                                          @RequestParam(required = false)String job,
+                                                                          @RequestParam(required = false) String criteria,
+                                                                          @RequestParam(required = false) int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_LIST, recruitService.findRecruitTitleAndTechStack(offset,recruitSearch)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_LIST, recruitService.findRecruitTitleAndTechStack(offset,
+                        RecruitSearch.of(title, techStack, job, criteria))));
     }
 
 
     @GetMapping("/scraps/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public  ResponseEntity<CommonResponseDto> userRecruitScrapList(){
+    public ResponseEntity<CommonResponseDto> userRecruitScrapList() {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList()));
     }
