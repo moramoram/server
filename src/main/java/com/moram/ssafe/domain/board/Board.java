@@ -26,13 +26,13 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardComment> commentList = new ArrayList<>();
 
-   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardLike> likeList = new ArrayList<>();
 
-    private Integer board_type; //1:자유 2:익명 3:취업정보 4:질문
+    private Integer boardType; //1:자유 2:익명 3:취업정보 4:질문
 
     private String title;
 
@@ -60,9 +60,9 @@ public class Board extends BaseEntity {
     }
 
     @Builder
-    public Board(User user, Integer board_type, String title, String content){
+    public Board(User user, Integer boardType, String title, String content){
         this.user = user;
-        this.board_type = board_type;
+        this.boardType = boardType;
         this.title = title;
         this.content = content;
         this.views=0;

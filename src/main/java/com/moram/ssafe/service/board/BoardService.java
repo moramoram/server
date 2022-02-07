@@ -1,10 +1,7 @@
 package com.moram.ssafe.service.board;
 
 import com.moram.ssafe.controller.user.annotation.UserContext;
-import com.moram.ssafe.domain.board.Board;
-import com.moram.ssafe.domain.board.BoardLikeRepository;
-import com.moram.ssafe.domain.board.BoardQueryRepository;
-import com.moram.ssafe.domain.board.BoardRepository;
+import com.moram.ssafe.domain.board.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.board.BoardResponse;
@@ -33,6 +30,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final BoardQueryRepository boardQueryRepository;
+    private final BoardCommentRepository boardCommentRepository;
 
     @Transactional
     public Long createBoard(BoardSaveRequest requestDto) {
@@ -52,10 +50,9 @@ public class BoardService {
     public BoardResponse findBoard(Long boardId) {
         Board board = boardRepository.findBoard(boardId).orElseThrow(BoardNotFoundException::new);
         board.addView();
-        Integer totalLike = board.getLikeList().size();
         Boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
 
-        return new BoardResponse(board, totalLike, likeStatus);
+        return new BoardResponse(board, likeStatus);
     }
 
     public List<BoardResponse> findUserBoard(Long userId, int offset) {
@@ -90,11 +87,7 @@ public class BoardService {
     public List<BoardResponse> findByUserComments(){
         List<Board> boards =  boardQueryRepository.findByUserComment(UserContext.getCurrentUserId());
 
-        return boards.stream().map(board -> {
-            Integer totalComment = board.getCommentList().size();
-            Integer totalLike = board.getLikeList().size();
-            return new BoardResponse(board, totalComment, totalLike);
-        }).collect(Collectors.toList());
+        return boards.stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
     @Transactional
@@ -116,17 +109,14 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
 
         validBoardUser(userId, board.getUser().getId());
-
+        boardLikeRepository.deleteByBoardId(boardId);
+        boardCommentRepository.deleteByBoardId(boardId);
         boardRepository.deleteById(boardId);
         return boardId;
     }
 
     public List<BoardResponse> PageToResponse(Page<Board> boards){
-        return boards.stream().map(board -> {
-            Integer totalComment = board.getCommentList().size();
-            Integer totalLike = board.getLikeList().size();
-            return new BoardResponse(board, totalComment, totalLike);
-        }).collect(Collectors.toList());
+        return boards.stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
     public void validBoardUser(Long currentUser, Long boardUser){

@@ -16,7 +16,7 @@ import static com.moram.ssafe.dto.common.response.SuccessMessage.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/study-scraps")
+@RequestMapping("/studies/scraps")
 public class StudyScrapController {
     private final StudyScrapService studyScrapService;
 

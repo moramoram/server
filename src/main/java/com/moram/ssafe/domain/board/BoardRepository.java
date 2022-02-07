@@ -14,27 +14,25 @@ import java.util.Optional;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @Query("select b from Board b join fetch b.user where b.id = :boardId")
-    Optional<Board> findById(@Param("boardId") Long boardId);
-
-    @EntityGraph(attributePaths = {"user"})
-    @Query("select b from Board b where b.board_type = :boardType")
+    @EntityGraph(attributePaths = {"commentList"})
+    @Query("select distinct b from Board b where b.boardType = :boardType")
     Page<Board> findBoardList(@Param("boardType") int boardType, Pageable pageable);
 
-    @Query("select b from Board b join fetch b.user join fetch b.likeList where b.id = :boardId")
+    @EntityGraph(attributePaths = {"user", "commentList"})
+    @Query("select b from Board b where b.id = :boardId")
     Optional<Board> findBoard(@Param("boardId") Long boardId);
 
-    @EntityGraph(attributePaths = {"user"})
-    @Query("select b from Board b where b.user.id = :userId")
+    @EntityGraph(attributePaths = {"commentList"})
+    @Query("select distinct b from Board b where b.user.id = :userId")
     Page<Board> findUserBoard(@Param("userId") Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
-    @Query("select b from Board b where b.board_type = :boardType and b.title like %:name%")
+    @Query("select distinct b from Board b where b.boardType = :boardType and b.title like %:name%")
     Page<Board> findByTitleContaining(@Param("boardType") int boardType, @Param("name") String name,
                                       Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
-    @Query("select b from Board b where b.board_type = :boardType " +
-            "order by b.likeList.size desc")
+    @Query("select distinct b from Board b where b.boardType = :boardType " +
+            "order by size(b.likeList) desc")
     Page<Board> findByLotsOfLike(@Param("boardType") int boardType, Pageable pageable);
 }

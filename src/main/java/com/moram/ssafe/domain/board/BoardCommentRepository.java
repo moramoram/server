@@ -1,5 +1,6 @@
 package com.moram.ssafe.domain.board;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,9 +12,8 @@ import java.util.Optional;
 @Repository
 public interface BoardCommentRepository extends JpaRepository<BoardComment, Long> {
 
-    @Query("select c from BoardComment c join fetch c.user join fetch c.board")
-    Optional<BoardComment> findById(Long commentId);
+    void deleteByBoardId(Long boardId);
 
-    @Query("select c from BoardComment c join fetch c.user where c.board.id = :boardId")
+    @Query("select distinct c from BoardComment c join fetch c.user where c.board.id = :boardId")
     List<BoardComment> findBoardCommentList(@Param("boardId") Long boardId);
 }
