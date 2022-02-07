@@ -10,8 +10,7 @@ import java.util.Optional;
 @Repository
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Long> {
 
-    @Query("select l from BoardLike l join fetch l.user where l.id = :likeId")
-    Optional<BoardLike> findById(@Param("likeId") Long likeId);
+    void deleteByBoardId(Long boardId);
 
     Boolean existsByBoardIdAndUserId(Long boardId, Long userId);
 }
