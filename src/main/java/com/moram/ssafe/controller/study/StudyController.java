@@ -70,7 +70,7 @@ public class StudyController {
                 HttpStatus.OK, SUCCESS_GET_STUDY_SCRAP, studyService.findByLotsOfScrap(offset)));
     }
 
-    @GetMapping("/user-comments")
+    @GetMapping("/comments/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findByUserComments(){
         return ResponseEntity.ok().body(CommonResponseDto.of(
