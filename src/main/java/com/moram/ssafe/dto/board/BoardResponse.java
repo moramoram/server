@@ -38,9 +38,9 @@ public class BoardResponse {
 
     private LocalDateTime modifiedDate;
 
-    public BoardResponse(Board board, Integer totalComment, Integer totalLike) { //전체 조회
+    public BoardResponse(Board board) { //전체 조회
 
-        this.boardType = board.getBoard_type();
+        this.boardType = board.getBoardType();
 
         if(this.boardType==2)
             this.writerInfo = UserResponse.from_anon(board.getUser());
@@ -51,15 +51,15 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.totalComment = totalComment;
-        this.totalLike = totalLike;
+        this.totalComment = board.getCommentList().size();
+        this.totalLike = board.getLikeList().size();
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
     }
 
-    public BoardResponse(Board board, Integer totalLike, Boolean likeStatus){ //단건 조회
+    public BoardResponse(Board board, Boolean likeStatus){ //단건 조회
 
-        this.boardType = board.getBoard_type();
+        this.boardType = board.getBoardType();
 
         if(this.boardType==2){
             this.writerInfo = UserResponse.from_anon(board.getUser());
@@ -76,7 +76,7 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.totalLike = totalLike;
+        this.totalLike = board.getLikeList().size();
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
         this.likeStatus = likeStatus;
