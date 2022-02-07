@@ -27,25 +27,25 @@ public class Study extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
     private List<StudyComment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
     private List<StudyScrap> scrapList = new ArrayList<>();
 
-    private String company_name;
+    private String companyName;
 
     private String title;
 
-    private String study_type;
+    private String studyType;
 
-    private String tech_stack;
+    private String techStack;
 
     private Integer recruitment;
 
     private String location;
 
-    private Integer on_off;
+    private Integer onOff;
 
     private String content;
 
@@ -59,28 +59,28 @@ public class Study extends BaseEntity {
     }
 
     public void update(StudyUpdateRequest updateRequest){
-        this.company_name = updateRequest.getCompany_name();
+        this.companyName = updateRequest.getCompanyName();
         this.title = updateRequest.getTitle();
-        this.study_type = updateRequest.getStudy_type();
-        this.tech_stack = updateRequest.getTech_stack();
+        this.studyType = updateRequest.getStudyType();
+        this.techStack = updateRequest.getTechStack();
         this.recruitment = updateRequest.getRecruitment();
         this.location = updateRequest.getLocation();
-        this.on_off = updateRequest.getOn_off();
+        this.onOff = updateRequest.getOnOff();
         this.content = updateRequest.getContent();
     }
 
     @Builder
-    public Study(User user, String company_name, String title, String study_type,
-                 String tech_stack, Integer recruitment, String location,
-                 Integer on_off, String content){
+    public Study(User user, String companyName, String title, String studyType,
+                 String techStack, Integer recruitment, String location,
+                 Integer onOff, String content){
         this.user = user;
-        this.company_name = company_name;
+        this.companyName = companyName;
         this.title = title;
-        this.study_type = study_type;
-        this.tech_stack = tech_stack;
+        this.studyType = studyType;
+        this.techStack = techStack;
         this.recruitment = recruitment;
         this.location = location;
-        this.on_off = on_off;
+        this.onOff = onOff;
         this.content = content;
         this.views = 0;
     }

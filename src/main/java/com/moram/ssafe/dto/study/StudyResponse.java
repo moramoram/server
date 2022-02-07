@@ -26,15 +26,15 @@ public class StudyResponse {
 
     private String title;
 
-    private String study_type;
+    private String studyType;
 
-    private String tech_stack;
+    private String techStack;
 
     private Integer recruitment;
 
     private String location;
 
-    private Integer on_off;
+    private Integer onOff;
 
     private String content;
 
@@ -48,18 +48,20 @@ public class StudyResponse {
 
     @Builder
     private StudyResponse(Long studyId, UserResponse writerInfo, String title,
-                          String tech_stack, Integer recruitment) {
+                          String techStack, Integer recruitment, String studyType, Integer onOff) {
         this.studyId = studyId;
         this.writerInfo = writerInfo;
         this.title = title;
-        this.tech_stack = tech_stack;
+        this.techStack = techStack;
         this.recruitment = recruitment;
+        this.studyType = studyType;
+        this.onOff = onOff;
     }
 
     public static StudyResponse from(Study study) { //전체 조회
         return StudyResponse.builder().studyId(study.getId()).title(study.getTitle())
                 .writerInfo(UserResponse.from(study.getUser())).recruitment(study.getRecruitment())
-                .tech_stack(study.getTech_stack()).build();
+                .techStack(study.getTechStack()).studyType(study.getStudyType()).onOff(study.getOnOff()).build();
     }
 
 
@@ -69,12 +71,14 @@ public class StudyResponse {
         Long studyId = study.getId();
         UserResponse writerInfo = UserResponse.from(study.getUser());
         String title = study.getTitle();
-        String tech_stack = study.getTech_stack();
+        String techStack = study.getTechStack();
         Integer recruitment = study.getRecruitment();
+        String studyType = study.getStudyType();
+        Integer onOff = study.getOnOff();
 
         return StudyResponse.builder().studyId(studyId).title(title)
                 .writerInfo(writerInfo).recruitment(recruitment)
-                .tech_stack(tech_stack).build();
+                .techStack(techStack).studyType(study.getStudyType()).onOff(study.getOnOff()).build();
     }
 
     public StudyResponse(Study study, Boolean scrapStatus){ //단건 조회
@@ -82,13 +86,13 @@ public class StudyResponse {
         this.writerInfo = UserResponse.from(study.getUser());
         this.comments = study.getCommentList().stream()
                 .map(comment -> StudyCommentResponse.from(comment)).collect(Collectors.toList());
-        this.company_name = study.getCompany_name();
+        this.company_name = study.getCompanyName();
         this.title = study.getTitle();
-        this.study_type = study.getStudy_type();
-        this.tech_stack = study.getTech_stack();
+        this.studyType = study.getStudyType();
+        this.techStack = study.getTechStack();
         this.recruitment = study.getRecruitment();
         this.location = study.getLocation();
-        this.on_off = study.getOn_off();
+        this.onOff = study.getOnOff();
         this.content = study.getContent();
         this.views = study.getViews();
         this.scrapStatus = scrapStatus;
