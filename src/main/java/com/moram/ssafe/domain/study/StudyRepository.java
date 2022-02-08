@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @EntityGraph(attributePaths = {"user"})
+    @Query("select distinct s from Study s")
     Page<Study> findAll(Pageable pageable);
 
     @Query("select s from Study s join fetch s.user where s.id = :studyId")
@@ -40,5 +41,4 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @EntityGraph(attributePaths = {"user"})
     @Query("select s from Study s order by size(s.scrapList) desc")
     Page<Study> findByLotsOfScrap(Pageable pageable);
-
 }

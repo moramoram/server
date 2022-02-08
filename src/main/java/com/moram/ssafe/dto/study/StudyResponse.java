@@ -78,7 +78,7 @@ public class StudyResponse {
 
         return StudyResponse.builder().studyId(studyId).title(title)
                 .writerInfo(writerInfo).recruitment(recruitment)
-                .techStack(techStack).studyType(study.getStudyType()).onOff(study.getOnOff()).build();
+                .techStack(techStack).studyType(studyType).onOff(onOff).build();
     }
 
     public StudyResponse(Study study, Boolean scrapStatus){ //단건 조회
