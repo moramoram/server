@@ -83,7 +83,6 @@ public class RecruitQueryRepository {
         if (criteria.equals("date")) {
             return recruit.createdDate.desc();
         }
-
         if (criteria.equals("scrap")) {
             return recruit.recruitScraps.recruitScraps.size().desc();
         }
