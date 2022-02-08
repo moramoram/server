@@ -3,6 +3,7 @@ package com.moram.ssafe.controller.board;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.board.BoardSaveRequest;
+import com.moram.ssafe.dto.board.BoardSearch;
 import com.moram.ssafe.dto.board.BoardUpdateRequest;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.service.board.BoardService;
@@ -71,6 +72,16 @@ public class BoardController {
     public ResponseEntity<CommonResponseDto> findByLotsOfLike(@PathVariable int boardType, @RequestParam int offset){
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_LIKE, boardService.findByLotsOfLike(boardType, offset)));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<CommonResponseDto> searchBoard(@RequestParam(required = false) Integer boardType,
+                                                         @RequestParam(required = false) String title,
+                                                         @RequestParam(required = false) String criteria,
+                                                         @RequestParam(required = false) int offset){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIST,
+                boardService.searchBoard(offset, BoardSearch.of(boardType, title, criteria))));
     }
 
     @GetMapping("/comments/users")
