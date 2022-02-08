@@ -18,7 +18,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findAll(Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
-    @Query("select s from Study s join fetch s.commentList where s.id = :studyId")
+    @Query("select s from Study s where s.id = :studyId")
     Optional<Study> findStudy(@Param("studyId") Long studyId);
 
     @EntityGraph(attributePaths = {"user"})

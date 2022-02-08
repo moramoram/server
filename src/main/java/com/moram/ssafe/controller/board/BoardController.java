@@ -99,7 +99,7 @@ public class BoardController {
                   HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.updateBoard(boardId, request)));
     }
 
-    @PutMapping("/{boardId}/scraps")
+    @PutMapping("/{boardId}/likes")
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> toggleBoardLikes(@PathVariable Long boardId){
         return ResponseEntity.ok().body(CommonResponseDto.of(
