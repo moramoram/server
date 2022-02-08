@@ -79,7 +79,7 @@ public class StudyController {
 
     @GetMapping("/scraps/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserScrap(@RequestParam int offset){
+    public ResponseEntity<CommonResponseDto> findUserScrap(@RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_RECRUIT_SCRAP_LIST,
                 studyService.findUserScrap(UserContext.getCurrentUserId(), offset)));
@@ -87,7 +87,7 @@ public class StudyController {
 
     @PutMapping("/{studyId}/scraps")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> toggleStudyScraps(@PathVariable Long studyId){
+    public ResponseEntity<CommonResponseDto> toggleStudyScraps(@PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_PUT_STUDY_SCRAP,
                 studyService.toggleStudyScraps(studyId)));

@@ -66,10 +66,7 @@ public class StudyService {
 
     public List<StudyResponse> findByStudyNameAndType(int offset, StudySearch studySearch) {
 
-        String title = studySearch.getTitle();
-        String type = studySearch.getType();
-
-        return studyQueryRepository.findByTitleAndTypeContaining(title, type,
+        return studyQueryRepository.findByTitleAndTypeContaining(studySearch,
                 PageRequest.of(offset - 1, 12))
                 .stream().map(StudyResponse::from).collect(Collectors.toList());
     }
