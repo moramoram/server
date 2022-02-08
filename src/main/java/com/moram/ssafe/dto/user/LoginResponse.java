@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class LoginResponse {
+
+    private Long userId;
     private String email;
     private String nickname;
     private int authCheck;
@@ -14,7 +16,8 @@ public class LoginResponse {
     private String refreshToken;
 
     @Builder
-    public LoginResponse(String email, String nickname, int authCheck, String refreshToken, String accessToken) {
+    public LoginResponse(Long userId, String email, String nickname, int authCheck, String refreshToken, String accessToken) {
+        this.userId = userId;
         this.email = email;
         this.nickname = nickname;
         this.authCheck = authCheck;

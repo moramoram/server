@@ -8,6 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserResponse {
 
+    private Long userId;
+
     private String nickname;
 
     private String profileImg;
@@ -19,12 +21,12 @@ public class UserResponse {
     private int authCheck;
 
     public static UserResponse from(User user) {
-        return new UserResponse(user.getNickname(), user.getProfileImg(), user.getOrdinal(),
+        return new UserResponse(user.getId(), user.getNickname(), user.getProfileImg(), user.getOrdinal(),
                 user.getCampus(), user.getAuthCheck());
     }
 
     public static UserResponse from_anon(User user) {
-        return new UserResponse("익명", null, null, null,user.getAuthCheck());
+        return new UserResponse(user.getId(), "익명", null, null, null, user.getAuthCheck());
     }
 
     public void setNickname(String nickname) {
