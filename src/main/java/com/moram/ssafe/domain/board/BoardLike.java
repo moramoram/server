@@ -1,6 +1,5 @@
 package com.moram.ssafe.domain.board;
 
-import com.moram.ssafe.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,20 +16,23 @@ public class BoardLike {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(nullable = false)
+    private Long userId;
 
     @Builder
-    public BoardLike(User user, Board board){
-        this.user = user;
+    public BoardLike(Board board, Long userId){
         this.board = board;
+        this.userId = userId;
     }
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    public boolean ownedBy(Long userId) {
+        return this.userId.equals(userId);
     }
 }
