@@ -30,9 +30,11 @@ public class StudyResponse {
 
     private String techStack;
 
-    private Integer recruitment;
+    private Boolean recruitment;
 
-    private String location;
+    private String memberNumber;
+
+    private String thumbnailImg;
 
     private Integer onOff;
 
@@ -48,40 +50,43 @@ public class StudyResponse {
 
     @Builder
     private StudyResponse(Long studyId, UserResponse writerInfo, String title,
-                          String techStack, Integer recruitment, String studyType, Integer onOff) {
+                          String techStack, Boolean recruitment, String memberNumber, String thumbnailImg, String studyType, Integer onOff) {
         this.studyId = studyId;
         this.writerInfo = writerInfo;
         this.title = title;
         this.techStack = techStack;
         this.recruitment = recruitment;
         this.studyType = studyType;
+        this.thumbnailImg = thumbnailImg;
         this.onOff = onOff;
     }
 
     public static StudyResponse from(Study study) { //전체 조회
         return StudyResponse.builder().studyId(study.getId()).title(study.getTitle())
                 .writerInfo(UserResponse.from(study.getUser())).recruitment(study.getRecruitment())
-                .techStack(study.getTechStack()).studyType(study.getStudyType()).onOff(study.getOnOff()).build();
+                .techStack(study.getTechStack()).studyType(study.getStudyType())
+                .thumbnailImg(study.getThumbnailImg())
+                .onOff(study.getOnOff()).build();
     }
 
-
-    public static StudyResponse from(StudyScrap scrap){ //전체 조회
-       Study study = scrap.getStudy();
+    public static StudyResponse from(StudyScrap scrap) { //전체 조회
+        Study study = scrap.getStudy();
 
         Long studyId = study.getId();
         UserResponse writerInfo = UserResponse.from(study.getUser());
         String title = study.getTitle();
         String techStack = study.getTechStack();
-        Integer recruitment = study.getRecruitment();
+        Boolean recruitment = study.getRecruitment();
+        String thumbnailImg = study.getThumbnailImg();
         String studyType = study.getStudyType();
         Integer onOff = study.getOnOff();
 
         return StudyResponse.builder().studyId(studyId).title(title)
                 .writerInfo(writerInfo).recruitment(recruitment)
-                .techStack(techStack).studyType(study.getStudyType()).onOff(study.getOnOff()).build();
+                .techStack(techStack).studyType(studyType).thumbnailImg(thumbnailImg).onOff(onOff).build();
     }
 
-    public StudyResponse(Study study, Boolean scrapStatus){ //단건 조회
+    public StudyResponse(Study study, Boolean scrapStatus) { //단건 조회
         this.studyId = study.getId();
         this.writerInfo = UserResponse.from(study.getUser());
         this.comments = study.getCommentList().stream()
@@ -91,7 +96,8 @@ public class StudyResponse {
         this.studyType = study.getStudyType();
         this.techStack = study.getTechStack();
         this.recruitment = study.getRecruitment();
-        this.location = study.getLocation();
+        this.memberNumber = study.getMemberNumber();
+        this.thumbnailImg = study.getThumbnailImg();
         this.onOff = study.getOnOff();
         this.content = study.getContent();
         this.views = study.getViews();

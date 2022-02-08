@@ -1,7 +1,6 @@
 package com.moram.ssafe.exception.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.moram.ssafe.exception.auth.UnsupportedJwtTokenException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,34 +10,38 @@ import lombok.Getter;
 public enum ErrorCode {
 
     // Common
-    INVALID_INPUT_VALUE(400 , "Invalid Input Value"),
+    INVALID_INPUT_VALUE(400, "Invalid Input Value"),
     METHOD_NOT_ALLOWED(405, "Method Not Allowed"),
+    TYPE_MISMATCH(400, "Type mismatch"),
     ENTITY_NOT_FOUND(400, " Entity Not Found"),
+    MISSING_REQUEST_PARAMETER(400, "Missing request parameter"),
     INTERNAL_SERVER_ERROR(500, "Server Error"),
     INVALID_TYPE_VALUE(400, " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "Access is Denied"),
     JSON_WRITE_ERROR(401, "JSON content that are not pure I/O problems"),
+    MAX_UPLOAD_SIZE_EXCEEDED(400, "Max file size exceeded"),
+    MULTIPART_FILE_CONVERT_FAIL(400,"File covert fail"),
 
     //User
     USER_NOT_FOUND(404, "User not found."),
-    DUPLICATE_NICKNAME(409,"Duplicate nickname."),
+    DUPLICATE_NICKNAME(409, "Duplicate nickname."),
 
     //Auth and Jwt
-    FAIL_TO_AUTHENTICATION(401,"Fail To Authentication"),
-    NOT_EXIST_TOKEN(401,"Not exist token"),
+    FAIL_TO_AUTHENTICATION(401, "Fail To Authentication"),
+    NOT_EXIST_TOKEN(401, "Not exist token"),
     EXPIRED_ACCESS_TOKEN(401, "Expired access token."),
-    INVALID_JWT_SIGNATURE(401,"Invalid JWT signature"),
-    UNSUPPORTED_JWT_TOKEN(401,"Unsupported Jwt Token"),
-    INVALID_JWT_TOKEN(401,"Invalid Jwt token"),
-    NOT_VALID_USER(401,"Not valid user"),
+    INVALID_JWT_SIGNATURE(401, "Invalid JWT signature"),
+    UNSUPPORTED_JWT_TOKEN(401, "Unsupported Jwt Token"),
+    INVALID_JWT_TOKEN(401, "Invalid Jwt token"),
+    NOT_VALID_USER(401, "Not valid user"),
 
     //Recruit
-    RECRUIT_NOT_FOUND(404,"Recruit not found"),
-    RECRUIT_SCRAP_REMOVE_FAIL(404,"Recruit Scrap Remove fail"),
+    RECRUIT_NOT_FOUND(404, "Recruit not found"),
+    RECRUIT_SCRAP_REMOVE_FAIL(404, "Recruit Scrap Remove fail"),
 
     //Company
-    COMPANY_NOT_FOUND(404,"Company not found"),
-    COMPANY_COMMENT_NOT_FOUND(404,"Company comment not found"),
+    COMPANY_NOT_FOUND(404, "Company not found"),
+    COMPANY_COMMENT_NOT_FOUND(404, "Company comment not found"),
 
     //Board
     BOARD_NOT_FOUND(404, "Board not found"),

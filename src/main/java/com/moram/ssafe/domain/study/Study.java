@@ -2,7 +2,7 @@ package com.moram.ssafe.domain.study;
 
 import com.moram.ssafe.domain.BaseEntity;
 import com.moram.ssafe.domain.user.User;
-import com.moram.ssafe.dto.study.StudyUpdateRequest;
+import com.moram.ssafe.dto.study.StudyRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,8 @@ import java.util.List;
 @Table(name = "tbl_study")
 public class Study extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "study_id")
     private Long id;
 
@@ -41,9 +42,11 @@ public class Study extends BaseEntity {
 
     private String techStack;
 
-    private Integer recruitment;
+    private Boolean recruitment;
 
-    private String location;
+    private String memberNumber;
+
+    private String thumbnailImg;
 
     private Integer onOff;
 
@@ -51,37 +54,45 @@ public class Study extends BaseEntity {
 
     private Integer views;
 
-    public void addView() {this.views++;}
+    public void addView() {
+        this.views++;
+    }
 
-    public void addComment(StudyComment comment){
+    public void addComment(StudyComment comment) {
         commentList.add(comment);
         comment.setStudy(this);
     }
 
-    public void update(StudyUpdateRequest updateRequest){
-        this.companyName = updateRequest.getCompanyName();
-        this.title = updateRequest.getTitle();
-        this.studyType = updateRequest.getStudyType();
-        this.techStack = updateRequest.getTechStack();
-        this.recruitment = updateRequest.getRecruitment();
-        this.location = updateRequest.getLocation();
-        this.onOff = updateRequest.getOnOff();
-        this.content = updateRequest.getContent();
+    public void update(StudyRequestDto requestDto) {
+        this.companyName = requestDto.getCompanyName();
+        this.title = requestDto.getTitle();
+        this.studyType = requestDto.getStudyType();
+        this.techStack = requestDto.getTechStack();
+        this.memberNumber = requestDto.getMemberNumber();
+        this.thumbnailImg = requestDto.getThumbnailImg();
+        this.onOff = requestDto.getOnOff();
+        this.content = requestDto.getContent();
     }
 
     @Builder
     public Study(User user, String companyName, String title, String studyType,
-                 String techStack, Integer recruitment, String location,
-                 Integer onOff, String content){
+                 String techStack, String memberNumber, String thumbnailImg,
+                 Integer onOff, String content) {
         this.user = user;
         this.companyName = companyName;
         this.title = title;
         this.studyType = studyType;
         this.techStack = techStack;
-        this.recruitment = recruitment;
-        this.location = location;
+        this.recruitment = true;
+        this.memberNumber = memberNumber;
+        this.thumbnailImg = thumbnailImg;
         this.onOff = onOff;
         this.content = content;
         this.views = 0;
+    }
+
+    public Boolean updateRecruitment(boolean recruitment) {
+        this.recruitment = recruitment;
+        return recruitment;
     }
 }
