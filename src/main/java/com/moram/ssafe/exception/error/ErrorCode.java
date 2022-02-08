@@ -42,7 +42,7 @@ public enum ErrorCode {
 
     //Board
     BOARD_NOT_FOUND(404, "Board not found"),
-    LIKE_NOT_FOUND(404, "Like not found"),
+    LIKE_REMOVE_FAIL(404, "Board Like remove fail"),
 
     //Comment
     COMMENT_NOT_FOUND(404, "Comment not found"),
