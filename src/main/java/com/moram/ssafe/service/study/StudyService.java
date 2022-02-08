@@ -2,10 +2,7 @@ package com.moram.ssafe.service.study;
 
 
 import com.moram.ssafe.controller.user.annotation.UserContext;
-import com.moram.ssafe.domain.study.Study;
-import com.moram.ssafe.domain.study.StudyQueryRepository;
-import com.moram.ssafe.domain.study.StudyRepository;
-import com.moram.ssafe.domain.study.StudyScrapRepository;
+import com.moram.ssafe.domain.study.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.study.StudyRequestDto;
@@ -35,6 +32,7 @@ public class StudyService {
     private final StudyScrapRepository studyScrapRepository;
     private final UserRepository userRepository;
     private final StudyQueryRepository studyQueryRepository;
+    private final StudyCommentRepository studyCommentRepository;
 
     @Transactional
     public Long createStudy(StudyRequestDto request) {
@@ -132,6 +130,8 @@ public class StudyService {
 
         validStudyUser(userId, study.getUser().getId());
 
+        studyCommentRepository.deleteByStudyId(studyId);
+        studyScrapRepository.deleteByStudyId(studyId);
         studyRepository.deleteById(studyId);
         return studyId;
     }

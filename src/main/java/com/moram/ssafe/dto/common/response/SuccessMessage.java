@@ -67,9 +67,8 @@ public class SuccessMessage {
     public static String SUCCESS_GET_BOARD_LIST_COMMENTS = "사용자가 댓글 단 게시물 리스트 조회 성공";
 
     //Like
-    public static String SUCCESS_PUSH_LIKE = "좋아요 표시 성공";
-    public static String SUCCESS_DELETE_LIKE = "좋아요 삭제 성공";
-    public static String SUCCESS_GET_LIKE = "좋아요 조회 성공";
+    public static String SUCCESS_PUT_LIKE = "좋아요 수정 성공";
+
 
     //Study
     public static String SUCCESS_GET_STUDY = "스터디 상세 조회 성공";

@@ -38,7 +38,7 @@ public class BoardResponse {
 
     private LocalDateTime modifiedDate;
 
-    public BoardResponse(Board board) { //전체 조회
+   public BoardResponse(Board board) { //전체 조회
 
         this.boardType = board.getBoardType();
 
@@ -51,8 +51,8 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.totalComment = board.getCommentList().size();
-        this.totalLike = board.getLikeList().size();
+        this.totalComment = board.getTotalComments();
+        this.totalLike = board.getTotalLikes();
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
     }
@@ -63,12 +63,12 @@ public class BoardResponse {
 
         if(this.boardType==2){
             this.writerInfo = UserResponse.from_anon(board.getUser());
-            this.comments = board.getCommentList().stream()
+            this.comments = board.getBoardComments().getBoardComments().stream()
                     .map(BoardCommentResponse::from_anon).collect(Collectors.toList());
         }
         else{
             this.writerInfo = UserResponse.from(board.getUser());
-            this.comments = board.getCommentList().stream()
+            this.comments = board.getBoardComments().getBoardComments().stream()
                     .map(BoardCommentResponse::from).collect(Collectors.toList());
         }
 
@@ -76,7 +76,7 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.totalLike = board.getLikeList().size();
+        this.totalLike = board.getTotalComments();
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
         this.likeStatus = likeStatus;
