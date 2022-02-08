@@ -21,8 +21,7 @@ public class StudyFormRequest {
 
     @NotBlank(message = "스터디 유형이 없습니다.")
     private String studyType;
-
-    @NotBlank(message = "테크 스택이 없습니다.")
+    
     @Size(max = 255, message = "255자 이하여야 합니다.")
     private String techStack;
 

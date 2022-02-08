@@ -75,7 +75,7 @@ public class SuccessMessage {
     public static String SUCCESS_POST_STUDY = "스터디 등록 성공";
     public static String SUCCESS_UPDATE_STUDY = "스터디 수정 성공";
     public static String SUCCESS_DELETE_STUDY = "스터디 삭제 성공";
-    public static String SUCCESS_GET_STUDY_NAME = "스터디명 검색 조회 성공";
+    public static String SUCCESS_GET_STUDY_NAME = "스터디 검색 성공";
     public static String SUCCESS_GET_STUDY_VIEWS = "스터디 조회순 조회 성공";
     public static String SUCCESS_GET_STUDY_SCRAP = "스터디명 스크랩순 조회 성공";
     public static String SUCCESS_GET_STUDY_LIST_COMMENTS = "사용자가 댓글 단 스터디 리스트 조회 성공";
