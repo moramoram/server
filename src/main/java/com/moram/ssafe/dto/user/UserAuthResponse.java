@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserAuthResponse {
 
-    private Long id;
+    private Long userId;
     private String email;
     private String profileImg;
     private String nickname;

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserProfileResponse {
 
+    private Long userId;
     private String email;
     private String profileImg;
     private String nickname;
@@ -22,7 +23,7 @@ public class UserProfileResponse {
     private LocalDateTime modifiedDate;
 
     public static UserProfileResponse from(User user) {
-        return new UserProfileResponse(user.getEmail(),
+        return new UserProfileResponse(user.getId(), user.getEmail(),
                 user.getProfileImg(), user.getNickname(), user.getRealName(), user.getOrdinal(),
                 user.getCampus(), user.getAuthCheck(), user.getLikeJob(),user.getCreatedDate(),user.getModifiedDate());
     }

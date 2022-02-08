@@ -45,6 +45,7 @@ public class AuthService {
         String refreshToken = jwtTokenProvider.createRefreshToken(user);
 
         return LoginResponse.builder()
+                .userId(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .authCheck(user.getAuthCheck())
