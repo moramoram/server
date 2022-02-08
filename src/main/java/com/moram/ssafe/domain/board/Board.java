@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,11 +27,17 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<BoardComment> commentList = new ArrayList<>();
+//   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+//    private List<BoardComment> commentList = new ArrayList<>();
 
-   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<BoardLike> likeList = new ArrayList<>();
+//   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+//    private List<BoardLike> likeList = new ArrayList<>();
+
+    @Embedded
+    private final BoardComments boardComments = new BoardComments();
+
+    @Embedded
+    private final BoardLikes boardLikes = new BoardLikes();
 
     private Integer boardType; //1:자유 2:익명 3:취업정보 4:질문
 
@@ -45,13 +52,8 @@ public class Board extends BaseEntity {
     }
 
     public void addComment(BoardComment comment){
-        this.commentList.add(comment);
+        this.boardComments.getBoardComments().add(comment);
         comment.setBoard(this);
-    }
-
-    public void addLike(BoardLike like){
-        this.likeList.add(like);
-        like.setBoard(this);
     }
 
     public void update(String title, String content){
@@ -68,4 +70,15 @@ public class Board extends BaseEntity {
         this.views=0;
     }
 
+    public boolean toggleBoardLike(BoardLike boardLike) {
+        return boardLikes.toggleBoardLike(boardLike);
+    }
+
+    public int getTotalComments(){
+        return boardComments.count();
+    }
+
+    public int getTotalLikes(){
+        return boardLikes.count();
+    }
 }
