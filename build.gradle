@@ -52,7 +52,8 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
 
     //aws
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

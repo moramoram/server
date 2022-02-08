@@ -11,6 +11,6 @@ import javax.validation.constraints.Size;
 public class UserNickNameRequest {
 
     @NotBlank(message = "빈문자열을 허용하지 않습니다.")
-    @Size(min = 2, max = 8, message = "2~8자의 닉네임만 가능합니다.")
+    @Size(min = 2, max = 10, message = "2~10자의 닉네임만 가능합니다.")
     private String nickname;
 }
