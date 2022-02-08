@@ -4,10 +4,7 @@ import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.board.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
-import com.moram.ssafe.dto.board.BoardLikeResponse;
-import com.moram.ssafe.dto.board.BoardResponse;
-import com.moram.ssafe.dto.board.BoardSaveRequest;
-import com.moram.ssafe.dto.board.BoardUpdateRequest;
+import com.moram.ssafe.dto.board.*;
 import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.board.BoardNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +42,7 @@ public class BoardService {
 
     @Transactional
     public BoardResponse findBoard(Long boardId) {
-        Board board = boardQueryRepository.findBoard(boardId);
+        Board board = boardRepository.findBoard(boardId).orElseThrow(BoardNotFoundException::new);
         if(board==null) throw new BoardNotFoundException();
 
         board.addView();
@@ -73,6 +70,11 @@ public class BoardService {
 
     public List<BoardResponse> findByLotsOfLike(int boardType, int offset){
         return boardQueryRepository.findByLotsOfLike(boardType, PageRequest.of(offset - 1, 12))
+                .stream().map(BoardResponse::new).collect(Collectors.toList());
+    }
+
+    public List<BoardResponse> searchBoard(int offset, BoardSearch boardSearch){
+        return boardQueryRepository.searchBoard(PageRequest.of(offset - 1, 12), boardSearch)
                 .stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
