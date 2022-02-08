@@ -55,7 +55,6 @@ public class User extends BaseEntity {
     }
 
     public void update(UserUpdateAddAuth user) {
-        this.profileImg = user.getProfileImg();
         this.nickname = user.getNickname();
         this.realName = user.getRealName();
         this.ordinal = user.getOrdinal();
@@ -90,11 +89,6 @@ public class User extends BaseEntity {
     }
 
     public void profileImageUpdate(String profileImg) {
-        this.profileImg = profileImg;
-    }
-
-    public void profileUpdate(String nickname, String profileImg) {
-        this.nickname = nickname;
         this.profileImg = profileImg;
     }
 }
