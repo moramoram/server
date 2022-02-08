@@ -18,7 +18,7 @@ public class BoardLikes {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true) //orphanRemoval 없으면 삭제가 안됨.
     private final List<BoardLike> boardLikes = new ArrayList<>();
 
-    public int count(){
+    public int size(){
         return boardLikes.size();
     }
 
