@@ -14,6 +14,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RestController
 public class S3Controller {
+
     private final S3Uploader s3Uploader;
 
     @PostMapping("/images")

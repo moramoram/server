@@ -50,10 +50,10 @@ public class CompanyController {
     }
 
     @GetMapping("/name")
-    public ResponseEntity<CommonResponseDto> findCompanyName(@RequestBody CompanyNameRequest request) {
+    public ResponseEntity<CommonResponseDto> findCompanyName(@RequestParam(defaultValue = "") String name) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_COMPANY_NAME,
-                companyService.findCompanyName(request.getName())));
+                companyService.findCompanyName(name)));
     }
 
     @GetMapping("/users")
@@ -67,19 +67,19 @@ public class CompanyController {
 
     @PutMapping("/{companyId}/name")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId,@RequestBody CompanyNameRequest request) {
+    public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId, @RequestBody CompanyNameRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMPANY_NAME,
-                companyService.updateCompanyName(companyId,request.getName())));
+                companyService.updateCompanyName(companyId, request.getName())));
     }
 
     @PutMapping("/{companyId}/logo-img")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> updateLogoImg(@PathVariable Long companyId,@ModelAttribute MultipartFile logoImg) throws IOException{
+    public ResponseEntity<CommonResponseDto> updateLogoImg(@PathVariable Long companyId, @ModelAttribute MultipartFile logoImg) throws IOException {
         String logoImgUrl = s3Uploader.upload(logoImg, "static/company");
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMPANY_LOGO,
-                companyService.updateLogoImg(companyId,logoImgUrl)));
+                companyService.updateLogoImg(companyId, logoImgUrl)));
     }
 
     @DeleteMapping("/{companyId}")

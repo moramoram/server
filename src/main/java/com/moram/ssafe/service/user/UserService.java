@@ -87,10 +87,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileResponse userProfileUpdate(String nickname,String profileImg) {
+    public UserProfileResponse userProfileUpdate(String profileImg) {
         Long id = UserContext.getCurrentUserId();
         User originUser = getUser(id);
-        originUser.profileUpdate(nickname,profileImg);
+        originUser.profileImageUpdate(profileImg);
         return UserProfileResponse.from(originUser);
     }
 }

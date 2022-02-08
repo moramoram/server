@@ -1,25 +1,23 @@
 package com.moram.ssafe.dto.recruit;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class RecruitSearch {
 
-    @NotNull(message = "null을 허용하지 않습니다.")
     private String title;
 
-    @NotNull(message = "null을 허용하지 않습니다.")
     private List<String> techStack;
 
-    @NotNull(message = "null을 허용하지 않습니다.")
     private String job;
 
-    @NotNull(message = "null을 허용하지 않습니다.")
     private String criteria;
+
+    public static RecruitSearch of(String title, List<String> techStack, String job, String criteria) {
+        return new RecruitSearch(title, techStack, job, criteria);
+    }
 }
