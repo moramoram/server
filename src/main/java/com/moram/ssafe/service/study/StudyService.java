@@ -5,6 +5,7 @@ import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.study.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
+import com.moram.ssafe.dto.study.*;
 import com.moram.ssafe.dto.study.StudyRequestDto;
 import com.moram.ssafe.dto.study.StudyResponse;
 import com.moram.ssafe.dto.study.StudySearch;
@@ -33,6 +34,7 @@ public class StudyService {
     private final UserRepository userRepository;
     private final StudyQueryRepository studyQueryRepository;
     private final StudyCommentRepository studyCommentRepository;
+    private final StudyScrapQueryRepository studyScrapQueryRepository;
 
     @Transactional
     public Long createStudy(StudyRequestDto request) {
@@ -66,20 +68,10 @@ public class StudyService {
 
         String title = studySearch.getTitle();
         String type = studySearch.getType();
-        Page<Study> studies = null;
 
-        if (title != null && type != null) {
-            studies = studyRepository.findByTitleAndTypeContaining(title, type,
-                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
-        } else if (title == null && type != null) {
-            studies = studyRepository.findByTypeContaining(type,
-                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
-        } else if (title != null && type == null) {
-            studies = studyRepository.findByTitleContaining(title,
-                    PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
-        }
-
-        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
+        return studyQueryRepository.findByTitleAndTypeContaining(title, type,
+                PageRequest.of(offset - 1, 12))
+                .stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
     public List<StudyResponse> findByLotsOfView(int offset) {
@@ -97,6 +89,23 @@ public class StudyService {
     public List<StudyResponse> findByUserComments() {
         return studyQueryRepository.findByUserComment(UserContext.getCurrentUserId())
                 .stream().map(StudyResponse::from).collect(Collectors.toList());
+    }
+
+    public List<StudyResponse> findUserScrap(Long userId, int offset){
+
+        return studyScrapQueryRepository.findByUserScrap(userId,
+                        PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")))
+                .stream().map(StudyResponse::from).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public StudyScrapResponse toggleStudyScraps(Long studyId) {
+        Long userId = UserContext.getCurrentUserId();
+        Study study = studyRepository.findStudy(studyId).orElseThrow(StudyNotFoundException::new);
+        StudyScrap studyScrap = StudyScrap.builder().userId(userId).study(study).build();
+
+        return StudyScrapResponse.from(study.getStudyScraps().toggleStudyScraps(studyScrap));
+
     }
 
     @Transactional

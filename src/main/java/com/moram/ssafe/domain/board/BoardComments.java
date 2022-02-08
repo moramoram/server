@@ -18,5 +18,5 @@ public class BoardComments {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<BoardComment> boardComments = new ArrayList<>();
 
-    public int count() {return boardComments.size();}
+    public int size() {return boardComments.size();}
 }

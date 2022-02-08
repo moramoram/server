@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.moram.ssafe.domain.board.QBoard.board;
 import static com.moram.ssafe.domain.board.QBoardComment.boardComment;

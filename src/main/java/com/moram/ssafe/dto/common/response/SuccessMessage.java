@@ -65,8 +65,6 @@ public class SuccessMessage {
     public static String SUCCESS_GET_BOARD_VIEW = "게시물 조회순 조회 성공";
     public static String SUCCESS_GET_BOARD_LIKE = "게시물 좋아요순 조회 성공";
     public static String SUCCESS_GET_BOARD_LIST_COMMENTS = "사용자가 댓글 단 게시물 리스트 조회 성공";
-
-    //Like
     public static String SUCCESS_PUT_LIKE = "좋아요 수정 성공";
 
 
@@ -81,9 +79,6 @@ public class SuccessMessage {
     public static String SUCCESS_GET_STUDY_VIEWS = "스터디 조회순 조회 성공";
     public static String SUCCESS_GET_STUDY_SCRAP = "스터디명 스크랩순 조회 성공";
     public static String SUCCESS_GET_STUDY_LIST_COMMENTS = "사용자가 댓글 단 스터디 리스트 조회 성공";
+    public static String SUCCESS_PUT_STUDY_SCRAP = "스터디 스크랩 수정 성공";
 
-    //Scrap
-    public static String SUCCESS_PUSH_SCRAP = "스크랩 성공";
-    public static String SUCCESS_DELETE_SCRAP = "스크랩 삭제 성공";
-    public static String SUCCESS_GET_STUDY_SCRAP_LIST = "스크랩 게시물 리스트 조회 성공";
 }

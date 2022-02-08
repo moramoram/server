@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,19 +25,6 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findUserStudy(@Param("userId") Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"user"})
-    @Query("select distinct s from Study s where s.title like %:title%")
-    Page<Study> findByTitleContaining(@Param("title") String title, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"user"})
-    @Query("select distinct s from Study s where s.studyType = :type and s.title like %:title%")
-    Page<Study> findByTitleAndTypeContaining(@Param("title")String title, @Param("type") String type,
-                                             Pageable pageable);
-
-    @EntityGraph(attributePaths = {"user"})
-    @Query("select distinct s from Study s where s.studyType = :type")
-    Page<Study> findByTypeContaining(@Param("type") String type, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"user"})
-    @Query("select s from Study s order by size(s.scrapList) desc")
+    @Query("select s from Study s order by size(s.studyScraps.studyScraps) desc")
     Page<Study> findByLotsOfScrap(Pageable pageable);
 }

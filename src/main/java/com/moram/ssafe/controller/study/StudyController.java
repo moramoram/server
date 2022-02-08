@@ -74,6 +74,22 @@ public class StudyController {
                 HttpStatus.OK, SUCCESS_GET_STUDY_LIST_COMMENTS, studyService.findByUserComments()));
     }
 
+    @GetMapping("/scraps/users")
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> findUserScrap(@RequestParam int offset){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_RECRUIT_SCRAP_LIST,
+                studyService.findUserScrap(UserContext.getCurrentUserId(), offset)));
+    }
+
+    @PutMapping("/{studyId}/scraps")
+    @PreAuthorize(roles = {"ROLE_AUTH"})
+    public ResponseEntity<CommonResponseDto> toggleStudyScraps(@PathVariable Long studyId){
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_PUT_STUDY_SCRAP,
+                studyService.toggleStudyScraps(studyId)));
+    }
+
     @PostMapping
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> createStudy(@Valid StudyFormRequest request) throws IOException {
@@ -81,10 +97,10 @@ public class StudyController {
                 HttpStatus.OK, SUCCESS_POST_STUDY, studyService.createStudy(convertStudyRequestDto(request))));
     }
 
-
     @PutMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateStudy(@PathVariable Long studyId, @Valid StudyFormRequest request) throws IOException {
+    public ResponseEntity<CommonResponseDto> updateStudy(@PathVariable Long studyId, @Valid StudyFormRequest request)
+            throws IOException {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateStudy(studyId, convertStudyRequestDto(request))));
     }

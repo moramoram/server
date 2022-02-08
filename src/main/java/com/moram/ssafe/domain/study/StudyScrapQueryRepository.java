@@ -2,7 +2,6 @@ package com.moram.ssafe.domain.study;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +20,7 @@ public class StudyScrapQueryRepository {
                 .select(studyScrap.study)
                 .distinct()
                 .from(studyScrap)
-                .where(studyScrap.user.id.eq(userId))
+                .where(studyScrap.userId.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
