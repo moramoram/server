@@ -75,10 +75,10 @@ public class Board extends BaseEntity {
     }
 
     public int getTotalComments(){
-        return boardComments.count();
+        return boardComments.size();
     }
 
     public int getTotalLikes(){
-        return boardLikes.count();
+        return boardLikes.size();
     }
 }

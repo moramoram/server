@@ -52,7 +52,7 @@ public enum ErrorCode {
 
     //Study
     STUDY_NOT_FOUND(404, "Study not found"),
-    STUDY_SCRAP_NOT_FOUND(404, "Study Scrap not found");
+    STUDY_SCRAP_REMOVE_FAIL(404, "Study Scrap remove fail");
 
     private final int status;
     private final String message;
