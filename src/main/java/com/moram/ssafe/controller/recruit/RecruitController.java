@@ -72,7 +72,7 @@ public class RecruitController {
     @GetMapping("/search")
     public ResponseEntity<CommonResponseDto> findRecruitTitleAndTechStack(@RequestParam(required = false) String title,
                                                                           @RequestParam(required = false) List<String> techStack,
-                                                                          @RequestParam(required = false)String job,
+                                                                          @RequestParam(required = false) String job,
                                                                           @RequestParam(required = false) String criteria,
                                                                           @RequestParam(required = false) int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
