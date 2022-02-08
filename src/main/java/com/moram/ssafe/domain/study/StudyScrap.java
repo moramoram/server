@@ -22,13 +22,14 @@ public class StudyScrap {
     @JoinColumn(name = "study_id")
     private Study study;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(nullable = false)
+    private Long userId;
 
     @Builder
-    public StudyScrap(User user, Study study){
-        this.user = user;
+    public StudyScrap(Long userId, Study study){
+        this.userId = userId;
         this.study = study;
     }
+
+    public boolean ownedBy(Long userId) {return this.userId.equals(userId);}
 }

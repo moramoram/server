@@ -30,8 +30,8 @@ public class Study extends BaseEntity {
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
     private List<StudyComment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
-    private List<StudyScrap> scrapList = new ArrayList<>();
+    @Embedded
+    private final StudyScraps studyScraps = new StudyScraps();
 
     private String companyName;
 
