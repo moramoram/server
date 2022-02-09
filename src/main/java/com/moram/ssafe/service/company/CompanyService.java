@@ -3,9 +3,11 @@ package com.moram.ssafe.service.company;
 import com.moram.ssafe.config.s3.S3Uploader;
 import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.company.Company;
+import com.moram.ssafe.domain.company.CompanyCommentRepository;
 import com.moram.ssafe.domain.company.CompanyQueryRepository;
 import com.moram.ssafe.domain.company.CompanyRepository;
 import com.moram.ssafe.domain.recruit.RecruitRepository;
+import com.moram.ssafe.domain.recruit.RecruitScrapRepository;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.company.CompanyResponse;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final CompanyCommentRepository companyCommentRepository;
     private final CompanyQueryRepository companyQueryRepository;
     private final UserRepository userRepository;
     private final RecruitRepository recruitRepository;
@@ -71,7 +74,8 @@ public class CompanyService {
     public void deleteCompany(Long companyId) {
         Company company = getCompany(companyId);
         s3Uploader.deleteObject(company.getLogoImg());
-        recruitRepository.deleteByCompanyId(companyId);
+        recruitRepository.deleteByCompanyId(company.getId());
+        companyCommentRepository.deleteByCompanyId(company.getId());
         companyRepository.deleteById(company.getId());
     }
 
