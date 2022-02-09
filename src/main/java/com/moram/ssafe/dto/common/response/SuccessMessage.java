@@ -56,7 +56,7 @@ public class SuccessMessage {
 
     //Board
     public static String SUCCESS_GET_BOARD = "게시판 상세 조회 성공";
-    public static String SUCCESS_GET_BOARD_LIST = "게시판 리스트 최신순 조회 성공";
+    public static String SUCCESS_GET_BOARD_LIST = "게시판 리스트 조회 성공";
     public static String SUCCESS_GET_BOARD_LIST_USER = "사용자 작성 게시판 리스트 조회 성공";
     public static String SUCCESS_POST_BOARD = "게시물 등록 성공";
     public static String SUCCESS_UPDATE_BOARD = "게시물 수정 성공";
@@ -70,7 +70,7 @@ public class SuccessMessage {
 
     //Study
     public static String SUCCESS_GET_STUDY = "스터디 상세 조회 성공";
-    public static String SUCCESS_GET_STUDY_LIST = "스터디 리스트 최신순 조회 성공";
+    public static String SUCCESS_GET_STUDY_LIST = "스터디 리스트 조회 성공";
     public static String SUCCESS_GET_STUDY_LIST_USER = "사용자 작성 스터디 리스트 조회 성공";
     public static String SUCCESS_POST_STUDY = "스터디 등록 성공";
     public static String SUCCESS_UPDATE_STUDY = "스터디 수정 성공";

@@ -104,7 +104,7 @@ public class BoardController {
                 HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.updateBoard(currentUser.getId(), boardId, request)));
     }
 
-    @PutMapping("/{boardId}/scraps")
+    @PutMapping("/{boardId}/likes")
     @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> toggleBoardLikes(@AuthenticationPrincipal CurrentUser currentUser,
                                                               @PathVariable Long boardId) {

@@ -115,6 +115,7 @@ public class RecruitService {
     @Transactional
     public void deleteRecruit(Long id) {
         Recruit recruit = getRecruit(id);
+        recruitScrapRepository.deleteByRecruitId(recruit.getId());
         recruitRepository.deleteById(recruit.getId());
     }
 
