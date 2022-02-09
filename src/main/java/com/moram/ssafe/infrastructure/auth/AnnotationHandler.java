@@ -1,5 +1,6 @@
-package com.moram.ssafe.controller.user.annotation;
+package com.moram.ssafe.infrastructure.auth;
 
+import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.exception.user.FailToAuthenticationException;
 
 public class AnnotationHandler {

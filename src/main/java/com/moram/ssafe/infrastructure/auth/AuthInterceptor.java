@@ -1,6 +1,5 @@
 package com.moram.ssafe.infrastructure.auth;
 
-import com.moram.ssafe.controller.user.annotation.AnnotationHandler;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.exception.auth.NoTokenException;
 import io.jsonwebtoken.Claims;
