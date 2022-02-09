@@ -1,6 +1,8 @@
 package com.moram.ssafe.controller.company;
 
 import com.moram.ssafe.config.s3.S3Uploader;
+import com.moram.ssafe.controller.user.annotation.AuthenticationPrincipal;
+import com.moram.ssafe.controller.user.annotation.CurrentUser;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
@@ -58,10 +60,10 @@ public class CompanyController {
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserCommentsByCompany() {
+    public ResponseEntity<CommonResponseDto> findUserCommentsByCompany(@AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_COMPANY_LIST,
-                companyService.findUserCommentsByCompany()));
+                companyService.findUserCommentsByCompany(currentUser.getId())));
     }
 
 

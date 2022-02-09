@@ -1,7 +1,6 @@
 package com.moram.ssafe.service.study;
 
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.study.Study;
 import com.moram.ssafe.domain.study.StudyComment;
 import com.moram.ssafe.domain.study.StudyCommentRepository;
@@ -34,8 +33,7 @@ public class StudyCommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createStudyComment(StudyCommentSaveRequest request){
-        Long userId = UserContext.getCurrentUserId();
+    public Long createStudyComment(Long userId,StudyCommentSaveRequest request){
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         Study study = studyRepository.findStudy(request.getStudyId()).orElseThrow(StudyNotFoundException::new);
@@ -50,8 +48,7 @@ public class StudyCommentService {
     }
 
     @Transactional
-    public Long updateStudyComment(Long commentId, StudyCommentUpdateRequest request){
-        Long userId = UserContext.getCurrentUserId();
+    public Long updateStudyComment(Long userId,Long commentId, StudyCommentUpdateRequest request){
         StudyComment comment = studyCommentRepository.findById(commentId).orElseThrow(StudyCommentNotFound::new);
 
         validCommentUser(userId, comment.getUser().getId());
@@ -61,8 +58,7 @@ public class StudyCommentService {
     }
 
     @Transactional
-    public Long deleteStudyComment(Long commentId){
-        Long userId = UserContext.getCurrentUserId();
+    public Long deleteStudyComment(Long userId,Long commentId){
         StudyComment comment = studyCommentRepository.findById(commentId).orElseThrow(StudyCommentNotFound::new);
 
         validCommentUser(userId, comment.getUser().getId());

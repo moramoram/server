@@ -1,6 +1,5 @@
 package com.moram.ssafe.service.user;
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.user.Role;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
@@ -54,8 +53,7 @@ public class AuthService {
                 .build();
     }
 
-    public RefreshTokenResponse refreshToken() {
-        Long userId = UserContext.getCurrentUserId();
+    public RefreshTokenResponse refreshToken(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return RefreshTokenResponse.builder()
                 .refreshToken(jwtTokenProvider.createRefreshToken(user))

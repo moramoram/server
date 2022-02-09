@@ -1,5 +1,7 @@
 package com.moram.ssafe.controller.company;
 
+import com.moram.ssafe.controller.user.annotation.AuthenticationPrincipal;
+import com.moram.ssafe.controller.user.annotation.CurrentUser;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
@@ -22,10 +24,11 @@ public class CompanyCommentController {
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> createComment(@RequestBody @Valid CompanyCommentRequest request) {
+    public ResponseEntity<CommonResponseDto> createComment(@AuthenticationPrincipal CurrentUser currentUser,
+                                                           @RequestBody @Valid CompanyCommentRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_POST_COMMENT,
-                companyCommentService.createComment(request)));
+                companyCommentService.createComment(currentUser.getId(),request)));
     }
 
     @GetMapping("/{companyId}")
@@ -37,16 +40,18 @@ public class CompanyCommentController {
 
     @PutMapping
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateComment(@RequestBody @Valid CompanyCommentUpdateRequest request) {
+    public ResponseEntity<CommonResponseDto> updateComment(@AuthenticationPrincipal CurrentUser currentUser,
+                                                           @RequestBody @Valid CompanyCommentUpdateRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMMENT,
-                companyCommentService.updateComment(request)));
+                companyCommentService.updateComment(currentUser.getId(), request)));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> deleteComment(@PathVariable Long id) {
-        companyCommentService.deleteComment(id);
+    public ResponseEntity<CommonResponseDto> deleteComment(@AuthenticationPrincipal CurrentUser currentUser,
+                                                           @PathVariable Long id) {
+        companyCommentService.deleteComment(currentUser.getId(), id);
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.NO_CONTENT, SuccessMessage.SUCCESS_DELETE_COMMENT));
     }

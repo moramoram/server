@@ -1,5 +1,7 @@
 package com.moram.ssafe.controller.recruit;
 
+import com.moram.ssafe.controller.user.annotation.AuthenticationPrincipal;
+import com.moram.ssafe.controller.user.annotation.CurrentUser;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
@@ -39,10 +41,11 @@ public class RecruitController {
 
     @GetMapping("/{id}/users")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> findUserRecruit(@PathVariable Long id) {
+    public ResponseEntity<CommonResponseDto> findUserRecruit(@AuthenticationPrincipal CurrentUser currentUser,
+                                                             @PathVariable Long id) {
         recruitService.addView(id);
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT, recruitService.findUserRecruit(id)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT, recruitService.findUserRecruit(currentUser.getId(), id)));
     }
 
     @GetMapping("/benefits")
@@ -83,9 +86,9 @@ public class RecruitController {
 
     @GetMapping("/scraps/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> userRecruitScrapList() {
+    public ResponseEntity<CommonResponseDto> userRecruitScrapList(@AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList()));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList(currentUser.getId())));
     }
 
     @PostMapping
@@ -112,9 +115,10 @@ public class RecruitController {
 
     @PutMapping("/{recruitId}/scraps")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> toggleRecruitScrap(@PathVariable Long recruitId) {
+    public ResponseEntity<CommonResponseDto> toggleRecruitScrap(@AuthenticationPrincipal CurrentUser currentUser,
+                                                                @PathVariable Long recruitId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_PUT_RECRUIT_SCRAP, recruitService.toggleRecruitScraps(recruitId)));
+                HttpStatus.OK, SuccessMessage.SUCCESS_PUT_RECRUIT_SCRAP, recruitService.toggleRecruitScraps(currentUser.getId(), recruitId)));
     }
 
 }

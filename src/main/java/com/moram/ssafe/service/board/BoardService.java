@@ -1,6 +1,5 @@
 package com.moram.ssafe.service.board;
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.board.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
@@ -29,65 +28,63 @@ public class BoardService {
     private final BoardCommentRepository boardCommentRepository;
 
     @Transactional
-    public Long createBoard(BoardSaveRequest requestDto) {
-        User user = userRepository.findById(UserContext.getCurrentUserId())
+    public Long createBoard(Long userId, BoardSaveRequest requestDto) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(BoardNotFoundException::new);
         return boardRepository.save(requestDto.of(user)).getId();
     }
 
     public List<BoardResponse> findBoardList(int boardType, int offset) {
-        return  boardQueryRepository.findBoardList(boardType, PageRequest.of(offset - 1, 12))
+        return boardQueryRepository.findBoardList(boardType, PageRequest.of(offset - 1, 12))
                 .stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
     @Transactional
-    public BoardResponse findBoard(Long boardId) {
+    public BoardResponse findBoard(Long userId, Long boardId) {
         Board board = boardRepository.findBoard(boardId).orElseThrow(BoardNotFoundException::new);
-        if(board==null) throw new BoardNotFoundException();
+        if (board == null) throw new BoardNotFoundException();
 
         board.addView();
-        Boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, UserContext.getCurrentUserId());
+        Boolean likeStatus = boardLikeRepository.existsByBoardIdAndUserId(boardId, userId);
 
         return new BoardResponse(board, likeStatus);
     }
 
     public List<BoardResponse> findUserBoard(Long userId, int offset) {
-        return  boardQueryRepository.findUserBoard(userId, PageRequest.of(offset - 1, 12))
+        return boardQueryRepository.findUserBoard(userId, PageRequest.of(offset - 1, 12))
                 .stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
-    public List<BoardResponse> findByBoardName(int boardType, String name, int offset){
+    public List<BoardResponse> findByBoardName(int boardType, String name, int offset) {
 
         return boardQueryRepository.findByTitleContaining(boardType, name, PageRequest.of(offset - 1, 12))
                 .stream().map(BoardResponse::new).collect(Collectors.toList());
 
     }
 
-    public List<BoardResponse> findByLotsOfView(int boardType, int offset){
-        return  boardQueryRepository.findByLotsOfView(boardType, PageRequest.of(offset - 1, 12))
+    public List<BoardResponse> findByLotsOfView(int boardType, int offset) {
+        return boardQueryRepository.findByLotsOfView(boardType, PageRequest.of(offset - 1, 12))
                 .stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
-    public List<BoardResponse> findByLotsOfLike(int boardType, int offset){
+    public List<BoardResponse> findByLotsOfLike(int boardType, int offset) {
         return boardQueryRepository.findByLotsOfLike(boardType, PageRequest.of(offset - 1, 12))
                 .stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
-    public List<BoardResponse> searchBoard(int offset, BoardSearch boardSearch){
+    public List<BoardResponse> searchBoard(int offset, BoardSearch boardSearch) {
         return boardQueryRepository.searchBoard(PageRequest.of(offset - 1, 12), boardSearch)
                 .stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
-    public List<BoardResponse> findByUserComments(){
-        List<Board> boards =  boardQueryRepository.findByUserComment(UserContext.getCurrentUserId());
+    public List<BoardResponse> findByUserComments(Long userId) {
+        List<Board> boards = boardQueryRepository.findByUserComment(userId);
 
         return boards.stream().map(BoardResponse::new).collect(Collectors.toList());
     }
 
     @Transactional
-    public Long updateBoard(Long boardId, BoardUpdateRequest requestDto) {
-        Long userId = UserContext.getCurrentUserId();
-
+    public Long updateBoard(Long userId, Long boardId, BoardUpdateRequest requestDto) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
 
         validBoardUser(userId, board.getUser().getId());
@@ -97,8 +94,7 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardLikeResponse toggleBoardLikes(Long boardId){
-        Long userId = UserContext.getCurrentUserId();
+    public BoardLikeResponse toggleBoardLikes(Long userId, Long boardId) {
         Board board = boardRepository.findBoard(boardId).orElseThrow(BoardNotFoundException::new);
         BoardLike boardLike = BoardLike.builder().board(board).userId(userId).build();
 
@@ -106,9 +102,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Long deleteBoard(Long boardId) {
-        Long userId = UserContext.getCurrentUserId();
-
+    public Long deleteBoard(Long userId, Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
 
         validBoardUser(userId, board.getUser().getId());
@@ -118,8 +112,8 @@ public class BoardService {
         return boardId;
     }
 
-    public void validBoardUser(Long currentUser, Long boardUser){
-        if(currentUser == boardUser)
+    public void validBoardUser(Long currentUser, Long boardUser) {
+        if (currentUser == boardUser)
             return;
         throw new UserAuthenticationException();
     }

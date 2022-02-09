@@ -1,8 +1,9 @@
 package com.moram.ssafe.controller.study;
 
 import com.moram.ssafe.config.s3.S3Uploader;
+import com.moram.ssafe.controller.user.annotation.AuthenticationPrincipal;
+import com.moram.ssafe.controller.user.annotation.CurrentUser;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.study.StudyFormRequest;
 import com.moram.ssafe.dto.study.StudyRequestDto;
@@ -36,16 +37,17 @@ public class StudyController {
 
     @GetMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findStudy(@PathVariable Long studyId) {
+    public ResponseEntity<CommonResponseDto> findStudy(@AuthenticationPrincipal CurrentUser currentUser,
+                                                       @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY, studyService.findStudy(studyId)));
+                HttpStatus.OK, SUCCESS_GET_STUDY, studyService.findStudy(currentUser.getId(), studyId)));
     }
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserStudy(@RequestParam int offset) {
+    public ResponseEntity<CommonResponseDto> findUserStudy(@AuthenticationPrincipal CurrentUser currentUser, @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(HttpStatus.OK,
-                SUCCESS_GET_BOARD_LIST_USER, studyService.findUserStudy(UserContext.getCurrentUserId(), offset)));
+                SUCCESS_GET_BOARD_LIST_USER, studyService.findUserStudy(currentUser.getId(), offset)));
     }
 
     @GetMapping("/search")
@@ -72,40 +74,45 @@ public class StudyController {
 
     @GetMapping("/comments/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findByUserComments() {
+    public ResponseEntity<CommonResponseDto> findByUserComments(@AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_STUDY_LIST_COMMENTS, studyService.findByUserComments()));
+                HttpStatus.OK, SUCCESS_GET_STUDY_LIST_COMMENTS, studyService.findByUserComments(currentUser.getId())));
     }
 
     @GetMapping("/scraps/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserScrap(@RequestParam int offset) {
+    public ResponseEntity<CommonResponseDto> findUserScrap(@AuthenticationPrincipal CurrentUser currentUser,
+                                                           @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_RECRUIT_SCRAP_LIST,
-                studyService.findUserScrap(UserContext.getCurrentUserId(), offset)));
+                studyService.findUserScrap(currentUser.getId(), offset)));
     }
 
     @PutMapping("/{studyId}/scraps")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> toggleStudyScraps(@PathVariable Long studyId) {
+    public ResponseEntity<CommonResponseDto> toggleStudyScraps(@AuthenticationPrincipal CurrentUser currentUser,
+                                                               @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_PUT_STUDY_SCRAP,
-                studyService.toggleStudyScraps(studyId)));
+                studyService.toggleStudyScraps(currentUser.getId(), studyId)));
     }
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> createStudy(@Valid StudyFormRequest request) throws IOException {
+    public ResponseEntity<CommonResponseDto> createStudy(@AuthenticationPrincipal CurrentUser currentUser,
+                                                         @Valid StudyFormRequest request) throws IOException {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.createStudy(convertStudyRequestDto(request))));
+                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.createStudy(currentUser.getId(), convertStudyRequestDto(request))));
     }
 
     @PutMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateStudy(@PathVariable Long studyId, @Valid StudyFormRequest request)
+    public ResponseEntity<CommonResponseDto> updateStudy(@AuthenticationPrincipal CurrentUser currentUser,
+                                                         @PathVariable Long studyId, @Valid StudyFormRequest request)
             throws IOException {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateStudy(studyId, convertStudyRequestDto(request))));
+                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateStudy(currentUser.getId(),
+                        studyId, convertStudyRequestDto(request))));
     }
 
     public StudyRequestDto convertStudyRequestDto(StudyFormRequest request) throws IOException {
@@ -129,15 +136,17 @@ public class StudyController {
 
     @PutMapping("{studyId}/recruitments")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateRecruitment(@PathVariable Long studyId) {
+    public ResponseEntity<CommonResponseDto> updateRecruitment(@AuthenticationPrincipal CurrentUser currentUser,
+                                                               @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateRecruitment(studyId)));
+                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateRecruitment(currentUser.getId(), studyId)));
     }
 
     @DeleteMapping("/{studyId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> deleteStudy(@PathVariable Long studyId) {
+    public ResponseEntity<CommonResponseDto> deleteStudy(@AuthenticationPrincipal CurrentUser currentUser,
+                                                         @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.deleteStudy(studyId)));
+                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.deleteStudy(currentUser.getId(), studyId)));
     }
 }
