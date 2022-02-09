@@ -1,7 +1,6 @@
 package com.moram.ssafe.service.company;
 
 import com.moram.ssafe.config.s3.S3Uploader;
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.company.Company;
 import com.moram.ssafe.domain.company.CompanyQueryRepository;
 import com.moram.ssafe.domain.company.CompanyRepository;
@@ -58,8 +57,7 @@ public class CompanyService {
 
     }
 
-    public List<CompanyResponse> findUserCommentsByCompany() {
-        Long userId = UserContext.getCurrentUserId();
+    public List<CompanyResponse> findUserCommentsByCompany(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         List<Company> companyList = companyQueryRepository.findUserCommentsByCompany(user.getId());

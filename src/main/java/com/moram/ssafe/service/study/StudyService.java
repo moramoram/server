@@ -1,7 +1,6 @@
 package com.moram.ssafe.service.study;
 
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.study.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
@@ -37,8 +36,8 @@ public class StudyService {
     private final StudyScrapQueryRepository studyScrapQueryRepository;
 
     @Transactional
-    public Long createStudy(StudyRequestDto request) {
-        User user = userRepository.findById(UserContext.getCurrentUserId())
+    public Long createStudy(Long userId,StudyRequestDto request) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         return studyRepository.save(request.toStudy(user)).getId();
     }
@@ -50,10 +49,10 @@ public class StudyService {
     }
 
     @Transactional
-    public StudyResponse findStudy(Long studyId) {
+    public StudyResponse findStudy(Long userId,Long studyId) {
         Study study = studyRepository.findStudy(studyId).orElseThrow(StudyNotFoundException::new);
         study.addView();
-        Boolean scrapStatus = studyScrapRepository.existsByStudyIdAndUserId(studyId, UserContext.getCurrentUserId());
+        Boolean scrapStatus = studyScrapRepository.existsByStudyIdAndUserId(studyId, userId);
         return new StudyResponse(study, scrapStatus);
     }
 
@@ -83,8 +82,8 @@ public class StudyService {
         return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyResponse> findByUserComments() {
-        return studyQueryRepository.findByUserComment(UserContext.getCurrentUserId())
+    public List<StudyResponse> findByUserComments(Long userId) {
+        return studyQueryRepository.findByUserComment(userId)
                 .stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
@@ -96,8 +95,7 @@ public class StudyService {
     }
 
     @Transactional
-    public StudyScrapResponse toggleStudyScraps(Long studyId) {
-        Long userId = UserContext.getCurrentUserId();
+    public StudyScrapResponse toggleStudyScraps(Long userId,Long studyId) {
         Study study = studyRepository.findStudy(studyId).orElseThrow(StudyNotFoundException::new);
         StudyScrap studyScrap = StudyScrap.builder().userId(userId).study(study).build();
 
@@ -106,9 +104,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Long updateStudy(Long studyId, StudyRequestDto request) {
-        Long userId = UserContext.getCurrentUserId();
-
+    public Long updateStudy(Long userId,Long studyId, StudyRequestDto request) {
         Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
 
         validStudyUser(userId, study.getUser().getId());
@@ -118,8 +114,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Boolean updateRecruitment(Long studyId) {
-        Long userId = UserContext.getCurrentUserId();
+    public Boolean updateRecruitment(Long userId,Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
         validStudyUser(userId, study.getUser().getId());
         if (study.getRecruitment()) {
@@ -129,9 +124,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Long deleteStudy(Long studyId) {
-        Long userId = UserContext.getCurrentUserId();
-
+    public Long deleteStudy(Long userId,Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
 
         validStudyUser(userId, study.getUser().getId());

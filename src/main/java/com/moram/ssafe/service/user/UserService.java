@@ -1,6 +1,5 @@
 package com.moram.ssafe.service.user;
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.UserAuthResponse;
@@ -25,27 +24,24 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserProfileResponse getUserProfile() {
-        Long id = UserContext.getCurrentUserId();
-        User user = getUser(id);
+    public UserProfileResponse getUserProfile(Long userId) {
+        User user = getUser(userId);
         return UserProfileResponse.from(user);
     }
 
     @Transactional
-    public UserProfileResponse updateUserAddAuth(UserUpdateAddAuth request) {
+    public UserProfileResponse updateUserAddAuth(Long userId,UserUpdateAddAuth request) {
         if (userRepository.existsByNickname(request.getNickname())) {
             throw new DuplicateNicknameException();
         }
-        Long id = UserContext.getCurrentUserId();
-        User originUser = getUser(id);
+        User originUser = getUser(userId);
         originUser.update(request);
         return UserProfileResponse.from(originUser);
     }
 
     @Transactional
-    public void deleteUser() {
-        Long id = UserContext.getCurrentUserId();
-        User originUser = getUser(id);
+    public void deleteUser(Long userId) {
+        User originUser = getUser(userId);
         originUser.deleteUser();
     }
 
@@ -76,20 +72,18 @@ public class UserService {
     }
 
     @Transactional
-    public String nicknameUpdate(String nickname) {
+    public String nicknameUpdate(Long userId,String nickname) {
         if (userRepository.existsByNickname(nickname)) {
             throw new DuplicateNicknameException();
         }
-        Long id = UserContext.getCurrentUserId();
-        User originUser = getUser(id);
+        User originUser = getUser(userId);
         originUser.nickNameUpdate(nickname);
         return originUser.getNickname();
     }
 
     @Transactional
-    public UserProfileResponse userProfileUpdate(String profileImg) {
-        Long id = UserContext.getCurrentUserId();
-        User originUser = getUser(id);
+    public UserProfileResponse userProfileUpdate(Long userId,String profileImg) {
+        User originUser = getUser(userId);
         originUser.profileImageUpdate(profileImg);
         return UserProfileResponse.from(originUser);
     }

@@ -1,9 +1,7 @@
 package com.moram.ssafe.infrastructure.auth;
 
 import com.moram.ssafe.controller.user.annotation.AnnotationHandler;
-import com.moram.ssafe.controller.user.annotation.JwtPayload;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.exception.auth.NoTokenException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -60,12 +58,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private String[] getAuthorities(String token) {
         Claims claims = tokenProvider.getData(token);
-
-        Long userId = claims.get("id", Long.class);
-        UserContext.USER_CONTEXT.set(new JwtPayload(userId));
-
         String authorities = (String) claims.get(AUTHORITIES_KEY);
-
         return authorities.split(AUTHORITIES_SPLITTER);
     }
 

@@ -1,6 +1,8 @@
 package com.moram.ssafe.controller.user;
 
 import com.moram.ssafe.config.s3.S3Uploader;
+import com.moram.ssafe.controller.user.annotation.AuthenticationPrincipal;
+import com.moram.ssafe.controller.user.annotation.CurrentUser;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
 import com.moram.ssafe.dto.common.response.CommonResponseDto;
 import com.moram.ssafe.dto.common.response.SuccessMessage;
@@ -34,9 +36,9 @@ public class UserController {
 
     @GetMapping("/me")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> getUserProfile() {
+    public ResponseEntity<CommonResponseDto> getUserProfile(@AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_PROFILE, userService.getUserProfile()));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_USER_PROFILE, userService.getUserProfile(currentUser.getId())));
     }
 
     @PostMapping("/nickname-check")
@@ -47,9 +49,9 @@ public class UserController {
 
     @PutMapping("/refresh")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> refresh() {
+    public ResponseEntity<CommonResponseDto> refresh(@AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_PUT_REFRESH, authService.refreshToken()));
+                HttpStatus.OK, SUCCESS_PUT_REFRESH, authService.refreshToken(currentUser.getId())));
     }
 
     @GetMapping
@@ -62,24 +64,27 @@ public class UserController {
 
     @PutMapping("/nickname")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> userNicknameUpdate(@RequestBody @Valid UserNickNameRequest request) {
+    public ResponseEntity<CommonResponseDto> userNicknameUpdate(@AuthenticationPrincipal CurrentUser currentUser,
+                                                                @RequestBody @Valid UserNickNameRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_NICKNAME, userService.nicknameUpdate(request.getNickname())));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_NICKNAME, userService.nicknameUpdate(currentUser.getId(), request.getNickname())));
 
     }
 
     @PutMapping("/profile-images")
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> userProfileUpdate(@ModelAttribute @Valid UserProfileImgRequest request) throws IOException {
+    public ResponseEntity<CommonResponseDto> userProfileUpdate(@AuthenticationPrincipal CurrentUser currentUser,
+                                                               @ModelAttribute @Valid UserProfileImgRequest request) throws IOException {
         String profileImg = s3Uploader.upload(request.getProfileImg(), "static/profile");
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileUpdate(profileImg)));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileUpdate(currentUser.getId(),profileImg)));
 
     }
 
     @PutMapping
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> updateUserAddAuth(@ModelAttribute @Valid UserUpdateAddAuthFormRequest request) throws IOException {
+    public ResponseEntity<CommonResponseDto> updateUserAddAuth(@AuthenticationPrincipal CurrentUser currentUser,
+                                                               @ModelAttribute @Valid UserUpdateAddAuthFormRequest request) throws IOException {
         String authImg = s3Uploader.upload(request.getAuthImg(), "static/auth");
 
         UserUpdateAddAuth addAuth = UserUpdateAddAuth.builder()
@@ -91,13 +96,13 @@ public class UserController {
                 .build();
 
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_ADD_AUTH, userService.updateUserAddAuth(addAuth)));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_ADD_AUTH, userService.updateUserAddAuth(currentUser.getId(),addAuth)));
     }
 
     @DeleteMapping
     @PreAuthorize(roles = {"ROLE_USER"})
-    public ResponseEntity<CommonResponseDto> deleteUser() {
-        userService.deleteUser();
+    public ResponseEntity<CommonResponseDto> deleteUser(@AuthenticationPrincipal CurrentUser currentUser) {
+        userService.deleteUser(currentUser.getId());
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.NO_CONTENT, SUCCESS_DELETE_USER));
     }

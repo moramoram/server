@@ -1,6 +1,5 @@
 package com.moram.ssafe.service.company;
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.company.Company;
 import com.moram.ssafe.domain.company.CompanyComment;
 import com.moram.ssafe.domain.company.CompanyCommentRepository;
@@ -33,8 +32,7 @@ public class CompanyCommentService {
     private final CompanyCommentRepository companyCommentRepository;
 
     @Transactional
-    public CompanyCommentResponse createComment(CompanyCommentRequest request) {
-        Long userId = UserContext.getCurrentUserId();
+    public CompanyCommentResponse createComment(Long userId,CompanyCommentRequest request) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Company company = companyRepository.findById(request.getCompanyId()).orElseThrow(CompanyNotFoundException::new);
         CompanyComment comment = companyCommentRepository.save(
@@ -54,9 +52,7 @@ public class CompanyCommentService {
     }
 
     @Transactional
-    public CompanyCommentResponse updateComment(CompanyCommentUpdateRequest request) {
-        Long userId = UserContext.getCurrentUserId();
-
+    public CompanyCommentResponse updateComment(Long userId,CompanyCommentUpdateRequest request) {
         CompanyComment comment = companyCommentRepository.findById(request.getCommentId())
                 .orElseThrow(CompanyCommentNotFoundException::new);
 
@@ -68,8 +64,7 @@ public class CompanyCommentService {
     }
 
     @Transactional
-    public void deleteComment(Long id) {
-        Long userId = UserContext.getCurrentUserId();
+    public void deleteComment(Long userId,Long id) {
         CompanyComment comment = companyCommentRepository.findById(id)
                 .orElseThrow(CompanyCommentNotFoundException::new);
 

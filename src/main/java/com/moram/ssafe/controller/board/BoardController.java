@@ -1,7 +1,8 @@
 package com.moram.ssafe.controller.board;
 
+import com.moram.ssafe.controller.user.annotation.AuthenticationPrincipal;
+import com.moram.ssafe.controller.user.annotation.CurrentUser;
 import com.moram.ssafe.controller.user.annotation.PreAuthorize;
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.dto.board.BoardSaveRequest;
 import com.moram.ssafe.dto.board.BoardSearch;
 import com.moram.ssafe.dto.board.BoardUpdateRequest;
@@ -26,13 +27,14 @@ public class BoardController {
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> createBoard(@RequestBody @Valid BoardSaveRequest request){
+    public ResponseEntity<CommonResponseDto> createBoard(@AuthenticationPrincipal CurrentUser currentUser,
+                                                         @RequestBody @Valid BoardSaveRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_BOARD, boardService.createBoard(request)));
+                HttpStatus.OK, SUCCESS_POST_BOARD, boardService.createBoard(currentUser.getId(), request)));
     }
 
     @GetMapping("/types/{boardType}")
-    public ResponseEntity<CommonResponseDto> findBoardList(@PathVariable int boardType, @RequestParam int offset){
+    public ResponseEntity<CommonResponseDto> findBoardList(@PathVariable int boardType, @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_LIST, boardService.findBoardList(boardType, offset))
         );
@@ -40,36 +42,38 @@ public class BoardController {
 
     @GetMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findBoard(@PathVariable Long boardId){
+    public ResponseEntity<CommonResponseDto> findBoard(@AuthenticationPrincipal CurrentUser currentUser,
+                                                       @PathVariable Long boardId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD, boardService.findBoard(boardId)
+                HttpStatus.OK, SUCCESS_GET_BOARD, boardService.findBoard(currentUser.getId(), boardId)
         ));
     }
 
     @GetMapping("/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findUserBoard(@RequestParam int offset){
+    public ResponseEntity<CommonResponseDto> findUserBoard(@AuthenticationPrincipal CurrentUser currentUser,
+                                                           @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_LIST_USER,
-                boardService.findUserBoard(UserContext.getCurrentUserId(), offset)
+                boardService.findUserBoard(currentUser.getId(), offset)
         ));
     }
 
     @GetMapping("/types/{boardType}/name")
     public ResponseEntity<CommonResponseDto> findByBoardName(@PathVariable int boardType, @RequestParam String name,
-                                                             @RequestParam int offset){
+                                                             @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_NAME, boardService.findByBoardName(boardType, name, offset)));
     }
 
     @GetMapping("/types/{boardType}/views")
-    public ResponseEntity<CommonResponseDto> findByLotsOfView(@PathVariable int boardType, @RequestParam int offset){
+    public ResponseEntity<CommonResponseDto> findByLotsOfView(@PathVariable int boardType, @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_VIEW, boardService.findByLotsOfView(boardType, offset)));
     }
 
     @GetMapping("/types/{boardType}/likes")
-    public ResponseEntity<CommonResponseDto> findByLotsOfLike(@PathVariable int boardType, @RequestParam int offset){
+    public ResponseEntity<CommonResponseDto> findByLotsOfLike(@PathVariable int boardType, @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_LIKE, boardService.findByLotsOfLike(boardType, offset)));
     }
@@ -78,7 +82,7 @@ public class BoardController {
     public ResponseEntity<CommonResponseDto> searchBoard(@RequestParam(required = false) Integer boardType,
                                                          @RequestParam(required = false) String title,
                                                          @RequestParam(required = false) String criteria,
-                                                         @RequestParam(required = false) int offset){
+                                                         @RequestParam(required = false) int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SUCCESS_GET_BOARD_LIST,
                 boardService.searchBoard(offset, BoardSearch.of(boardType, title, criteria))));
@@ -86,31 +90,34 @@ public class BoardController {
 
     @GetMapping("/comments/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> findByUserComments(){
+    public ResponseEntity<CommonResponseDto> findByUserComments(@AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_BOARD_LIST_COMMENTS, boardService.findByUserComments()));
+                HttpStatus.OK, SUCCESS_GET_BOARD_LIST_COMMENTS, boardService.findByUserComments(currentUser.getId())));
     }
 
     @PutMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> updateBoard(@PathVariable Long boardId,
-                                                         @RequestBody @Valid BoardUpdateRequest request){
-          return ResponseEntity.ok().body(CommonResponseDto.of(
-                  HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.updateBoard(boardId, request)));
+    public ResponseEntity<CommonResponseDto> updateBoard(@AuthenticationPrincipal CurrentUser currentUser,
+                                                         @PathVariable Long boardId,
+                                                         @RequestBody @Valid BoardUpdateRequest request) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.updateBoard(currentUser.getId(), boardId, request)));
     }
 
     @PutMapping("/{boardId}/scraps")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> toggleBoardLikes(@PathVariable Long boardId){
+    public ResponseEntity<CommonResponseDto> toggleBoardLikes(@AuthenticationPrincipal CurrentUser currentUser,
+                                                              @PathVariable Long boardId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_PUT_LIKE, boardService.toggleBoardLikes(boardId)));
+                HttpStatus.OK, SUCCESS_PUT_LIKE, boardService.toggleBoardLikes(currentUser.getId(), boardId)));
     }
 
     @DeleteMapping("/{boardId}")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> deleteBoard(@PathVariable Long boardId){
-            return ResponseEntity.ok().body(CommonResponseDto.of(
-                    HttpStatus.OK, SUCCESS_DELETE_BOARD, boardService.deleteBoard(boardId)));
+    public ResponseEntity<CommonResponseDto> deleteBoard(@AuthenticationPrincipal CurrentUser currentUser,
+                                                         @PathVariable Long boardId) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_DELETE_BOARD, boardService.deleteBoard(currentUser.getId(), boardId)));
     }
 
 }

@@ -1,6 +1,5 @@
 package com.moram.ssafe.service.board;
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.board.Board;
 import com.moram.ssafe.domain.board.BoardComment;
 import com.moram.ssafe.domain.board.BoardCommentRepository;
@@ -31,9 +30,9 @@ public class BoardCommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createBoardComment(BoardCommentSaveRequest request){
+    public Long createBoardComment(Long userId, BoardCommentSaveRequest request) {
 
-        User user = userRepository.findById(UserContext.getCurrentUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         Board board = boardRepository.findBoard(request.getBoardId())
                 .orElseThrow(BoardNotFoundException::new);
@@ -41,15 +40,13 @@ public class BoardCommentService {
         return boardCommentRepository.save(request.from(user, board, request.getContent())).getId();
     }
 
-    public List<BoardCommentResponse> findBoardCommentList(Long boardId){
+    public List<BoardCommentResponse> findBoardCommentList(Long boardId) {
         return boardCommentRepository.findBoardCommentList(boardId).stream()
                 .map(BoardCommentResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
-    public Long updateBoardComment(Long commentId, BoardCommentUpdateRequest request){
-        Long userId = UserContext.getCurrentUserId();
-
+    public Long updateBoardComment(Long userId, Long commentId, BoardCommentUpdateRequest request) {
         BoardComment comment = boardCommentRepository.findById(commentId)
                 .orElseThrow(BoardCommentNotFoundException::new);
 
@@ -61,11 +58,9 @@ public class BoardCommentService {
     }
 
     @Transactional
-    public Long deleteBoardComment(Long commentId){
-        Long userId = UserContext.getCurrentUserId();
-
+    public Long deleteBoardComment(Long userId, Long commentId) {
         BoardComment comment = boardCommentRepository.findById(commentId)
-                        .orElseThrow(BoardCommentNotFoundException::new);
+                .orElseThrow(BoardCommentNotFoundException::new);
 
         validCommentUser(userId, comment.getUser().getId());
 
@@ -74,8 +69,8 @@ public class BoardCommentService {
         return commentId;
     }
 
-    public void validCommentUser(Long currentUser, Long commentUser){
-        if(currentUser == commentUser)
+    public void validCommentUser(Long currentUser, Long commentUser) {
+        if (currentUser == commentUser)
             return;
         throw new UserNotFoundException();
     }

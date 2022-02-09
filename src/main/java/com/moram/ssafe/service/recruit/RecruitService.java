@@ -1,6 +1,5 @@
 package com.moram.ssafe.service.recruit;
 
-import com.moram.ssafe.controller.user.annotation.UserContext;
 import com.moram.ssafe.domain.company.Company;
 import com.moram.ssafe.domain.company.CompanyRepository;
 import com.moram.ssafe.domain.recruit.*;
@@ -39,15 +38,12 @@ public class RecruitService {
         return RecruitResponse.from(recruit, false);
     }
 
-    public RecruitResponse findUserRecruit(Long id) {
-        Long userId = UserContext.getCurrentUserId();
+    public RecruitResponse findUserRecruit(Long userId, Long id) {
         Recruit recruit = getRecruit(id);
         return RecruitResponse.from(recruit, recruitScrapRepository.existsByUserIdAndRecruitId(userId, recruit.getId()));
     }
 
-    public List<RecruitResponse> findUserRecruitScrapList() {
-        Long userId = UserContext.getCurrentUserId();
-
+    public List<RecruitResponse> findUserRecruitScrapList(Long userId) {
         List<Recruit> recruits = recruitRepository.findByUserScrap(userId);
         return recruits.stream()
                 .map(RecruitResponse::from).collect(Collectors.toList());
@@ -82,8 +78,7 @@ public class RecruitService {
 
 
     @Transactional
-    public RecruitScrapResponse toggleRecruitScraps(Long recruitId) {
-        Long userId = UserContext.getCurrentUserId();
+    public RecruitScrapResponse toggleRecruitScraps(Long userId,Long recruitId) {
         Recruit recruit = getRecruit(recruitId);
         RecruitScrap recruitScrap = RecruitScrap.builder()
                 .recruit(recruit)
