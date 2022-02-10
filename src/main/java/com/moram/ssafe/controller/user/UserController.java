@@ -81,6 +81,14 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/profile-images")
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> userProfileDelete(@AuthenticationPrincipal CurrentUser currentUser) throws IOException {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileDelete(currentUser.getId())));
+
+    }
+
     @PutMapping
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> updateUserAddAuth(@AuthenticationPrincipal CurrentUser currentUser,
