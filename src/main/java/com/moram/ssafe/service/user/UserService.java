@@ -1,5 +1,6 @@
 package com.moram.ssafe.service.user;
 
+import com.moram.ssafe.config.s3.S3Uploader;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.UserAuthResponse;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final S3Uploader s3Uploader;
 
     public UserProfileResponse getUserProfile(Long userId) {
         User user = getUser(userId);
@@ -30,7 +32,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileResponse updateUserAddAuth(Long userId,UserUpdateAddAuth request) {
+    public UserProfileResponse updateUserAddAuth(Long userId, UserUpdateAddAuth request) {
         if (userRepository.existsByNickname(request.getNickname())) {
             throw new DuplicateNicknameException();
         }
@@ -72,7 +74,7 @@ public class UserService {
     }
 
     @Transactional
-    public String nicknameUpdate(Long userId,String nickname) {
+    public String nicknameUpdate(Long userId, String nickname) {
         if (userRepository.existsByNickname(nickname)) {
             throw new DuplicateNicknameException();
         }
@@ -82,9 +84,17 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileResponse userProfileUpdate(Long userId,String profileImg) {
+    public UserProfileResponse userProfileUpdate(Long userId, String profileImg) {
         User originUser = getUser(userId);
         originUser.profileImageUpdate(profileImg);
+        return UserProfileResponse.from(originUser);
+    }
+
+    @Transactional
+    public UserProfileResponse userProfileDelete(Long userId) {
+        User originUser = getUser(userId);
+//        s3Uploader.deleteObject("profile/" + originUser.getProfileImg());
+        originUser.profileImageDelete(originUser.getProfileImg());
         return UserProfileResponse.from(originUser);
     }
 }

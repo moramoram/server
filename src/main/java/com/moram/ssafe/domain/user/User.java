@@ -91,4 +91,8 @@ public class User extends BaseEntity {
     public void profileImageUpdate(String profileImg) {
         this.profileImg = profileImg;
     }
+
+    public void profileImageDelete(String profileImg) {
+        this.profileImg = "";
+    }
 }
