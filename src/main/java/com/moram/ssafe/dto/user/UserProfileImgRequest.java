@@ -1,6 +1,7 @@
 package com.moram.ssafe.dto.user;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class UserProfileImgRequest {
 
     @NotNull(message = "null을 허용하지 않습니다.")
