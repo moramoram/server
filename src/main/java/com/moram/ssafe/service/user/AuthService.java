@@ -56,6 +56,7 @@ public class AuthService {
     public RefreshTokenResponse refreshToken(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return RefreshTokenResponse.builder()
+                .accessToken(jwtTokenProvider.createAccessToken(user))
                 .refreshToken(jwtTokenProvider.createRefreshToken(user))
                 .build();
     }
