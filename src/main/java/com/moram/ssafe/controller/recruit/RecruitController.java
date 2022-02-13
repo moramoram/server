@@ -33,14 +33,7 @@ public class RecruitController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommonResponseDto> findRecruit(@PathVariable Long id) {
-        recruitService.addView(id);
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT, recruitService.findRecruit(id)));
-    }
-
-    @GetMapping("/{id}/users")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findUserRecruit(@AuthenticationPrincipal CurrentUser currentUser,
                                                              @PathVariable Long id) {
         recruitService.addView(id);

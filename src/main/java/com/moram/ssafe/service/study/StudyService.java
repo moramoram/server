@@ -4,9 +4,9 @@ package com.moram.ssafe.service.study;
 import com.moram.ssafe.domain.study.*;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
-import com.moram.ssafe.dto.study.*;
 import com.moram.ssafe.dto.study.StudyRequestDto;
 import com.moram.ssafe.dto.study.StudyResponse;
+import com.moram.ssafe.dto.study.StudyScrapResponse;
 import com.moram.ssafe.dto.study.StudySearch;
 import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.study.StudyNotFoundException;
@@ -36,7 +36,7 @@ public class StudyService {
     private final StudyScrapQueryRepository studyScrapQueryRepository;
 
     @Transactional
-    public Long createStudy(Long userId,StudyRequestDto request) {
+    public Long createStudy(Long userId, StudyRequestDto request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         return studyRepository.save(request.toStudy(user)).getId();
@@ -48,8 +48,13 @@ public class StudyService {
         return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
+    public List<StudyResponse> findCompanyNameStudy(String companyName) {
+        List<Study> studies = studyQueryRepository.findCompanyNameStudy(companyName);
+        return studies.stream().map(StudyResponse::from).collect(Collectors.toList());
+    }
+
     @Transactional
-    public StudyResponse findStudy(Long userId,Long studyId) {
+    public StudyResponse findStudy(Long userId, Long studyId) {
         Study study = studyRepository.findStudy(studyId).orElseThrow(StudyNotFoundException::new);
         study.addView();
         Boolean scrapStatus = studyScrapRepository.existsByStudyIdAndUserId(studyId, userId);
@@ -87,15 +92,15 @@ public class StudyService {
                 .stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
-    public List<StudyResponse> findUserScrap(Long userId, int offset){
+    public List<StudyResponse> findUserScrap(Long userId, int offset) {
 
         return studyScrapQueryRepository.findByUserScrap(userId,
-                        PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")))
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")))
                 .stream().map(StudyResponse::from).collect(Collectors.toList());
     }
 
     @Transactional
-    public StudyScrapResponse toggleStudyScraps(Long userId,Long studyId) {
+    public StudyScrapResponse toggleStudyScraps(Long userId, Long studyId) {
         Study study = studyRepository.findStudy(studyId).orElseThrow(StudyNotFoundException::new);
         StudyScrap studyScrap = StudyScrap.builder().userId(userId).study(study).build();
 
@@ -104,7 +109,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Long updateStudy(Long userId,Long studyId, StudyRequestDto request) {
+    public Long updateStudy(Long userId, Long studyId, StudyRequestDto request) {
         Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
 
         validStudyUser(userId, study.getUser().getId());
@@ -114,7 +119,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Boolean updateRecruitment(Long userId,Long studyId) {
+    public Boolean updateRecruitment(Long userId, Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
         validStudyUser(userId, study.getUser().getId());
         if (study.getRecruitment()) {
@@ -124,7 +129,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Long deleteStudy(Long userId,Long studyId) {
+    public Long deleteStudy(Long userId, Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
 
         validStudyUser(userId, study.getUser().getId());
@@ -140,4 +145,5 @@ public class StudyService {
             return;
         throw new UserAuthenticationException();
     }
+
 }

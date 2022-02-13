@@ -33,11 +33,6 @@ public class RecruitService {
                 .map(RecruitResponse::from).collect(Collectors.toList());
     }
 
-    public RecruitResponse findRecruit(Long id) {
-        Recruit recruit = getRecruit(id);
-        return RecruitResponse.from(recruit, false);
-    }
-
     public RecruitResponse findUserRecruit(Long userId, Long id) {
         Recruit recruit = getRecruit(id);
         return RecruitResponse.from(recruit, recruitScrapRepository.existsByUserIdAndRecruitId(userId, recruit.getId()));
@@ -78,7 +73,7 @@ public class RecruitService {
 
 
     @Transactional
-    public RecruitScrapResponse toggleRecruitScraps(Long userId,Long recruitId) {
+    public RecruitScrapResponse toggleRecruitScraps(Long userId, Long recruitId) {
         Recruit recruit = getRecruit(recruitId);
         RecruitScrap recruitScrap = RecruitScrap.builder()
                 .recruit(recruit)

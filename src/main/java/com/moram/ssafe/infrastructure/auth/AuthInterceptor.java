@@ -32,9 +32,9 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) {
-        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
-            return true;
-        }
+        if (HttpMethod.OPTIONS.matches(request.getMethod())) return true;
+        if (!(handler instanceof HandlerMethod)) return true;
+
         HandlerMethod method = (HandlerMethod) handler;
         Optional<PreAuthorize> preAuthorize = getPreAuthorize(method);
         Optional<String> jwt = resolveToken(request);
