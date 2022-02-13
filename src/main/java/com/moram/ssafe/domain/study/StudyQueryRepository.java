@@ -38,6 +38,20 @@ public class StudyQueryRepository {
                 .fetch();
     }
 
+    public List<Study> findCompanyNameStudy(String companyName) {
+        return jpaQueryFactory.selectFrom(study)
+                .innerJoin(study.user).fetchJoin()
+                .where(containCompanyName(companyName))
+                .orderBy(study.companyName.asc())
+                .fetch();
+    }
+
+    private BooleanExpression containCompanyName(String companyName) {
+        if (companyName.isEmpty() || companyName == null)
+            return null;
+        return study.companyName.contains(companyName);
+    }
+
     private BooleanExpression containTitle(String title) {
         if (title.isEmpty() || title == null)
             return null;
@@ -59,4 +73,6 @@ public class StudyQueryRepository {
         }
         return study.createdDate.desc();
     }
+
+
 }
