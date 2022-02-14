@@ -1,5 +1,7 @@
 package com.moram.ssafe.service.user;
 
+import com.moram.ssafe.domain.notification.Notification;
+import com.moram.ssafe.domain.notification.NotificationRepository;
 import com.moram.ssafe.domain.user.Role;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
@@ -29,6 +31,7 @@ public class AuthService {
     private final OauthProviderStore oauthProviderStore;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final NotificationRepository notificationRepository;
 
     public LoginResponse login(String providerName, String code) {
 
@@ -64,17 +67,27 @@ public class AuthService {
     public User saveOrUpdate(UserProfile profile) {
         Optional<User> optionalUser = userRepository.findBySocialId(profile.getOauthId());
         if (!optionalUser.isPresent()) {
-            return userRepository.save(
+            User user = userRepository.save(
                     User.builder()
                             .email(profile.getEmail())
                             .roleType(Role.USER)
                             .socialId(profile.getOauthId())
                             .nickname("Guest")
                             .build());
+            saveNotification(user.getId());
+            return user;
         }
         User user = userRepository.findBySocialId(profile.getOauthId())
                 .orElseThrow(UserNotFoundException::new);
         return user;
+    }
+
+    public void saveNotification(Long recUser) {
+        notificationRepository.save(Notification.builder()
+                .message("회원 가입을 축하드립니다.")
+                .sender("SSAFE 관리자")
+                .recUser(recUser)
+                .build());
     }
 
     private OauthTokenResponse getToken(String code, OauthProvider provider) {
