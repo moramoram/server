@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
@@ -36,7 +38,7 @@ public class NotificationController {
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> createNotification(@RequestBody NotificationRequest notificationRequest) {
+    public ResponseEntity<CommonResponseDto> createNotification(@Valid @RequestBody NotificationRequest notificationRequest) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_POST_NOTIFICATION, notificationService.createNotification(notificationRequest)));
     }
