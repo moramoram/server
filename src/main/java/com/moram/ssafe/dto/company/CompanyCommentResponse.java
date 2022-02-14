@@ -13,7 +13,7 @@ public class CompanyCommentResponse {
 
     private Long commentId;
 
-    private UserResponse writer;
+    private UserResponse writerInfo;
 
     private String content;
 
