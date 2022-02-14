@@ -47,18 +47,6 @@ public class RecruitController {
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_BENEFIT, recruitService.findRecruitBenefit(offset)));
     }
 
-    @GetMapping("/popularity")
-    public ResponseEntity<CommonResponseDto> findByLotsOfScrap(@RequestParam int offset) {
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_POPULARITY, recruitService.findByLotsOfScrap(offset)));
-    }
-
-    @GetMapping("/latest")
-    public ResponseEntity<CommonResponseDto> findRecruitLatest(@RequestParam int offset) {
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_LATEST, recruitService.findRecruitLatest(offset)));
-    }
-
     @GetMapping("/close-date")
     public ResponseEntity<CommonResponseDto> findRecruitCloseDate(@RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
@@ -79,9 +67,10 @@ public class RecruitController {
 
     @GetMapping("/scraps/users")
     @PreAuthorize(roles = {"ROLE_AUTH"})
-    public ResponseEntity<CommonResponseDto> userRecruitScrapList(@AuthenticationPrincipal CurrentUser currentUser) {
+    public ResponseEntity<CommonResponseDto> userRecruitScrapList(@AuthenticationPrincipal CurrentUser currentUser,
+                                                                  @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList(currentUser.getId())));
+                HttpStatus.OK, SuccessMessage.SUCCESS_GET_RECRUIT_SCRAP_LIST, recruitService.findUserRecruitScrapList(currentUser.getId(),offset)));
     }
 
     @PostMapping
