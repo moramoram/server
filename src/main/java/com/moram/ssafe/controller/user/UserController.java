@@ -54,14 +54,6 @@ public class UserController {
                 HttpStatus.OK, SUCCESS_PUT_REFRESH, authService.refreshToken(currentUser.getId())));
     }
 
-    @GetMapping
-    @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> getUserList() {
-        return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_USER_LIST, userService.getUserList()));
-
-    }
-
     @PutMapping("/nickname")
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> userNicknameUpdate(@AuthenticationPrincipal CurrentUser currentUser,
@@ -77,7 +69,7 @@ public class UserController {
                                                                @ModelAttribute @Valid UserProfileImgRequest request) throws IOException {
         String profileImg = s3Uploader.upload(request.getProfileImg(), "static/profile");
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileUpdate(currentUser.getId(),profileImg)));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileUpdate(currentUser.getId(), profileImg)));
 
     }
 
@@ -104,7 +96,7 @@ public class UserController {
                 .build();
 
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_ADD_AUTH, userService.updateUserAddAuth(currentUser.getId(),addAuth)));
+                HttpStatus.OK, SUCCESS_UPDATE_USER_ADD_AUTH, userService.updateUserAddAuth(currentUser.getId(), addAuth)));
     }
 
     @DeleteMapping
@@ -113,6 +105,21 @@ public class UserController {
         userService.deleteUser(currentUser.getId());
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.NO_CONTENT, SUCCESS_DELETE_USER));
+    }
+
+    @GetMapping
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
+    public ResponseEntity<CommonResponseDto> getUserList() {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_USER_LIST, userService.getUserList()));
+
+    }
+
+    @GetMapping("/{userId}")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
+    public ResponseEntity<CommonResponseDto> findUser(@PathVariable Long userId) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.OK, SUCCESS_GET_USER, userService.findUser(userId)));
     }
 
     @GetMapping("/auth-approve/wait")
