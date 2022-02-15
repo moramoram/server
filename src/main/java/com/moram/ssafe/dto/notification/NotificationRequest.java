@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -16,7 +17,7 @@ public class NotificationRequest {
     @Size(max = 150, message = "150자 이하로 작성해주세요")
     private String message;
 
-    @NotNull(message = "보낸사람 이름이 없습니다.")
+    @NotBlank(message = "보낸사람 이름이 없습니다.")
     private String sender;
 
     @NotNull(message = "User Id가 없습니다")

@@ -38,7 +38,7 @@ public class NotificationController {
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> createNotification(@Valid @RequestBody NotificationRequest notificationRequest) {
+    public ResponseEntity<CommonResponseDto> createNotification(@RequestBody @Valid NotificationRequest notificationRequest) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_POST_NOTIFICATION, notificationService.createNotification(notificationRequest)));
     }
