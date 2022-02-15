@@ -40,8 +40,13 @@ public class BoardCommentService {
         return boardCommentRepository.save(request.from(user, board, request.getContent())).getId();
     }
 
-    public List<BoardCommentResponse> findBoardCommentList(Long boardId) {
-        return boardCommentRepository.findBoardCommentList(boardId).stream()
+    public List<BoardCommentResponse> findBoardCommentList(int boardType, Long boardId) {
+        List<BoardComment> boardComments = boardCommentRepository.findBoardCommentList(boardId);
+        if (boardType == 2) {
+            return boardComments.stream()
+                    .map(BoardCommentResponse::from_anon).collect(Collectors.toList());
+        }
+        return boardComments.stream()
                 .map(BoardCommentResponse::from).collect(Collectors.toList());
     }
 
