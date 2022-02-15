@@ -10,7 +10,6 @@ public class SuccessMessage {
     //User
     public static String SUCCESS_POST_LOGIN = "Login 성공.";
     public static String SUCCESS_GET_USER_LIST = "User List 조회 성공";
-    public static String SUCCESS_GET_USER = "User 조회 성공";
     public static String SUCCESS_GET_USER_PROFILE = "User Profile 조회 성공";
     public static String SUCCESS_GET_USER_CHECK_NICKNAME = "User 닉네임 체크 결과";
     public static String SUCCESS_UPDATE_USER_NICKNAME = "User 닉네임 수정 성공";

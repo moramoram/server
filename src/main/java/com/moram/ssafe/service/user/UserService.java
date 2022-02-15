@@ -59,10 +59,6 @@ public class UserService {
         return users.stream().map(UserAuthResponse::from).collect(Collectors.toList());
     }
 
-    public UserAuthResponse findUser(Long userId) {
-        return UserAuthResponse.from(getUser(userId));
-    }
-
     public User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
@@ -101,5 +97,4 @@ public class UserService {
         originUser.profileImageDelete(originUser.getProfileImg());
         return UserProfileResponse.from(originUser);
     }
-
 }
