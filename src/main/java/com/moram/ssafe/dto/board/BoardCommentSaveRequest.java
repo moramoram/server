@@ -5,6 +5,7 @@ import com.moram.ssafe.domain.board.BoardComment;
 import com.moram.ssafe.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ public class BoardCommentSaveRequest {
     private Long boardId;
 
     @NotBlank(message = "게시물 댓글 내용이 없습니다.")
+    @Length(max = 500, message = "500자 이하여야합니다.")
     private String content;
 
     public BoardComment from(User user, Board board, String content){

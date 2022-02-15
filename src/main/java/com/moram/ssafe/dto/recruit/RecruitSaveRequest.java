@@ -6,6 +6,7 @@ import com.moram.ssafe.domain.recruit.Recruit;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,31 +21,31 @@ public class RecruitSaveRequest {
     private Long companyId;
 
     @NotBlank(message = "title 이 없습니다")
-    @Size(max = 45, message = "1이상 45이하여야 합니다.")
+    @Length(max = 45, message = "1이상 45이하여야 합니다.")
     private String title;
 
     @NotBlank(message = "recruit Url 이 없습니다.")
-    @Size(max = 255, message = "255이하여야 합니다.")
+    @Length(max = 255, message = "255이하여야 합니다.")
     private String recruitUrl;
 
     @NotBlank(message = "job 이 없습니다")
-    @Size(max = 45, message = "1이상 45이하여야 합니다.")
+    @Length(max = 45, message = "1이상 45이하여야 합니다.")
     private String job;
 
     @NotBlank(message = "emp type 이 없습니다")
-    @Size(max = 45, message = "1이상 45이하여야 합니다.")
+    @Length(max = 45, message = "1이상 45이하여야 합니다.")
     private String empType;
 
     @NotBlank(message = "career 가 없습니다")
-    @Size(max = 45, message = "1이상 45이하여야 합니다.")
+    @Length(max = 45, message = "1이상 45이하여야 합니다.")
     private String career;
 
     @NotBlank(message = "location 이 없습니다")
-    @Size(max = 45, message = "1이상 45이하여야 합니다.")
+    @Length(max = 45, message = "1이상 45이하여야 합니다.")
     private String location;
 
     @NotBlank(message = "tech stack 이 없습니다")
-    @Size(max = 255, message = "1이상 255이하여야 합니다.")
+    @Length(max = 255, message = "1이상 255이하여야 합니다.")
     private String techStack;
 
     @NotNull(message = "open Date 이 없습니다")

@@ -84,7 +84,7 @@ public class AuthService {
 
     public void saveNotification(Long recUser) {
         notificationRepository.save(Notification.builder()
-                .message("회원 가입을 축하드립니다.")
+                .message("처음 오신 것을 환영해요! ✨")
                 .sender("SSAFE 관리자")
                 .recUser(recUser)
                 .build());
