@@ -84,6 +84,10 @@ public class User extends BaseEntity {
         this.authCheck = 3;
     }
 
+    public void authReject() {
+        this.authCheck = 1;
+    }
+
     public void nickNameUpdate(String nickname) {
         this.nickname = nickname;
     }
