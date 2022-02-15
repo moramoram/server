@@ -38,8 +38,9 @@ public class RecruitService {
         return RecruitResponse.from(recruit, recruitScrapRepository.existsByUserIdAndRecruitId(userId, recruit.getId()));
     }
 
-    public List<RecruitResponse> findUserRecruitScrapList(Long userId) {
-        List<Recruit> recruits = recruitRepository.findByUserScrap(userId);
+    public List<RecruitResponse> findUserRecruitScrapList(Long userId,int offset) {
+        List<Recruit> recruits = recruitQueryRepository.findByUserScrap(userId,
+                PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
         return recruits.stream()
                 .map(RecruitResponse::from).collect(Collectors.toList());
     }
@@ -47,17 +48,6 @@ public class RecruitService {
     public List<RecruitResponse> findRecruitBenefit(int offset) {
         return recruitRepository.findByRecruitBenefit(
                 PageRequest.of(offset - 1, 12, Sort.by("createdDate").descending()))
-                .stream().map(RecruitResponse::from).collect(Collectors.toList());
-    }
-
-    public List<RecruitResponse> findRecruitLatest(int offset) {
-        return recruitRepository.findByRecruitLatest(
-                PageRequest.of(offset - 1, 12, Sort.by("createdDate").descending()))
-                .stream().map(RecruitResponse::from).collect(Collectors.toList());
-    }
-
-    public List<RecruitResponse> findByLotsOfScrap(int offset) {
-        return recruitQueryRepository.findByLotsOfScrap(PageRequest.of(offset - 1, 12))
                 .stream().map(RecruitResponse::from).collect(Collectors.toList());
     }
 

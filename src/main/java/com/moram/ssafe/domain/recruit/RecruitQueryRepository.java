@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.moram.ssafe.domain.recruit.QRecruit.recruit;
+import static com.moram.ssafe.domain.recruit.QRecruitScrap.recruitScrap;
 
 @RequiredArgsConstructor
 @Repository
@@ -20,11 +21,14 @@ public class RecruitQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<Recruit> findByLotsOfScrap(PageRequest pageable) {
-
-        return jpaQueryFactory.selectFrom(recruit)
-                .innerJoin(recruit.company).fetchJoin()
-                .orderBy(recruit.recruitScraps.recruitScraps.size().desc())
+    public List<Recruit> findByUserScrap(Long userId, PageRequest pageable) {
+        return jpaQueryFactory
+                .select(recruitScrap.recruit)
+                .distinct()
+                .from(recruitScrap)
+                .innerJoin(recruitScrap.recruit.company).fetchJoin()
+                .where(recruitScrap.userId.eq(userId))
+                .orderBy(recruitScrap.recruit.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

@@ -24,18 +24,9 @@ public interface RecruitRepository extends JpaRepository<Recruit,Long> {
     List<Recruit> findAll();
 
     @EntityGraph(attributePaths = {"company"})
-    @Query(value = "select r from Recruit r join RecruitScrap rc " +
-            "on r.id = rc.recruit.id and rc.userId = :userId")
-    List<Recruit> findByUserScrap(@Param("userId") Long userId);
-
-    @EntityGraph(attributePaths = {"company"})
     @Query(value = "select r from Recruit r " +
             "where r.sBenefit = true")
     List<Recruit> findByRecruitBenefit(Pageable pageable);
-
-    @EntityGraph(attributePaths = {"company"})
-    @Query(value = "select r from Recruit r")
-    List<Recruit> findByRecruitLatest(Pageable pageable);
 
     void deleteByCompanyId(Long companyId);
 }
