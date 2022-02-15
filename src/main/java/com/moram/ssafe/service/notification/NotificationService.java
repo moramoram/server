@@ -2,10 +2,14 @@ package com.moram.ssafe.service.notification;
 
 import com.moram.ssafe.domain.notification.Notification;
 import com.moram.ssafe.domain.notification.NotificationRepository;
+import com.moram.ssafe.domain.user.User;
+import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.notification.NotificationRequest;
 import com.moram.ssafe.dto.notification.NotificationResponse;
+import com.moram.ssafe.dto.user.UserAuthResponse;
 import com.moram.ssafe.exception.auth.UserAuthenticationException;
 import com.moram.ssafe.exception.notification.NotificationNotFoundException;
+import com.moram.ssafe.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
 
     public List<NotificationResponse> findNotificationList(Long userId) {
         return notificationRepository.findByRecUser(userId)
@@ -46,6 +51,22 @@ public class NotificationService {
                 .orElseThrow(NotificationNotFoundException::new);
         validUser(notification.getRecUser(), userId);
         notificationRepository.deleteById(notificationId);
+    }
+
+    @Transactional
+    public UserAuthResponse rejectNotification(NotificationRequest request) {
+        User originUser = userRepository.findById(request.getUserId()).orElseThrow(UserNotFoundException::new);
+
+        originUser.authReject();
+
+        notificationRepository.save(request.toNotification());
+
+        return UserAuthResponse.from(originUser);
+    }
+
+    @Transactional
+    public void removeAllNotification(Long userId) {
+        notificationRepository.deleteByUserId(userId);
     }
 
     public void validUser(Long recUser, Long userId) {

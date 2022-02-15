@@ -40,15 +40,30 @@ public class NotificationController {
     @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> createNotification(@RequestBody @Valid NotificationRequest notificationRequest) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_POST_NOTIFICATION, notificationService.createNotification(notificationRequest)));
+                HttpStatus.CREATED, SuccessMessage.SUCCESS_POST_NOTIFICATION, notificationService.createNotification(notificationRequest)));
+    }
+
+    @PostMapping("/rejects")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
+    public ResponseEntity<CommonResponseDto> rejectNotification(@RequestBody @Valid NotificationRequest notificationRequest) {
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.CREATED, SuccessMessage.SUCCESS_REJECT, notificationService.rejectNotification(notificationRequest)));
     }
 
     @DeleteMapping("/{notificationId}")
-    @PreAuthorize(roles = {"ROLE_ADMIN"})
+    @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> removeNotification(@PathVariable Long notificationId,
                                                                 @AuthenticationPrincipal CurrentUser currentUser) {
         notificationService.removeNotification(notificationId, currentUser.getId());
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_DELETE_NOTIFICATION));
+                HttpStatus.NO_CONTENT, SuccessMessage.SUCCESS_DELETE_NOTIFICATION));
+    }
+
+    @DeleteMapping
+    @PreAuthorize(roles = {"ROLE_USER"})
+    public ResponseEntity<CommonResponseDto> removeAllNotification(@AuthenticationPrincipal CurrentUser currentUser) {
+        notificationService.removeAllNotification(currentUser.getId());
+        return ResponseEntity.ok().body(CommonResponseDto.of(
+                HttpStatus.NO_CONTENT, SuccessMessage.SUCCESS_DELETE_NOTIFICATION));
     }
 }
