@@ -35,11 +35,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/auth/**")
                 .excludePathPatterns("/recruits/search")
                 .excludePathPatterns("/recruits/benefits")
-                .excludePathPatterns("/recruits/latest")
-                .excludePathPatterns("/recruits/popularity")
                 .excludePathPatterns("/recruits/close-date")
+                .excludePathPatterns("/studies/search")
+                .excludePathPatterns("/boards/search")
                 .excludePathPatterns("/index.html/**");
     }
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(authenticationArgumentResolver);

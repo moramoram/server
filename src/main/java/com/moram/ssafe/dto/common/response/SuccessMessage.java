@@ -81,4 +81,9 @@ public class SuccessMessage {
     public static String SUCCESS_GET_STUDY_LIST_COMMENTS = "사용자가 댓글 단 스터디 리스트 조회 성공";
     public static String SUCCESS_PUT_STUDY_SCRAP = "스터디 스크랩 수정 성공";
 
+    //notification
+    public static String SUCCESS_POST_NOTIFICATION = "메시지 전송 성공";
+    public static String SUCCESS_GET_NOTIFICATION = "메시지 조회 성공";
+    public static String SUCCESS_DELETE_NOTIFICATION = "메시지 삭제 성공";
+
 }

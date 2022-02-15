@@ -20,7 +20,7 @@ public enum ErrorCode {
     HANDLE_ACCESS_DENIED(403, "Access is Denied"),
     JSON_WRITE_ERROR(401, "JSON content that are not pure I/O problems"),
     MAX_UPLOAD_SIZE_EXCEEDED(400, "Max file size exceeded"),
-    MULTIPART_FILE_CONVERT_FAIL(400,"File covert fail"),
+    MULTIPART_FILE_CONVERT_FAIL(400, "File covert fail"),
 
     //User
     USER_NOT_FOUND(404, "User not found."),
@@ -52,7 +52,10 @@ public enum ErrorCode {
 
     //Study
     STUDY_NOT_FOUND(404, "Study not found"),
-    STUDY_SCRAP_REMOVE_FAIL(404, "Study Scrap remove fail");
+    STUDY_SCRAP_REMOVE_FAIL(404, "Study Scrap remove fail"),
+
+    //Notification
+    NOTIFICATION_NOT_FOUND(404, "Notification not found");
 
     private final int status;
     private final String message;
