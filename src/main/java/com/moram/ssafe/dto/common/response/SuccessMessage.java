@@ -86,5 +86,6 @@ public class SuccessMessage {
     public static String SUCCESS_POST_NOTIFICATION = "메시지 전송 성공";
     public static String SUCCESS_GET_NOTIFICATION = "메시지 조회 성공";
     public static String SUCCESS_DELETE_NOTIFICATION = "메시지 삭제 성공";
+    public static String SUCCESS_REJECT = "User 반려 성공";
 
 }
