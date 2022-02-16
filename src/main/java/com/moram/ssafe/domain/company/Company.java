@@ -1,6 +1,7 @@
 package com.moram.ssafe.domain.company;
 
 import com.moram.ssafe.domain.BaseEntity;
+import com.moram.ssafe.dto.company.CompanyNameRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,16 +22,20 @@ public class Company extends BaseEntity {
 
     private String companyName;
 
+    private String engCompanyName;
+
     private String logoImg;
 
     @Builder
-    public Company(String companyName, String logoImg) {
+    public Company(String companyName, String engCompanyName, String logoImg) {
         this.companyName = companyName;
+        this.engCompanyName = engCompanyName;
         this.logoImg = logoImg;
     }
 
-    public void updateCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void updateCompanyName(CompanyNameRequest request) {
+        this.companyName = request.getCompanyName();
+        this.engCompanyName = request.getEngCompanyName();
     }
 
     public void updateLogoImg(String logoImg) {

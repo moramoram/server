@@ -12,9 +12,12 @@ public class CompanyResponse {
 
     private String companyName;
 
+    private String engCompanyName;
+
     private String logoImg;
 
     public static CompanyResponse from(Company company) {
-        return new CompanyResponse(company.getId(), company.getCompanyName(), company.getLogoImg());
+        return new CompanyResponse(company.getId(), company.getCompanyName(),
+                company.getEngCompanyName(), company.getLogoImg());
     }
 }

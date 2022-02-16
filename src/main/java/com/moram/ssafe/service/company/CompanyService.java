@@ -6,9 +6,9 @@ import com.moram.ssafe.domain.company.CompanyCommentRepository;
 import com.moram.ssafe.domain.company.CompanyQueryRepository;
 import com.moram.ssafe.domain.company.CompanyRepository;
 import com.moram.ssafe.domain.recruit.RecruitRepository;
-import com.moram.ssafe.domain.recruit.RecruitScrapRepository;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
+import com.moram.ssafe.dto.company.CompanyNameRequest;
 import com.moram.ssafe.dto.company.CompanyResponse;
 import com.moram.ssafe.exception.company.CompanyNotFoundException;
 import com.moram.ssafe.exception.user.UserNotFoundException;
@@ -35,17 +35,18 @@ public class CompanyService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public Long createCompany(String companyName, String logoImg) {
+    public Long createCompany(String companyName, String engCompanyName, String logoImg) {
         Company company = companyRepository.save(
                 Company.builder()
                         .companyName(companyName)
+                        .engCompanyName(engCompanyName)
                         .logoImg(logoImg)
                         .build());
         return company.getId();
     }
 
     public List<CompanyResponse> findCompanyList() {
-        return companyRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
+        return companyRepository.findAll(Sort.by(Sort.Direction.ASC, "companyName")).stream()
                 .map(CompanyResponse::from).collect(Collectors.toList());
     }
 
@@ -78,9 +79,9 @@ public class CompanyService {
     }
 
     @Transactional
-    public Long updateCompanyName(Long id, String name) {
+    public Long updateCompanyName(Long id, CompanyNameRequest request) {
         Company originCompany = getCompany(id);
-        originCompany.updateCompanyName(name);
+        originCompany.updateCompanyName(request);
         return originCompany.getId();
     }
 
