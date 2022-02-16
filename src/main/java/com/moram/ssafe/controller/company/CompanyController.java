@@ -30,11 +30,11 @@ public class CompanyController {
 
     @PostMapping
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> createCompany(@ModelAttribute @Valid CompanySaveRequest companySaveRequest) throws IOException {
-        String logoImg = s3Uploader.upload(companySaveRequest.getLogoImg(), "static/company");
+    public ResponseEntity<CommonResponseDto> createCompany(@ModelAttribute @Valid CompanySaveRequest request) throws IOException {
+        String logoImg = s3Uploader.upload(request.getLogoImg(), "static/company");
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_POST_COMPANY,
-                companyService.createCompany(companySaveRequest.getCompanyName(), logoImg)));
+                companyService.createCompany(request.getCompanyName(), request.getEngCompanyName(), logoImg)));
     }
 
     @GetMapping
@@ -69,10 +69,11 @@ public class CompanyController {
 
     @PutMapping("/{companyId}/name")
     @PreAuthorize(roles = {"ROLE_ADMIN"})
-    public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId, @RequestBody CompanyNameRequest request) {
+    public ResponseEntity<CommonResponseDto> updateCompanyName(@PathVariable Long companyId,
+                                                               @RequestBody @Valid CompanyNameRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMPANY_NAME,
-                companyService.updateCompanyName(companyId, request.getName())));
+                companyService.updateCompanyName(companyId, request)));
     }
 
     @PutMapping("/{companyId}/logo-img")

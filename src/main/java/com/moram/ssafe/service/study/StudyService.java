@@ -62,7 +62,6 @@ public class StudyService {
     }
 
     public List<StudyResponse> findUserStudy(Long userId, int offset) {
-
         Page<Study> studies = studyRepository.findUserStudy(userId,
                 PageRequest.of(offset - 1, 12, Sort.by(Sort.Direction.DESC, "createdDate")));
         return studies.stream().map(StudyResponse::from).collect(Collectors.toList());

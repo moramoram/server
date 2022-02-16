@@ -2,6 +2,7 @@ package com.moram.ssafe.dto.company;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,6 @@ public class CompanyCommentUpdateRequest {
     private Long commentId;
 
     @NotBlank(message = "빈문자열은 허용하지 않습니다.")
-    @Size(max = 200,message = "200자 이하로 작성해주세요")
+    @Length(max = 500,message = "200자 이하로 작성해주세요")
     private String content;
 }
