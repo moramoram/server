@@ -1,6 +1,8 @@
 package com.moram.ssafe.service.user;
 
 import com.moram.ssafe.config.s3.S3Uploader;
+import com.moram.ssafe.domain.notification.Notification;
+import com.moram.ssafe.domain.notification.NotificationRepository;
 import com.moram.ssafe.domain.user.User;
 import com.moram.ssafe.domain.user.UserRepository;
 import com.moram.ssafe.dto.user.UserAuthResponse;
@@ -25,6 +27,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
+    private final NotificationRepository notificationRepository;
 
     public UserProfileResponse getUserProfile(Long userId) {
         User user = getUser(userId);
@@ -51,6 +54,11 @@ public class UserService {
     public UserAuthResponse userAuthApprove(Long id) {
         User originUser = getUser(id);
         originUser.authUpdate();
+        notificationRepository.save(Notification.builder()
+                .message("축하드려요! ✨ \\n SSAFY 인증이 완료되었어요. \\n\\n 재로그인 하시면 모든 서비스를 이용할 수 있어요 :)")
+                .sender("SSAFE 관리자")
+                .recUser(id)
+                .build());
         return UserAuthResponse.from(originUser);
     }
 
