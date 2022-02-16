@@ -42,7 +42,9 @@ public class StudyQueryRepository {
         return jpaQueryFactory.selectFrom(study)
                 .innerJoin(study.user).fetchJoin()
                 .where(containCompanyName(companyName))
-                .orderBy(study.companyName.asc())
+                .orderBy(study.recruitment.desc(),
+                        study.recruitment.asc(),
+                        study.createdDate.desc())
                 .fetch();
     }
 

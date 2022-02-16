@@ -1,6 +1,5 @@
 package com.moram.ssafe.dto.study;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.moram.ssafe.domain.study.Study;
 import com.moram.ssafe.domain.study.StudyScrap;
 import com.moram.ssafe.dto.user.UserResponse;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StudyResponse {
 
     private Long studyId;
