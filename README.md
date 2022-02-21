@@ -213,19 +213,19 @@
 <table>
   <tr height="205px">
     <td align="center" width="200px">
-      <a href="https://github.com/jhj0602/"><img src="public/images/Hyoungjun.svg"/></a>
+      <a href="https://github.com/jhj0602/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Hyoungjun.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/wangsuuu/"><img src="public/images/Suruen.svg"/></a>
+      <a href="https://github.com/wangsuuu/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Suruen.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/devpla"><img src="public/images/Yeonhee.svg"/></a>
+      <a href="https://github.com/devpla"><img src="https://github.com/moramoram/client/blob/dev/public/images/Yeonhee.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/SonSangjoon/"><img src="public/images/Sangjoon.svg"/></a>
+      <a href="https://github.com/SonSangjoon/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Sangjoon.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/Yewonn/"><img src="public/images/Yewon.svg"/></a>
+      <a href="https://github.com/Yewonn/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Yewon.svg"/></a>
     </td>
   </tr>
   <tr>
