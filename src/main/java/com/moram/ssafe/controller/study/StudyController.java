@@ -109,7 +109,7 @@ public class StudyController {
     public ResponseEntity<CommonResponseDto> createStudy(@AuthenticationPrincipal CurrentUser currentUser,
                                                          @Valid StudyFormRequest request) throws IOException {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.createStudy(currentUser.getId(), convertStudyRequestDto(request))));
+                HttpStatus.CREATED, SUCCESS_POST_STUDY, studyService.createStudy(currentUser.getId(), convertStudyRequestDto(request))));
     }
 
     @PutMapping("/{studyId}")
@@ -154,6 +154,6 @@ public class StudyController {
     public ResponseEntity<CommonResponseDto> deleteStudy(@AuthenticationPrincipal CurrentUser currentUser,
                                                          @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.deleteStudy(currentUser.getId(), studyId)));
+                HttpStatus.NO_CONTENT, SUCCESS_DELETE_BOARD, studyService.deleteStudy(currentUser.getId(), studyId)));
     }
 }

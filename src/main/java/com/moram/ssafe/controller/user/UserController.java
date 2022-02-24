@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("/nickname-check")
     public ResponseEntity<CommonResponseDto> nicknameCheck(@RequestBody @Valid UserNickNameRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_GET_USER_CHECK_NICKNAME, userService.nicknameCheck(request.getNickname())));
+                HttpStatus.CREATED, SUCCESS_GET_USER_CHECK_NICKNAME, userService.nicknameCheck(request.getNickname())));
     }
 
     @PutMapping("/refresh")
@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<CommonResponseDto> userNicknameUpdate(@AuthenticationPrincipal CurrentUser currentUser,
                                                                 @RequestBody @Valid UserNickNameRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_NICKNAME, userService.nicknameUpdate(currentUser.getId(), request.getNickname())));
+                HttpStatus.CREATED, SUCCESS_UPDATE_USER_NICKNAME, userService.nicknameUpdate(currentUser.getId(), request.getNickname())));
 
     }
 
@@ -77,7 +77,7 @@ public class UserController {
     @PreAuthorize(roles = {"ROLE_USER"})
     public ResponseEntity<CommonResponseDto> userProfileDelete(@AuthenticationPrincipal CurrentUser currentUser) throws IOException {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileDelete(currentUser.getId())));
+                HttpStatus.NO_CONTENT, SUCCESS_UPDATE_USER_PROFILE_IMG, userService.userProfileDelete(currentUser.getId())));
 
     }
 

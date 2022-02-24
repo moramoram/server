@@ -27,7 +27,7 @@ public class CompanyCommentController {
     public ResponseEntity<CommonResponseDto> createComment(@AuthenticationPrincipal CurrentUser currentUser,
                                                            @RequestBody @Valid CompanyCommentRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_POST_COMMENT,
+                HttpStatus.CREATED, SuccessMessage.SUCCESS_POST_COMMENT,
                 companyCommentService.createComment(currentUser.getId(),request)));
     }
 
@@ -43,7 +43,7 @@ public class CompanyCommentController {
     public ResponseEntity<CommonResponseDto> updateComment(@AuthenticationPrincipal CurrentUser currentUser,
                                                            @RequestBody @Valid CompanyCommentUpdateRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_PUT_COMMENT,
+                HttpStatus.CREATED, SuccessMessage.SUCCESS_PUT_COMMENT,
                 companyCommentService.updateComment(currentUser.getId(), request)));
     }
 
