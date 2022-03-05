@@ -128,7 +128,7 @@
 
 |           유저 인증 페이지           |
 | :----------------------------------: |
-| ![](https://i.imgur.com/yUTASyD.gif) |
+| ![](https://github.com/moramoram/ssafe-service/blob/main/assets/01-auth.gif) |
 
 <br />
 
@@ -136,9 +136,7 @@
 
 | 랜딩 페이지 |
 | :---------: |
-
-|![](https://i.imgur.com/dVCxr4I.gif)
-|
+|![](https://github.com/moramoram/ssafe-service/blob/main/assets/02-landing.gif) |
 
 <br />
 
@@ -146,7 +144,7 @@
 
 |             메인 페이지              |
 | :----------------------------------: |
-| ![](https://i.imgur.com/MOuLy6L.gif) |
+| ![](https://github.com/moramoram/ssafe-service/blob/main/assets/03-main.gif) |
 
 <br />
 
@@ -154,14 +152,14 @@
 
 |           채용 공고 페이지           |
 | :----------------------------------: |
-| ![](https://i.imgur.com/vTBliU8.gif) |
+| ![](https://github.com/moramoram/ssafe-service/blob/main/assets/04-job.gif) |
 
 <br />
 
 - #### 자유롭게 개설, 참여할 수 있는 스터디 📖
   |            스터디 페이지             |
   | :----------------------------------: |
-  | ![](https://i.imgur.com/O4emzDQ.gif) |
+  | ![](https://github.com/moramoram/ssafe-service/blob/main/assets/05-study.gif) |
 
 <br />
 
@@ -169,7 +167,7 @@
 
 |           커뮤니티 페이지            |
 | :----------------------------------: |
-| ![](https://i.imgur.com/9C383ya.gif) |
+| ![](https://github.com/moramoram/ssafe-service/blob/main/assets/06-community.gif) |
 
 <br />
 
@@ -177,7 +175,7 @@
 
 |           커뮤니티 페이지            |            스터디 페이지             |             채용 페이지              |
 | :----------------------------------: | :----------------------------------: | :----------------------------------: |
-| ![](https://i.imgur.com/VJZj2AG.gif) | ![](https://i.imgur.com/7sBlsWl.gif) | ![](https://i.imgur.com/eMZjQFv.gif) |
+| ![](https://github.com/moramoram/ssafe-service/blob/main/assets/07-01-community.gif) | ![](https://github.com/moramoram/ssafe-service/blob/main/assets/07-02-study.gif) | ![](https://github.com/moramoram/ssafe-service/blob/main/assets/07-03-job.gif) |
 
 <br />
 
@@ -185,16 +183,15 @@
 
 |           커뮤니티 페이지            |            스터디 페이지             |
 | :----------------------------------: | :----------------------------------: |
-| ![](https://i.imgur.com/eW5W0fc.gif) | ![](https://i.imgur.com/rcnl2l0.gif) |
+| ![](https://github.com/moramoram/ssafe-service/blob/main/assets/08-01-community.gif) | ![](https://github.com/moramoram/ssafe-service/blob/main/assets/08-02-study.gif) |
 
-|
 
 <br />
 
 - #### Footer에서 ssafe에 대한 추가 정보들을 살펴볼 수 있어요.
   |           커뮤니티 페이지            |
   | :----------------------------------: |
-  | ![](https://i.imgur.com/SNaUgIq.gif) |
+  | ![](https://github.com/moramoram/ssafe-service/blob/main/assets/09-footer.gif) |
 
 <br />
 
@@ -215,19 +212,19 @@
 <table>
   <tr height="205px">
     <td align="center" width="200px">
-      <a href="https://github.com/jhj0602/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Hyoungjun.svg"/></a>
+      <a href="https://github.com/jhj0602/"><img src="public/images/Hyoungjun.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/wangsuuu/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Suruen.svg"/></a>
+      <a href="https://github.com/wangsuuu/"><img src="public/images/Suruen.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/devpla"><img src="https://github.com/moramoram/client/blob/dev/public/images/Yeonhee.svg"/></a>
+      <a href="https://github.com/devpla"><img src="public/images/Yeonhee.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/SonSangjoon/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Sangjoon.svg"/></a>
+      <a href="https://github.com/SonSangjoon/"><img src="public/images/Sangjoon.svg"/></a>
     </td>
     <td align="center" width="200px">
-      <a href="https://github.com/Yewonn/"><img src="https://github.com/moramoram/client/blob/dev/public/images/Yewon.svg"/></a>
+      <a href="https://github.com/Yewonn/"><img src="public/images/Yewon.svg"/></a>
     </td>
   </tr>
   <tr>
