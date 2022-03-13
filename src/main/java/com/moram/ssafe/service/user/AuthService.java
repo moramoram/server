@@ -70,7 +70,7 @@ public class AuthService {
             User user = userRepository.save(
                     User.builder()
                             .email(profile.getEmail())
-                            .roleType(Role.USER)
+                            .roleType(Role.AUTH)
                             .socialId(profile.getOauthId())
                             .nickname("Guest")
                             .build());

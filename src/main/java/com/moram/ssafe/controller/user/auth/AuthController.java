@@ -21,6 +21,6 @@ public class AuthController {
     @PostMapping("/login/{socialType}")
     public ResponseEntity<CommonResponseDto> login(@PathVariable String socialType, @RequestParam("code") String code) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_LOGIN, authService.login(socialType, code)));
+                HttpStatus.CREATED, SUCCESS_POST_LOGIN, authService.login(socialType, code)));
     }
 }

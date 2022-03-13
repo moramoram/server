@@ -55,7 +55,7 @@ public class UserService {
         User originUser = getUser(id);
         originUser.authUpdate();
         notificationRepository.save(Notification.builder()
-                .message("축하드려요! ✨ \\n SSAFY 인증이 완료되었어요. \\n\\n 재로그인 하시면 모든 서비스를 이용할 수 있어요 :)")
+                .message("축하드려요! ✨ \\n 인증이 완료되었어요. \\n\\n 재로그인 하시면 모든 서비스를 이용할 수 있어요 :)")
                 .sender("SSAFE 관리자")
                 .recUser(id)
                 .build());
