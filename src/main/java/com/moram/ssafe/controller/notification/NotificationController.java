@@ -22,14 +22,14 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findNotificationList(@AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
                 HttpStatus.OK, SuccessMessage.SUCCESS_GET_NOTIFICATION, notificationService.findNotificationList(currentUser.getId())));
     }
 
     @GetMapping("/{notificationId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> findNotification(@PathVariable Long notificationId,
                                                               @AuthenticationPrincipal CurrentUser currentUser) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
@@ -51,7 +51,7 @@ public class NotificationController {
     }
 
     @DeleteMapping("/{notificationId}")
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> removeNotification(@PathVariable Long notificationId,
                                                                 @AuthenticationPrincipal CurrentUser currentUser) {
         notificationService.removeNotification(notificationId, currentUser.getId());
@@ -60,7 +60,7 @@ public class NotificationController {
     }
 
     @DeleteMapping
-    @PreAuthorize(roles = {"ROLE_USER"})
+    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponseDto> removeAllNotification(@AuthenticationPrincipal CurrentUser currentUser) {
         notificationService.removeAllNotification(currentUser.getId());
         return ResponseEntity.ok().body(CommonResponseDto.of(

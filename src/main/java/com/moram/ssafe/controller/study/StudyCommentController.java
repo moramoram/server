@@ -29,7 +29,7 @@ public class StudyCommentController {
     public ResponseEntity<CommonResponseDto> createStudyComment(@AuthenticationPrincipal CurrentUser currentUser,
                                                                 @RequestBody @Valid StudyCommentSaveRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_COMMENT, studyCommentService.createStudyComment(currentUser.getId(), request)));
+                HttpStatus.CREATED, SUCCESS_POST_COMMENT, studyCommentService.createStudyComment(currentUser.getId(), request)));
     }
 
     @GetMapping("/{studyId}")
@@ -46,7 +46,7 @@ public class StudyCommentController {
                                                                 @PathVariable Long commentId,
                                                                 @RequestBody @Valid StudyCommentUpdateRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_PUT_COMMENT, studyCommentService.updateStudyComment(currentUser.getId(), commentId, request)));
+                HttpStatus.CREATED, SUCCESS_PUT_COMMENT, studyCommentService.updateStudyComment(currentUser.getId(), commentId, request)));
     }
 
     @DeleteMapping("/{commentId}")
@@ -54,7 +54,7 @@ public class StudyCommentController {
     public ResponseEntity<CommonResponseDto> deleteStudyComment(@AuthenticationPrincipal CurrentUser currentUser,
                                                                 @PathVariable Long commentId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_COMMENT, studyCommentService.deleteStudyComment(currentUser.getId(), commentId)));
+                HttpStatus.NO_CONTENT, SUCCESS_DELETE_COMMENT, studyCommentService.deleteStudyComment(currentUser.getId(), commentId)));
     }
 
 }

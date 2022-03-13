@@ -51,7 +51,7 @@ public class User extends BaseEntity {
         this.email = email;
         this.roleType = roleType;
         this.nickname = nickname;
-        this.authCheck = 1;
+        this.authCheck = 3;
     }
 
     public void update(UserUpdateAddAuth user) {
@@ -60,7 +60,7 @@ public class User extends BaseEntity {
         this.ordinal = user.getOrdinal();
         this.campus = user.getCampus();
         this.authImg = user.getAuthImg();
-        this.authCheck = 2;
+        this.authCheck = 3;
     }
 
     public void deleteUser() {

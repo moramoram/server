@@ -100,7 +100,7 @@ public class StudyController {
     public ResponseEntity<CommonResponseDto> toggleStudyScraps(@AuthenticationPrincipal CurrentUser currentUser,
                                                                @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_PUT_STUDY_SCRAP,
+                HttpStatus.CREATED, SUCCESS_PUT_STUDY_SCRAP,
                 studyService.toggleStudyScraps(currentUser.getId(), studyId)));
     }
 
@@ -109,7 +109,7 @@ public class StudyController {
     public ResponseEntity<CommonResponseDto> createStudy(@AuthenticationPrincipal CurrentUser currentUser,
                                                          @Valid StudyFormRequest request) throws IOException {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_STUDY, studyService.createStudy(currentUser.getId(), convertStudyRequestDto(request))));
+                HttpStatus.CREATED, SUCCESS_POST_STUDY, studyService.createStudy(currentUser.getId(), convertStudyRequestDto(request))));
     }
 
     @PutMapping("/{studyId}")
@@ -118,7 +118,7 @@ public class StudyController {
                                                          @PathVariable Long studyId, @Valid StudyFormRequest request)
             throws IOException {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateStudy(currentUser.getId(),
+                HttpStatus.CREATED, SUCCESS_UPDATE_STUDY, studyService.updateStudy(currentUser.getId(),
                         studyId, convertStudyRequestDto(request))));
     }
 
@@ -146,7 +146,7 @@ public class StudyController {
     public ResponseEntity<CommonResponseDto> updateRecruitment(@AuthenticationPrincipal CurrentUser currentUser,
                                                                @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_STUDY, studyService.updateRecruitment(currentUser.getId(), studyId)));
+                HttpStatus.CREATED, SUCCESS_UPDATE_STUDY, studyService.updateRecruitment(currentUser.getId(), studyId)));
     }
 
     @DeleteMapping("/{studyId}")
@@ -154,6 +154,6 @@ public class StudyController {
     public ResponseEntity<CommonResponseDto> deleteStudy(@AuthenticationPrincipal CurrentUser currentUser,
                                                          @PathVariable Long studyId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_BOARD, studyService.deleteStudy(currentUser.getId(), studyId)));
+                HttpStatus.NO_CONTENT, SUCCESS_DELETE_BOARD, studyService.deleteStudy(currentUser.getId(), studyId)));
     }
 }
