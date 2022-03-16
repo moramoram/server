@@ -29,7 +29,7 @@ public class BoardCommentController {
     public ResponseEntity<CommonResponseDto> createBoardComment(@AuthenticationPrincipal CurrentUser currentUser,
                                                                 @RequestBody @Valid BoardCommentSaveRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_COMMENT, boardCommentService.createBoardComment(currentUser.getId(), request)));
+                HttpStatus.CREATED, SUCCESS_POST_COMMENT, boardCommentService.createBoardComment(currentUser.getId(), request)));
     }
 
     @GetMapping("/{boardType}/{boardId}")
@@ -46,7 +46,7 @@ public class BoardCommentController {
                                                                 @PathVariable Long commentId,
                                                                 @RequestBody @Valid BoardCommentUpdateRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_PUT_COMMENT, boardCommentService.updateBoardComment(currentUser.getId(), commentId, request)));
+                HttpStatus.CREATED, SUCCESS_PUT_COMMENT, boardCommentService.updateBoardComment(currentUser.getId(), commentId, request)));
     }
 
     @DeleteMapping("/{commentId}")
@@ -54,7 +54,7 @@ public class BoardCommentController {
     public ResponseEntity<CommonResponseDto> deleteBoardComment(@AuthenticationPrincipal CurrentUser currentUser,
                                                                 @PathVariable Long commentId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_COMMENT, boardCommentService.deleteBoardComment(currentUser.getId(), commentId)));
+                HttpStatus.NO_CONTENT, SUCCESS_DELETE_COMMENT, boardCommentService.deleteBoardComment(currentUser.getId(), commentId)));
     }
 
 }

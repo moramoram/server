@@ -30,7 +30,7 @@ public class BoardController {
     public ResponseEntity<CommonResponseDto> createBoard(@AuthenticationPrincipal CurrentUser currentUser,
                                                          @RequestBody @Valid BoardSaveRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_POST_BOARD, boardService.createBoard(currentUser.getId(), request)));
+                HttpStatus.CREATED, SUCCESS_POST_BOARD, boardService.createBoard(currentUser.getId(), request)));
     }
 
     @GetMapping("/types/{boardType}")
@@ -101,7 +101,7 @@ public class BoardController {
                                                          @PathVariable Long boardId,
                                                          @RequestBody @Valid BoardUpdateRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_UPDATE_BOARD, boardService.updateBoard(currentUser.getId(), boardId, request)));
+                HttpStatus.CREATED, SUCCESS_UPDATE_BOARD, boardService.updateBoard(currentUser.getId(), boardId, request)));
     }
 
     @PutMapping("/{boardId}/likes")
@@ -109,7 +109,7 @@ public class BoardController {
     public ResponseEntity<CommonResponseDto> toggleBoardLikes(@AuthenticationPrincipal CurrentUser currentUser,
                                                               @PathVariable Long boardId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_PUT_LIKE, boardService.toggleBoardLikes(currentUser.getId(), boardId)));
+                HttpStatus.CREATED, SUCCESS_PUT_LIKE, boardService.toggleBoardLikes(currentUser.getId(), boardId)));
     }
 
     @DeleteMapping("/{boardId}")
@@ -117,7 +117,7 @@ public class BoardController {
     public ResponseEntity<CommonResponseDto> deleteBoard(@AuthenticationPrincipal CurrentUser currentUser,
                                                          @PathVariable Long boardId) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SUCCESS_DELETE_BOARD, boardService.deleteBoard(currentUser.getId(), boardId)));
+                HttpStatus.NO_CONTENT, SUCCESS_DELETE_BOARD, boardService.deleteBoard(currentUser.getId(), boardId)));
     }
 
 }

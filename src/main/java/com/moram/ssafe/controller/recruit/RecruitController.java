@@ -77,7 +77,7 @@ public class RecruitController {
     @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<CommonResponseDto> createRecruit(@RequestBody @Valid RecruitSaveRequest request) {
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_POST_RECRUIT, recruitService.createRecruit(request)));
+                HttpStatus.CREATED, SuccessMessage.SUCCESS_POST_RECRUIT, recruitService.createRecruit(request)));
     }
 
     @PutMapping("/{id}")

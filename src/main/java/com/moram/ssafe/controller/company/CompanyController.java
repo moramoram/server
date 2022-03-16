@@ -33,7 +33,7 @@ public class CompanyController {
     public ResponseEntity<CommonResponseDto> createCompany(@ModelAttribute @Valid CompanySaveRequest request) throws IOException {
         String logoImg = s3Uploader.upload(request.getLogoImg(), "static/company");
         return ResponseEntity.ok().body(CommonResponseDto.of(
-                HttpStatus.OK, SuccessMessage.SUCCESS_POST_COMPANY,
+                HttpStatus.CREATED, SuccessMessage.SUCCESS_POST_COMPANY,
                 companyService.createCompany(request.getCompanyName(), request.getEngCompanyName(), logoImg)));
     }
 
